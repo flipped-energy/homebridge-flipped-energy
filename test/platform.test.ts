@@ -168,6 +168,33 @@ test('accessories appear after E1 and carry the signals', async () => {
   }
 })
 
+test('on a Homebridge 1.x API without isMatterEnabled the HAP accessories still appear', async () => {
+  const config = block({ token: TOKEN })
+  prepare([config])
+  const stub = await fixtureStub()
+  const api = new HomebridgeAPI()
+  Object.defineProperty(api, 'isMatterEnabled', { value: undefined })
+  const registered: PlatformAccessory[] = []
+  emitterOf(api).on('registerPlatformAccessories', (accessories: PlatformAccessory[]) => registered.push(...accessories))
+  const log = new LogRecorder()
+  new Platform(log.logging, config, api, {
+    createTransport: (token) => new ApiClient({ baseUrl: stub.url, token, httpTimeoutS: HTTP_TIMEOUT_S, waitHttpTimeoutS: WAIT_HTTP_TIMEOUT_S }),
+    timers: new FakeClock(START),
+  })
+  try {
+    api.signalFinished()
+    await log.until((record) => record.message === 'energy: ok')
+    assert.deepEqual(
+      registered.map((accessory) => accessory.displayName),
+      ['Flipped Energy Rates', 'Flipped Energy Wholesale', 'Flipped Energy Status', 'Flipped Energy Grid Import'],
+    )
+    assert.deepEqual(log.messages('error'), [])
+  } finally {
+    api.signalShutdown()
+    await stub.close()
+  }
+})
+
 test('a cached accessory plus an invalid config: a read of On throws -70402 and no request is sent', async () => {
   const config = block({ token: 'not-a-token' })
   prepare([config])

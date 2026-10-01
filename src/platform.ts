@@ -140,7 +140,7 @@ export class Platform<Handle> implements DynamicPlatformPlugin {
   }
 
   #launched(): void {
-    const matterApi = this.api.isMatterEnabled() ? this.api.matter : undefined
+    const matterApi = typeof this.api.isMatterEnabled === 'function' && this.api.isMatterEnabled() ? this.api.matter : undefined
     if (matterApi !== undefined) {
       const matter = new MatterEnergy({ api: matterApi, log: this.log, pluginName: PLUGIN_NAME, platformName: PLATFORM_NAME })
       for (const accessory of this.#matterCache) matter.configure(accessory)

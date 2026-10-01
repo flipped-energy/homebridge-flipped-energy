@@ -10,6 +10,7 @@ First release line; releases are numbered `0.1.<patch>`.
 - The on/off signals as switches, occupancy sensors or contact sensors.
 - `Rates Unavailable` and `Wholesale Price Unavailable` sensors; opt-in `Token Expiring Soon` sensor and a log warning 14 days before the token expires.
 - An unknown value is shown as "No Response", never as off, a default or the last value; Homebridge restarts start from "No Response".
+- Runs on Homebridge 1.11 as well as 2.x. On 1.x, which has no Matter, the HAP accessories work and `matterEnergy` logs that Matter is not enabled.
 - Half-hourly energy history in the Eve app for grid import, solar export and controlled load.
 - Experimental Matter electrical energy sensors, on a child bridge with Matter enabled.
 - Several accounts: one block per account, each on its own child bridge.
