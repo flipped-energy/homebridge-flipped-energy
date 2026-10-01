@@ -1,0 +1,58 @@
+{
+  "name": "homebridge-flipped-energy",
+  "displayName": "Flipped Energy",
+  "version": "0.1.0",
+  "description": "Flipped Energy tariff periods, wholesale price signals and metered energy history for Homebridge.",
+  "author": "Flipped Energy",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/flipped-energy/homebridge-flipped-energy#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flipped-energy/homebridge-flipped-energy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/flipped-energy/homebridge-flipped-energy/issues"
+  },
+  "keywords": [
+    "homebridge-plugin",
+    "supports-hap",
+    "supports-matter",
+    "flipped-energy",
+    "electricity",
+    "energy",
+    "tariff",
+    "time-of-use",
+    "wholesale-price",
+    "nem",
+    "australia",
+    "eve",
+    "homekit"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "config.schema.json",
+    "LICENSE",
+    "NOTICE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": "^22 || ^24 || ^26",
+    "homebridge": "^2.4.0"
+  },
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
+    "build": "npm run clean && tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.typecheck.json",
+    "test": "node --test \"test/**/*.test.ts\"",
+    "homebridge": "homebridge -D -I -Q -U ./.homebridge-dev -P . --strict-plugin-resolution",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.0",
+    "homebridge": "^2.4.0",
+    "typescript": "^7.0.2"
+  }
+}

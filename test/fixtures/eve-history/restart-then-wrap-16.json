@@ -1,0 +1,280 @@
+{
+  "name": "restart-then-wrap-16",
+  "description": "Six 30-minute intervals (18 entries) into a memory of 16 slots, so the ring has already wrapped once (marker at entry 17) and is persisted with storage fs; the instance is dropped and a new one loads the file (restartAfterEntry = 18). beforeRestart: status and the transfer from the oldest announced entry. afterRestart: the transfer from the oldest announced entry right after the reload. Then two more intervals (six entries) are added: the first entry after a restart into a full ring inserts a second reference-time marker. historyStatus and historyEntries are after them, in order: 0, the oldest announced entry, the newest entry, one past the newest.",
+  "generator": {
+    "fakegato-history": "0.6.7",
+    "homebridge": "2.4.0",
+    "@homebridge/hap-nodejs": "2.2.2",
+    "node": "v24.19.0",
+    "accessoryType": "energy",
+    "disableTimer": true,
+    "storage": "fs",
+    "historyStatusShape": "S1"
+  },
+  "format": {
+    "intervals": "the ledger input, in order: start instant (Z), durationMinutes, kwh of imported energy",
+    "overflow": "intervals whose average power exceeds 6,553.5 W: no entries are written for them",
+    "entries": "every entry fed to fakegato-history addEntry({ time, power }) in this order: time is Unix seconds at the end of its 10-minute slot (start + 600 k), watts is the power given, deciwatts = watts * 10 is the 16-bit field value",
+    "restartAfterEntry": "null, or the number of entries after which the instance was dropped and a new one loaded the persisted file",
+    "beforeRestart": "null, or historyStatus, historyEntries and state read before the restart",
+    "afterRestart": "null, or historyEntries and state read right after the reload, before any further entry",
+    "historyStatus": "E863F116 bytes (hex, little-endian fields) as published after the last entry",
+    "historyEntries": "in replay order on one running instance: for each History Request, the address requested, the exact E863F11C bytes written (hex: 01 14, u32 address, 00 00) and every E863F117 read (hex) until the terminator 00",
+    "state": "the library counters after the last entry: firstEntry, lastEntry, usedMemory, refTime (first entry time minus epoch), initialTime"
+  },
+  "memorySize": 16,
+  "epoch": 978307200,
+  "signature": "04 0102 0202 0702 0f03",
+  "entryType": "1f",
+  "intervals": [
+    {
+      "start": "2026-09-28T14:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.412
+    },
+    {
+      "start": "2026-09-28T14:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.6
+    },
+    {
+      "start": "2026-09-28T15:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-28T15:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.225
+    },
+    {
+      "start": "2026-09-28T16:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.55
+    },
+    {
+      "start": "2026-09-28T16:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 3.276
+    },
+    {
+      "start": "2026-09-28T17:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.38
+    },
+    {
+      "start": "2026-09-28T17:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1
+    }
+  ],
+  "overflow": [],
+  "entries": [
+    {
+      "time": 1790604600,
+      "watts": 824,
+      "deciwatts": 8240
+    },
+    {
+      "time": 1790605200,
+      "watts": 824,
+      "deciwatts": 8240
+    },
+    {
+      "time": 1790605800,
+      "watts": 824,
+      "deciwatts": 8240
+    },
+    {
+      "time": 1790606400,
+      "watts": 1200,
+      "deciwatts": 12000
+    },
+    {
+      "time": 1790607000,
+      "watts": 1200,
+      "deciwatts": 12000
+    },
+    {
+      "time": 1790607600,
+      "watts": 1200,
+      "deciwatts": 12000
+    },
+    {
+      "time": 1790608200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790608800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790609400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790610000,
+      "watts": 450,
+      "deciwatts": 4500
+    },
+    {
+      "time": 1790610600,
+      "watts": 450,
+      "deciwatts": 4500
+    },
+    {
+      "time": 1790611200,
+      "watts": 450,
+      "deciwatts": 4500
+    },
+    {
+      "time": 1790611800,
+      "watts": 3100,
+      "deciwatts": 31000
+    },
+    {
+      "time": 1790612400,
+      "watts": 3100,
+      "deciwatts": 31000
+    },
+    {
+      "time": 1790613000,
+      "watts": 3100,
+      "deciwatts": 31000
+    },
+    {
+      "time": 1790613600,
+      "watts": 6552,
+      "deciwatts": 65520
+    },
+    {
+      "time": 1790614200,
+      "watts": 6552,
+      "deciwatts": 65520
+    },
+    {
+      "time": 1790614800,
+      "watts": 6552,
+      "deciwatts": 65520
+    },
+    {
+      "time": 1790615400,
+      "watts": 760,
+      "deciwatts": 7600
+    },
+    {
+      "time": 1790616000,
+      "watts": 760,
+      "deciwatts": 7600
+    },
+    {
+      "time": 1790616600,
+      "watts": 760,
+      "deciwatts": 7600
+    },
+    {
+      "time": 1790617200,
+      "watts": 2000,
+      "deciwatts": 20000
+    },
+    {
+      "time": 1790617800,
+      "watts": 2000,
+      "deciwatts": 20000
+    },
+    {
+      "time": 1790618400,
+      "watts": 2000,
+      "deciwatts": 20000
+    }
+  ],
+  "restartAfterEntry": 18,
+  "beforeRestart": {
+    "historyStatus": "d827000000000000b8ac6a30040102020207020f031000100005000000000000000101",
+    "historyEntries": [
+      {
+        "address": 5,
+        "request": "0114050000000000",
+        "reads": [
+          "15050000000100000081b8ac6a30000000000000001406000000600900001f00000000e02e000000001407000000b80b00001f00000000e02e000000001408000000100e00001f000000000000000000001409000000681000001f00000000000000000000140a000000c01200001f00000000000000000000140b000000181500001f00000000941100000000140c000000701700001f00000000941100000000140d000000c81900001f00000000941100000000140e000000201c00001f00000000187900000000140f000000781e00001f00000000187900000000",
+          "1410000000d02000001f0000000018790000000015110000000100000081b8ac6a30000000000000001412000000282300001f00000000f0ff000000001413000000802500001f00000000f0ff000000001414000000d82700001f00000000f0ff00000000",
+          "00"
+        ]
+      }
+    ],
+    "state": {
+      "firstEntry": 4,
+      "lastEntry": 20,
+      "usedMemory": 16,
+      "refTime": 812297400,
+      "initialTime": 1790604600
+    }
+  },
+  "afterRestart": {
+    "historyEntries": [
+      {
+        "address": 5,
+        "request": "0114050000000000",
+        "reads": [
+          "15050000000100000081b8ac6a30000000000000001406000000600900001f00000000e02e000000001407000000b80b00001f00000000e02e000000001408000000100e00001f000000000000000000001409000000681000001f00000000000000000000140a000000c01200001f00000000000000000000140b000000181500001f00000000941100000000140c000000701700001f00000000941100000000140d000000c81900001f00000000941100000000140e000000201c00001f00000000187900000000140f000000781e00001f00000000187900000000",
+          "1410000000d02000001f0000000018790000000015110000000100000081b8ac6a30000000000000001412000000282300001f00000000f0ff000000001413000000802500001f00000000f0ff000000001414000000d82700001f00000000f0ff00000000",
+          "00"
+        ]
+      }
+    ],
+    "state": {
+      "firstEntry": 4,
+      "lastEntry": 20,
+      "usedMemory": 16,
+      "refTime": 812297400,
+      "initialTime": 1790604600
+    }
+  },
+  "historyStatus": "e835000000000000b8ac6a30040102020207020f03100010000c000000000000000101",
+  "historyEntries": [
+    {
+      "address": 0,
+      "request": "0114000000000000",
+      "reads": [
+        "15010000000100000081b8ac6a30000000000000001402000000282300001f00000000f0ff000000001403000000802500001f00000000f0ff000000001404000000d82700001f00000000f0ff0000000015050000000100000081b8ac6a30000000000000001406000000302a00001f00000000b01d000000001407000000882c00001f00000000b01d000000001408000000e02e00001f00000000b01d000000001409000000383100001f00000000204e00000000140a000000903300001f00000000204e00000000140b000000e83500001f00000000204e00000000",
+        "150c0000000100000081b8ac6a3000000000000000140d000000c81900001f00000000941100000000140e000000201c00001f00000000187900000000140f000000781e00001f000000001879000000001410000000d02000001f0000000018790000000015110000000100000081b8ac6a30000000000000001412000000282300001f00000000f0ff000000001413000000802500001f00000000f0ff000000001414000000d82700001f00000000f0ff0000000015150000000100000081b8ac6a30000000000000001416000000302a00001f00000000b01d00000000",
+        "1417000000882c00001f00000000b01d000000001418000000e02e00001f00000000b01d000000001419000000383100001f00000000204e00000000141a000000903300001f00000000204e00000000141b000000e83500001f00000000204e00000000",
+        "00"
+      ]
+    },
+    {
+      "address": 12,
+      "request": "01140c0000000000",
+      "reads": [
+        "150c0000000100000081b8ac6a3000000000000000140d000000c81900001f00000000941100000000140e000000201c00001f00000000187900000000140f000000781e00001f000000001879000000001410000000d02000001f0000000018790000000015110000000100000081b8ac6a30000000000000001412000000282300001f00000000f0ff000000001413000000802500001f00000000f0ff000000001414000000d82700001f00000000f0ff0000000015150000000100000081b8ac6a30000000000000001416000000302a00001f00000000b01d00000000",
+        "1417000000882c00001f00000000b01d000000001418000000e02e00001f00000000b01d000000001419000000383100001f00000000204e00000000141a000000903300001f00000000204e00000000141b000000e83500001f00000000204e00000000",
+        "00"
+      ]
+    },
+    {
+      "address": 27,
+      "request": "01141b0000000000",
+      "reads": [
+        "141b000000e83500001f00000000204e00000000",
+        "00"
+      ]
+    },
+    {
+      "address": 28,
+      "request": "01141c0000000000",
+      "reads": [
+        "00"
+      ]
+    }
+  ],
+  "state": {
+    "firstEntry": 11,
+    "lastEntry": 27,
+    "usedMemory": 16,
+    "refTime": 812297400,
+    "initialTime": 1790604600
+  }
+}

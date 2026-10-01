@@ -1,0 +1,6881 @@
+{
+  "name": "seven-day-fill",
+  "description": "The first usage sync: 336 half-hour intervals (1,008 entries) covering the seven local Sydney days from 2026-09-22 00:00 AEST to 2026-09-29 00:00 AEST (2026-09-21T14:00:00Z to 2026-09-28T14:00:00Z), memory size 4032. Watts follow a synthetic daily profile with zero-import half hours in the 11:00 to 14:00 window. Addresses read in order: 0 (the whole transfer, 11 records per read), 1000, one past the newest.",
+  "generator": {
+    "fakegato-history": "0.6.7",
+    "homebridge": "2.4.0",
+    "@homebridge/hap-nodejs": "2.2.2",
+    "node": "v24.19.0",
+    "accessoryType": "energy",
+    "disableTimer": true,
+    "storage": null,
+    "historyStatusShape": "S1"
+  },
+  "format": {
+    "intervals": "the ledger input, in order: start instant (Z), durationMinutes, kwh of imported energy",
+    "overflow": "intervals whose average power exceeds 6,553.5 W: no entries are written for them",
+    "entries": "every entry fed to fakegato-history addEntry({ time, power }) in this order: time is Unix seconds at the end of its 10-minute slot (start + 600 k), watts is the power given, deciwatts = watts * 10 is the 16-bit field value",
+    "restartAfterEntry": "null, or the number of entries after which the instance was dropped and a new one loaded the persisted file",
+    "beforeRestart": "null, or historyStatus, historyEntries and state read before the restart",
+    "afterRestart": "null, or historyEntries and state read right after the reload, before any further entry",
+    "historyStatus": "E863F116 bytes (hex, little-endian fields) as published after the last entry",
+    "historyEntries": "in replay order on one running instance: for each History Request, the address requested, the exact E863F11C bytes written (hex: 01 14, u32 address, 00 00) and every E863F117 read (hex) until the terminator 00",
+    "state": "the library counters after the last entry: firstEntry, lastEntry, usedMemory, refTime (first entry time minus epoch), initialTime"
+  },
+  "memorySize": 4032,
+  "epoch": 978307200,
+  "signature": "04 0102 0202 0702 0f03",
+  "entryType": "1f",
+  "intervals": [
+    {
+      "start": "2026-09-21T14:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.15
+    },
+    {
+      "start": "2026-09-21T14:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.187
+    },
+    {
+      "start": "2026-09-21T15:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.174
+    },
+    {
+      "start": "2026-09-21T15:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.161
+    },
+    {
+      "start": "2026-09-21T16:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.198
+    },
+    {
+      "start": "2026-09-21T16:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.185
+    },
+    {
+      "start": "2026-09-21T17:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.172
+    },
+    {
+      "start": "2026-09-21T17:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.159
+    },
+    {
+      "start": "2026-09-21T18:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.196
+    },
+    {
+      "start": "2026-09-21T18:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.183
+    },
+    {
+      "start": "2026-09-21T19:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.17
+    },
+    {
+      "start": "2026-09-21T19:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.157
+    },
+    {
+      "start": "2026-09-21T20:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.744
+    },
+    {
+      "start": "2026-09-21T20:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.731
+    },
+    {
+      "start": "2026-09-21T21:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.718
+    },
+    {
+      "start": "2026-09-21T21:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.705
+    },
+    {
+      "start": "2026-09-21T22:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.742
+    },
+    {
+      "start": "2026-09-21T22:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.729
+    },
+    {
+      "start": "2026-09-21T23:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.266
+    },
+    {
+      "start": "2026-09-21T23:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.253
+    },
+    {
+      "start": "2026-09-22T00:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.29
+    },
+    {
+      "start": "2026-09-22T00:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.277
+    },
+    {
+      "start": "2026-09-22T01:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-22T01:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-22T02:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-22T02:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-22T03:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-22T03:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-22T04:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.286
+    },
+    {
+      "start": "2026-09-22T04:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.273
+    },
+    {
+      "start": "2026-09-22T05:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.26
+    },
+    {
+      "start": "2026-09-22T05:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.297
+    },
+    {
+      "start": "2026-09-22T06:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.134
+    },
+    {
+      "start": "2026-09-22T06:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.121
+    },
+    {
+      "start": "2026-09-22T07:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.108
+    },
+    {
+      "start": "2026-09-22T07:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.145
+    },
+    {
+      "start": "2026-09-22T08:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.132
+    },
+    {
+      "start": "2026-09-22T08:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.119
+    },
+    {
+      "start": "2026-09-22T09:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.106
+    },
+    {
+      "start": "2026-09-22T09:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.143
+    },
+    {
+      "start": "2026-09-22T10:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.13
+    },
+    {
+      "start": "2026-09-22T10:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.117
+    },
+    {
+      "start": "2026-09-22T11:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.104
+    },
+    {
+      "start": "2026-09-22T11:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.141
+    },
+    {
+      "start": "2026-09-22T12:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.428
+    },
+    {
+      "start": "2026-09-22T12:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.415
+    },
+    {
+      "start": "2026-09-22T13:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.402
+    },
+    {
+      "start": "2026-09-22T13:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.439
+    },
+    {
+      "start": "2026-09-22T14:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.176
+    },
+    {
+      "start": "2026-09-22T14:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.163
+    },
+    {
+      "start": "2026-09-22T15:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.15
+    },
+    {
+      "start": "2026-09-22T15:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.187
+    },
+    {
+      "start": "2026-09-22T16:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.174
+    },
+    {
+      "start": "2026-09-22T16:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.161
+    },
+    {
+      "start": "2026-09-22T17:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.198
+    },
+    {
+      "start": "2026-09-22T17:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.185
+    },
+    {
+      "start": "2026-09-22T18:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.172
+    },
+    {
+      "start": "2026-09-22T18:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.159
+    },
+    {
+      "start": "2026-09-22T19:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.196
+    },
+    {
+      "start": "2026-09-22T19:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.183
+    },
+    {
+      "start": "2026-09-22T20:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.72
+    },
+    {
+      "start": "2026-09-22T20:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.707
+    },
+    {
+      "start": "2026-09-22T21:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.744
+    },
+    {
+      "start": "2026-09-22T21:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.731
+    },
+    {
+      "start": "2026-09-22T22:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.718
+    },
+    {
+      "start": "2026-09-22T22:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.705
+    },
+    {
+      "start": "2026-09-22T23:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.292
+    },
+    {
+      "start": "2026-09-22T23:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.279
+    },
+    {
+      "start": "2026-09-23T00:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.266
+    },
+    {
+      "start": "2026-09-23T00:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.253
+    },
+    {
+      "start": "2026-09-23T01:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-23T01:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-23T02:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-23T02:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-23T03:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-23T03:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-23T04:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.262
+    },
+    {
+      "start": "2026-09-23T04:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.299
+    },
+    {
+      "start": "2026-09-23T05:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.286
+    },
+    {
+      "start": "2026-09-23T05:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.273
+    },
+    {
+      "start": "2026-09-23T06:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.11
+    },
+    {
+      "start": "2026-09-23T06:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.147
+    },
+    {
+      "start": "2026-09-23T07:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.134
+    },
+    {
+      "start": "2026-09-23T07:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.121
+    },
+    {
+      "start": "2026-09-23T08:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.108
+    },
+    {
+      "start": "2026-09-23T08:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.145
+    },
+    {
+      "start": "2026-09-23T09:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.132
+    },
+    {
+      "start": "2026-09-23T09:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.119
+    },
+    {
+      "start": "2026-09-23T10:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.106
+    },
+    {
+      "start": "2026-09-23T10:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.143
+    },
+    {
+      "start": "2026-09-23T11:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.13
+    },
+    {
+      "start": "2026-09-23T11:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.117
+    },
+    {
+      "start": "2026-09-23T12:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.404
+    },
+    {
+      "start": "2026-09-23T12:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.441
+    },
+    {
+      "start": "2026-09-23T13:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.428
+    },
+    {
+      "start": "2026-09-23T13:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.415
+    },
+    {
+      "start": "2026-09-23T14:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.152
+    },
+    {
+      "start": "2026-09-23T14:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.189
+    },
+    {
+      "start": "2026-09-23T15:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.176
+    },
+    {
+      "start": "2026-09-23T15:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.163
+    },
+    {
+      "start": "2026-09-23T16:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.15
+    },
+    {
+      "start": "2026-09-23T16:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.187
+    },
+    {
+      "start": "2026-09-23T17:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.174
+    },
+    {
+      "start": "2026-09-23T17:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.161
+    },
+    {
+      "start": "2026-09-23T18:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.198
+    },
+    {
+      "start": "2026-09-23T18:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.185
+    },
+    {
+      "start": "2026-09-23T19:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.172
+    },
+    {
+      "start": "2026-09-23T19:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.159
+    },
+    {
+      "start": "2026-09-23T20:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.746
+    },
+    {
+      "start": "2026-09-23T20:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.733
+    },
+    {
+      "start": "2026-09-23T21:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.72
+    },
+    {
+      "start": "2026-09-23T21:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.707
+    },
+    {
+      "start": "2026-09-23T22:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.744
+    },
+    {
+      "start": "2026-09-23T22:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.731
+    },
+    {
+      "start": "2026-09-23T23:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.268
+    },
+    {
+      "start": "2026-09-23T23:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.255
+    },
+    {
+      "start": "2026-09-24T00:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.292
+    },
+    {
+      "start": "2026-09-24T00:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.279
+    },
+    {
+      "start": "2026-09-24T01:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-24T01:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-24T02:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-24T02:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-24T03:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-24T03:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-24T04:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.288
+    },
+    {
+      "start": "2026-09-24T04:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.275
+    },
+    {
+      "start": "2026-09-24T05:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.262
+    },
+    {
+      "start": "2026-09-24T05:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.299
+    },
+    {
+      "start": "2026-09-24T06:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.136
+    },
+    {
+      "start": "2026-09-24T06:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.123
+    },
+    {
+      "start": "2026-09-24T07:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.11
+    },
+    {
+      "start": "2026-09-24T07:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.147
+    },
+    {
+      "start": "2026-09-24T08:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.134
+    },
+    {
+      "start": "2026-09-24T08:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.121
+    },
+    {
+      "start": "2026-09-24T09:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.108
+    },
+    {
+      "start": "2026-09-24T09:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.145
+    },
+    {
+      "start": "2026-09-24T10:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.132
+    },
+    {
+      "start": "2026-09-24T10:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.119
+    },
+    {
+      "start": "2026-09-24T11:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.106
+    },
+    {
+      "start": "2026-09-24T11:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.143
+    },
+    {
+      "start": "2026-09-24T12:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.43
+    },
+    {
+      "start": "2026-09-24T12:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.417
+    },
+    {
+      "start": "2026-09-24T13:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.404
+    },
+    {
+      "start": "2026-09-24T13:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.441
+    },
+    {
+      "start": "2026-09-24T14:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.178
+    },
+    {
+      "start": "2026-09-24T14:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.165
+    },
+    {
+      "start": "2026-09-24T15:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.152
+    },
+    {
+      "start": "2026-09-24T15:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.189
+    },
+    {
+      "start": "2026-09-24T16:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.176
+    },
+    {
+      "start": "2026-09-24T16:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.163
+    },
+    {
+      "start": "2026-09-24T17:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.15
+    },
+    {
+      "start": "2026-09-24T17:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.187
+    },
+    {
+      "start": "2026-09-24T18:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.174
+    },
+    {
+      "start": "2026-09-24T18:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.161
+    },
+    {
+      "start": "2026-09-24T19:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.198
+    },
+    {
+      "start": "2026-09-24T19:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.185
+    },
+    {
+      "start": "2026-09-24T20:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.722
+    },
+    {
+      "start": "2026-09-24T20:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.709
+    },
+    {
+      "start": "2026-09-24T21:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.746
+    },
+    {
+      "start": "2026-09-24T21:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.733
+    },
+    {
+      "start": "2026-09-24T22:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.72
+    },
+    {
+      "start": "2026-09-24T22:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.707
+    },
+    {
+      "start": "2026-09-24T23:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.294
+    },
+    {
+      "start": "2026-09-24T23:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.281
+    },
+    {
+      "start": "2026-09-25T00:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.268
+    },
+    {
+      "start": "2026-09-25T00:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.255
+    },
+    {
+      "start": "2026-09-25T01:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-25T01:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-25T02:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-25T02:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-25T03:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-25T03:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-25T04:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.264
+    },
+    {
+      "start": "2026-09-25T04:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.251
+    },
+    {
+      "start": "2026-09-25T05:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.288
+    },
+    {
+      "start": "2026-09-25T05:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.275
+    },
+    {
+      "start": "2026-09-25T06:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.112
+    },
+    {
+      "start": "2026-09-25T06:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.149
+    },
+    {
+      "start": "2026-09-25T07:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.136
+    },
+    {
+      "start": "2026-09-25T07:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.123
+    },
+    {
+      "start": "2026-09-25T08:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.11
+    },
+    {
+      "start": "2026-09-25T08:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.147
+    },
+    {
+      "start": "2026-09-25T09:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.134
+    },
+    {
+      "start": "2026-09-25T09:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.121
+    },
+    {
+      "start": "2026-09-25T10:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.108
+    },
+    {
+      "start": "2026-09-25T10:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.145
+    },
+    {
+      "start": "2026-09-25T11:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.132
+    },
+    {
+      "start": "2026-09-25T11:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.119
+    },
+    {
+      "start": "2026-09-25T12:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.406
+    },
+    {
+      "start": "2026-09-25T12:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.443
+    },
+    {
+      "start": "2026-09-25T13:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.43
+    },
+    {
+      "start": "2026-09-25T13:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.417
+    },
+    {
+      "start": "2026-09-25T14:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.154
+    },
+    {
+      "start": "2026-09-25T14:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.191
+    },
+    {
+      "start": "2026-09-25T15:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.178
+    },
+    {
+      "start": "2026-09-25T15:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.165
+    },
+    {
+      "start": "2026-09-25T16:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.152
+    },
+    {
+      "start": "2026-09-25T16:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.189
+    },
+    {
+      "start": "2026-09-25T17:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.176
+    },
+    {
+      "start": "2026-09-25T17:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.163
+    },
+    {
+      "start": "2026-09-25T18:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.15
+    },
+    {
+      "start": "2026-09-25T18:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.187
+    },
+    {
+      "start": "2026-09-25T19:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.174
+    },
+    {
+      "start": "2026-09-25T19:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.161
+    },
+    {
+      "start": "2026-09-25T20:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.748
+    },
+    {
+      "start": "2026-09-25T20:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.735
+    },
+    {
+      "start": "2026-09-25T21:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.722
+    },
+    {
+      "start": "2026-09-25T21:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.709
+    },
+    {
+      "start": "2026-09-25T22:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.746
+    },
+    {
+      "start": "2026-09-25T22:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.733
+    },
+    {
+      "start": "2026-09-25T23:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.27
+    },
+    {
+      "start": "2026-09-25T23:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.257
+    },
+    {
+      "start": "2026-09-26T00:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.294
+    },
+    {
+      "start": "2026-09-26T00:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.281
+    },
+    {
+      "start": "2026-09-26T01:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-26T01:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-26T02:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-26T02:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-26T03:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-26T03:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-26T04:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.29
+    },
+    {
+      "start": "2026-09-26T04:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.277
+    },
+    {
+      "start": "2026-09-26T05:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.264
+    },
+    {
+      "start": "2026-09-26T05:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.251
+    },
+    {
+      "start": "2026-09-26T06:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.138
+    },
+    {
+      "start": "2026-09-26T06:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.125
+    },
+    {
+      "start": "2026-09-26T07:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.112
+    },
+    {
+      "start": "2026-09-26T07:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.149
+    },
+    {
+      "start": "2026-09-26T08:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.136
+    },
+    {
+      "start": "2026-09-26T08:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.123
+    },
+    {
+      "start": "2026-09-26T09:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.11
+    },
+    {
+      "start": "2026-09-26T09:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.147
+    },
+    {
+      "start": "2026-09-26T10:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.134
+    },
+    {
+      "start": "2026-09-26T10:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.121
+    },
+    {
+      "start": "2026-09-26T11:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.108
+    },
+    {
+      "start": "2026-09-26T11:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.145
+    },
+    {
+      "start": "2026-09-26T12:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.432
+    },
+    {
+      "start": "2026-09-26T12:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.419
+    },
+    {
+      "start": "2026-09-26T13:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.406
+    },
+    {
+      "start": "2026-09-26T13:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.443
+    },
+    {
+      "start": "2026-09-26T14:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.18
+    },
+    {
+      "start": "2026-09-26T14:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.167
+    },
+    {
+      "start": "2026-09-26T15:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.154
+    },
+    {
+      "start": "2026-09-26T15:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.191
+    },
+    {
+      "start": "2026-09-26T16:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.178
+    },
+    {
+      "start": "2026-09-26T16:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.165
+    },
+    {
+      "start": "2026-09-26T17:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.152
+    },
+    {
+      "start": "2026-09-26T17:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.189
+    },
+    {
+      "start": "2026-09-26T18:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.176
+    },
+    {
+      "start": "2026-09-26T18:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.163
+    },
+    {
+      "start": "2026-09-26T19:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.15
+    },
+    {
+      "start": "2026-09-26T19:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.187
+    },
+    {
+      "start": "2026-09-26T20:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.724
+    },
+    {
+      "start": "2026-09-26T20:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.711
+    },
+    {
+      "start": "2026-09-26T21:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.748
+    },
+    {
+      "start": "2026-09-26T21:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.735
+    },
+    {
+      "start": "2026-09-26T22:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.722
+    },
+    {
+      "start": "2026-09-26T22:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.709
+    },
+    {
+      "start": "2026-09-26T23:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.296
+    },
+    {
+      "start": "2026-09-26T23:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.283
+    },
+    {
+      "start": "2026-09-27T00:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.27
+    },
+    {
+      "start": "2026-09-27T00:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.257
+    },
+    {
+      "start": "2026-09-27T01:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-27T01:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-27T02:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-27T02:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-27T03:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-27T03:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-27T04:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.266
+    },
+    {
+      "start": "2026-09-27T04:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.253
+    },
+    {
+      "start": "2026-09-27T05:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.29
+    },
+    {
+      "start": "2026-09-27T05:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.277
+    },
+    {
+      "start": "2026-09-27T06:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.114
+    },
+    {
+      "start": "2026-09-27T06:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.101
+    },
+    {
+      "start": "2026-09-27T07:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.138
+    },
+    {
+      "start": "2026-09-27T07:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.125
+    },
+    {
+      "start": "2026-09-27T08:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.112
+    },
+    {
+      "start": "2026-09-27T08:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.149
+    },
+    {
+      "start": "2026-09-27T09:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.136
+    },
+    {
+      "start": "2026-09-27T09:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.123
+    },
+    {
+      "start": "2026-09-27T10:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.11
+    },
+    {
+      "start": "2026-09-27T10:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.147
+    },
+    {
+      "start": "2026-09-27T11:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.134
+    },
+    {
+      "start": "2026-09-27T11:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.121
+    },
+    {
+      "start": "2026-09-27T12:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.408
+    },
+    {
+      "start": "2026-09-27T12:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.445
+    },
+    {
+      "start": "2026-09-27T13:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.432
+    },
+    {
+      "start": "2026-09-27T13:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.419
+    },
+    {
+      "start": "2026-09-27T14:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.156
+    },
+    {
+      "start": "2026-09-27T14:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.193
+    },
+    {
+      "start": "2026-09-27T15:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.18
+    },
+    {
+      "start": "2026-09-27T15:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.167
+    },
+    {
+      "start": "2026-09-27T16:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.154
+    },
+    {
+      "start": "2026-09-27T16:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.191
+    },
+    {
+      "start": "2026-09-27T17:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.178
+    },
+    {
+      "start": "2026-09-27T17:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.165
+    },
+    {
+      "start": "2026-09-27T18:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.152
+    },
+    {
+      "start": "2026-09-27T18:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.189
+    },
+    {
+      "start": "2026-09-27T19:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.176
+    },
+    {
+      "start": "2026-09-27T19:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.163
+    },
+    {
+      "start": "2026-09-27T20:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.7
+    },
+    {
+      "start": "2026-09-27T20:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.737
+    },
+    {
+      "start": "2026-09-27T21:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.724
+    },
+    {
+      "start": "2026-09-27T21:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.711
+    },
+    {
+      "start": "2026-09-27T22:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.748
+    },
+    {
+      "start": "2026-09-27T22:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.735
+    },
+    {
+      "start": "2026-09-27T23:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.272
+    },
+    {
+      "start": "2026-09-27T23:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.259
+    },
+    {
+      "start": "2026-09-28T00:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.296
+    },
+    {
+      "start": "2026-09-28T00:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.283
+    },
+    {
+      "start": "2026-09-28T01:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-28T01:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-28T02:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-28T02:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-28T03:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-28T03:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0
+    },
+    {
+      "start": "2026-09-28T04:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.292
+    },
+    {
+      "start": "2026-09-28T04:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.279
+    },
+    {
+      "start": "2026-09-28T05:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.266
+    },
+    {
+      "start": "2026-09-28T05:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.253
+    },
+    {
+      "start": "2026-09-28T06:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.14
+    },
+    {
+      "start": "2026-09-28T06:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.127
+    },
+    {
+      "start": "2026-09-28T07:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.114
+    },
+    {
+      "start": "2026-09-28T07:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.101
+    },
+    {
+      "start": "2026-09-28T08:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.138
+    },
+    {
+      "start": "2026-09-28T08:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.125
+    },
+    {
+      "start": "2026-09-28T09:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.112
+    },
+    {
+      "start": "2026-09-28T09:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.149
+    },
+    {
+      "start": "2026-09-28T10:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.136
+    },
+    {
+      "start": "2026-09-28T10:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.123
+    },
+    {
+      "start": "2026-09-28T11:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.11
+    },
+    {
+      "start": "2026-09-28T11:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 1.147
+    },
+    {
+      "start": "2026-09-28T12:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.434
+    },
+    {
+      "start": "2026-09-28T12:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.421
+    },
+    {
+      "start": "2026-09-28T13:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.408
+    },
+    {
+      "start": "2026-09-28T13:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.445
+    }
+  ],
+  "overflow": [],
+  "entries": [
+    {
+      "time": 1789999800,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790000400,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790001000,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790001600,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790002200,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790002800,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790003400,
+      "watts": 348,
+      "deciwatts": 3480
+    },
+    {
+      "time": 1790004000,
+      "watts": 348,
+      "deciwatts": 3480
+    },
+    {
+      "time": 1790004600,
+      "watts": 348,
+      "deciwatts": 3480
+    },
+    {
+      "time": 1790005200,
+      "watts": 322,
+      "deciwatts": 3220
+    },
+    {
+      "time": 1790005800,
+      "watts": 322,
+      "deciwatts": 3220
+    },
+    {
+      "time": 1790006400,
+      "watts": 322,
+      "deciwatts": 3220
+    },
+    {
+      "time": 1790007000,
+      "watts": 396,
+      "deciwatts": 3960
+    },
+    {
+      "time": 1790007600,
+      "watts": 396,
+      "deciwatts": 3960
+    },
+    {
+      "time": 1790008200,
+      "watts": 396,
+      "deciwatts": 3960
+    },
+    {
+      "time": 1790008800,
+      "watts": 370,
+      "deciwatts": 3700
+    },
+    {
+      "time": 1790009400,
+      "watts": 370,
+      "deciwatts": 3700
+    },
+    {
+      "time": 1790010000,
+      "watts": 370,
+      "deciwatts": 3700
+    },
+    {
+      "time": 1790010600,
+      "watts": 344,
+      "deciwatts": 3440
+    },
+    {
+      "time": 1790011200,
+      "watts": 344,
+      "deciwatts": 3440
+    },
+    {
+      "time": 1790011800,
+      "watts": 344,
+      "deciwatts": 3440
+    },
+    {
+      "time": 1790012400,
+      "watts": 318,
+      "deciwatts": 3180
+    },
+    {
+      "time": 1790013000,
+      "watts": 318,
+      "deciwatts": 3180
+    },
+    {
+      "time": 1790013600,
+      "watts": 318,
+      "deciwatts": 3180
+    },
+    {
+      "time": 1790014200,
+      "watts": 392,
+      "deciwatts": 3920
+    },
+    {
+      "time": 1790014800,
+      "watts": 392,
+      "deciwatts": 3920
+    },
+    {
+      "time": 1790015400,
+      "watts": 392,
+      "deciwatts": 3920
+    },
+    {
+      "time": 1790016000,
+      "watts": 366,
+      "deciwatts": 3660
+    },
+    {
+      "time": 1790016600,
+      "watts": 366,
+      "deciwatts": 3660
+    },
+    {
+      "time": 1790017200,
+      "watts": 366,
+      "deciwatts": 3660
+    },
+    {
+      "time": 1790017800,
+      "watts": 340,
+      "deciwatts": 3400
+    },
+    {
+      "time": 1790018400,
+      "watts": 340,
+      "deciwatts": 3400
+    },
+    {
+      "time": 1790019000,
+      "watts": 340,
+      "deciwatts": 3400
+    },
+    {
+      "time": 1790019600,
+      "watts": 314,
+      "deciwatts": 3140
+    },
+    {
+      "time": 1790020200,
+      "watts": 314,
+      "deciwatts": 3140
+    },
+    {
+      "time": 1790020800,
+      "watts": 314,
+      "deciwatts": 3140
+    },
+    {
+      "time": 1790021400,
+      "watts": 1488,
+      "deciwatts": 14880
+    },
+    {
+      "time": 1790022000,
+      "watts": 1488,
+      "deciwatts": 14880
+    },
+    {
+      "time": 1790022600,
+      "watts": 1488,
+      "deciwatts": 14880
+    },
+    {
+      "time": 1790023200,
+      "watts": 1462,
+      "deciwatts": 14620
+    },
+    {
+      "time": 1790023800,
+      "watts": 1462,
+      "deciwatts": 14620
+    },
+    {
+      "time": 1790024400,
+      "watts": 1462,
+      "deciwatts": 14620
+    },
+    {
+      "time": 1790025000,
+      "watts": 1436,
+      "deciwatts": 14360
+    },
+    {
+      "time": 1790025600,
+      "watts": 1436,
+      "deciwatts": 14360
+    },
+    {
+      "time": 1790026200,
+      "watts": 1436,
+      "deciwatts": 14360
+    },
+    {
+      "time": 1790026800,
+      "watts": 1410,
+      "deciwatts": 14100
+    },
+    {
+      "time": 1790027400,
+      "watts": 1410,
+      "deciwatts": 14100
+    },
+    {
+      "time": 1790028000,
+      "watts": 1410,
+      "deciwatts": 14100
+    },
+    {
+      "time": 1790028600,
+      "watts": 1484,
+      "deciwatts": 14840
+    },
+    {
+      "time": 1790029200,
+      "watts": 1484,
+      "deciwatts": 14840
+    },
+    {
+      "time": 1790029800,
+      "watts": 1484,
+      "deciwatts": 14840
+    },
+    {
+      "time": 1790030400,
+      "watts": 1458,
+      "deciwatts": 14580
+    },
+    {
+      "time": 1790031000,
+      "watts": 1458,
+      "deciwatts": 14580
+    },
+    {
+      "time": 1790031600,
+      "watts": 1458,
+      "deciwatts": 14580
+    },
+    {
+      "time": 1790032200,
+      "watts": 532,
+      "deciwatts": 5320
+    },
+    {
+      "time": 1790032800,
+      "watts": 532,
+      "deciwatts": 5320
+    },
+    {
+      "time": 1790033400,
+      "watts": 532,
+      "deciwatts": 5320
+    },
+    {
+      "time": 1790034000,
+      "watts": 506,
+      "deciwatts": 5060
+    },
+    {
+      "time": 1790034600,
+      "watts": 506,
+      "deciwatts": 5060
+    },
+    {
+      "time": 1790035200,
+      "watts": 506,
+      "deciwatts": 5060
+    },
+    {
+      "time": 1790035800,
+      "watts": 580,
+      "deciwatts": 5800
+    },
+    {
+      "time": 1790036400,
+      "watts": 580,
+      "deciwatts": 5800
+    },
+    {
+      "time": 1790037000,
+      "watts": 580,
+      "deciwatts": 5800
+    },
+    {
+      "time": 1790037600,
+      "watts": 554,
+      "deciwatts": 5540
+    },
+    {
+      "time": 1790038200,
+      "watts": 554,
+      "deciwatts": 5540
+    },
+    {
+      "time": 1790038800,
+      "watts": 554,
+      "deciwatts": 5540
+    },
+    {
+      "time": 1790039400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790040000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790040600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790041200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790041800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790042400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790043000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790043600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790044200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790044800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790045400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790046000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790046600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790047200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790047800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790048400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790049000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790049600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790050200,
+      "watts": 572,
+      "deciwatts": 5720
+    },
+    {
+      "time": 1790050800,
+      "watts": 572,
+      "deciwatts": 5720
+    },
+    {
+      "time": 1790051400,
+      "watts": 572,
+      "deciwatts": 5720
+    },
+    {
+      "time": 1790052000,
+      "watts": 546,
+      "deciwatts": 5460
+    },
+    {
+      "time": 1790052600,
+      "watts": 546,
+      "deciwatts": 5460
+    },
+    {
+      "time": 1790053200,
+      "watts": 546,
+      "deciwatts": 5460
+    },
+    {
+      "time": 1790053800,
+      "watts": 520,
+      "deciwatts": 5200
+    },
+    {
+      "time": 1790054400,
+      "watts": 520,
+      "deciwatts": 5200
+    },
+    {
+      "time": 1790055000,
+      "watts": 520,
+      "deciwatts": 5200
+    },
+    {
+      "time": 1790055600,
+      "watts": 594,
+      "deciwatts": 5940
+    },
+    {
+      "time": 1790056200,
+      "watts": 594,
+      "deciwatts": 5940
+    },
+    {
+      "time": 1790056800,
+      "watts": 594,
+      "deciwatts": 5940
+    },
+    {
+      "time": 1790057400,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790058000,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790058600,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790059200,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790059800,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790060400,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790061000,
+      "watts": 2216,
+      "deciwatts": 22160
+    },
+    {
+      "time": 1790061600,
+      "watts": 2216,
+      "deciwatts": 22160
+    },
+    {
+      "time": 1790062200,
+      "watts": 2216,
+      "deciwatts": 22160
+    },
+    {
+      "time": 1790062800,
+      "watts": 2290,
+      "deciwatts": 22900
+    },
+    {
+      "time": 1790063400,
+      "watts": 2290,
+      "deciwatts": 22900
+    },
+    {
+      "time": 1790064000,
+      "watts": 2290,
+      "deciwatts": 22900
+    },
+    {
+      "time": 1790064600,
+      "watts": 2264,
+      "deciwatts": 22640
+    },
+    {
+      "time": 1790065200,
+      "watts": 2264,
+      "deciwatts": 22640
+    },
+    {
+      "time": 1790065800,
+      "watts": 2264,
+      "deciwatts": 22640
+    },
+    {
+      "time": 1790066400,
+      "watts": 2238,
+      "deciwatts": 22380
+    },
+    {
+      "time": 1790067000,
+      "watts": 2238,
+      "deciwatts": 22380
+    },
+    {
+      "time": 1790067600,
+      "watts": 2238,
+      "deciwatts": 22380
+    },
+    {
+      "time": 1790068200,
+      "watts": 2212,
+      "deciwatts": 22120
+    },
+    {
+      "time": 1790068800,
+      "watts": 2212,
+      "deciwatts": 22120
+    },
+    {
+      "time": 1790069400,
+      "watts": 2212,
+      "deciwatts": 22120
+    },
+    {
+      "time": 1790070000,
+      "watts": 2286,
+      "deciwatts": 22860
+    },
+    {
+      "time": 1790070600,
+      "watts": 2286,
+      "deciwatts": 22860
+    },
+    {
+      "time": 1790071200,
+      "watts": 2286,
+      "deciwatts": 22860
+    },
+    {
+      "time": 1790071800,
+      "watts": 2260,
+      "deciwatts": 22600
+    },
+    {
+      "time": 1790072400,
+      "watts": 2260,
+      "deciwatts": 22600
+    },
+    {
+      "time": 1790073000,
+      "watts": 2260,
+      "deciwatts": 22600
+    },
+    {
+      "time": 1790073600,
+      "watts": 2234,
+      "deciwatts": 22340
+    },
+    {
+      "time": 1790074200,
+      "watts": 2234,
+      "deciwatts": 22340
+    },
+    {
+      "time": 1790074800,
+      "watts": 2234,
+      "deciwatts": 22340
+    },
+    {
+      "time": 1790075400,
+      "watts": 2208,
+      "deciwatts": 22080
+    },
+    {
+      "time": 1790076000,
+      "watts": 2208,
+      "deciwatts": 22080
+    },
+    {
+      "time": 1790076600,
+      "watts": 2208,
+      "deciwatts": 22080
+    },
+    {
+      "time": 1790077200,
+      "watts": 2282,
+      "deciwatts": 22820
+    },
+    {
+      "time": 1790077800,
+      "watts": 2282,
+      "deciwatts": 22820
+    },
+    {
+      "time": 1790078400,
+      "watts": 2282,
+      "deciwatts": 22820
+    },
+    {
+      "time": 1790079000,
+      "watts": 856,
+      "deciwatts": 8560
+    },
+    {
+      "time": 1790079600,
+      "watts": 856,
+      "deciwatts": 8560
+    },
+    {
+      "time": 1790080200,
+      "watts": 856,
+      "deciwatts": 8560
+    },
+    {
+      "time": 1790080800,
+      "watts": 830,
+      "deciwatts": 8300
+    },
+    {
+      "time": 1790081400,
+      "watts": 830,
+      "deciwatts": 8300
+    },
+    {
+      "time": 1790082000,
+      "watts": 830,
+      "deciwatts": 8300
+    },
+    {
+      "time": 1790082600,
+      "watts": 804,
+      "deciwatts": 8040
+    },
+    {
+      "time": 1790083200,
+      "watts": 804,
+      "deciwatts": 8040
+    },
+    {
+      "time": 1790083800,
+      "watts": 804,
+      "deciwatts": 8040
+    },
+    {
+      "time": 1790084400,
+      "watts": 878,
+      "deciwatts": 8780
+    },
+    {
+      "time": 1790085000,
+      "watts": 878,
+      "deciwatts": 8780
+    },
+    {
+      "time": 1790085600,
+      "watts": 878,
+      "deciwatts": 8780
+    },
+    {
+      "time": 1790086200,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790086800,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790087400,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790088000,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790088600,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790089200,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790089800,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790090400,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790091000,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790091600,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790092200,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790092800,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790093400,
+      "watts": 348,
+      "deciwatts": 3480
+    },
+    {
+      "time": 1790094000,
+      "watts": 348,
+      "deciwatts": 3480
+    },
+    {
+      "time": 1790094600,
+      "watts": 348,
+      "deciwatts": 3480
+    },
+    {
+      "time": 1790095200,
+      "watts": 322,
+      "deciwatts": 3220
+    },
+    {
+      "time": 1790095800,
+      "watts": 322,
+      "deciwatts": 3220
+    },
+    {
+      "time": 1790096400,
+      "watts": 322,
+      "deciwatts": 3220
+    },
+    {
+      "time": 1790097000,
+      "watts": 396,
+      "deciwatts": 3960
+    },
+    {
+      "time": 1790097600,
+      "watts": 396,
+      "deciwatts": 3960
+    },
+    {
+      "time": 1790098200,
+      "watts": 396,
+      "deciwatts": 3960
+    },
+    {
+      "time": 1790098800,
+      "watts": 370,
+      "deciwatts": 3700
+    },
+    {
+      "time": 1790099400,
+      "watts": 370,
+      "deciwatts": 3700
+    },
+    {
+      "time": 1790100000,
+      "watts": 370,
+      "deciwatts": 3700
+    },
+    {
+      "time": 1790100600,
+      "watts": 344,
+      "deciwatts": 3440
+    },
+    {
+      "time": 1790101200,
+      "watts": 344,
+      "deciwatts": 3440
+    },
+    {
+      "time": 1790101800,
+      "watts": 344,
+      "deciwatts": 3440
+    },
+    {
+      "time": 1790102400,
+      "watts": 318,
+      "deciwatts": 3180
+    },
+    {
+      "time": 1790103000,
+      "watts": 318,
+      "deciwatts": 3180
+    },
+    {
+      "time": 1790103600,
+      "watts": 318,
+      "deciwatts": 3180
+    },
+    {
+      "time": 1790104200,
+      "watts": 392,
+      "deciwatts": 3920
+    },
+    {
+      "time": 1790104800,
+      "watts": 392,
+      "deciwatts": 3920
+    },
+    {
+      "time": 1790105400,
+      "watts": 392,
+      "deciwatts": 3920
+    },
+    {
+      "time": 1790106000,
+      "watts": 366,
+      "deciwatts": 3660
+    },
+    {
+      "time": 1790106600,
+      "watts": 366,
+      "deciwatts": 3660
+    },
+    {
+      "time": 1790107200,
+      "watts": 366,
+      "deciwatts": 3660
+    },
+    {
+      "time": 1790107800,
+      "watts": 1440,
+      "deciwatts": 14400
+    },
+    {
+      "time": 1790108400,
+      "watts": 1440,
+      "deciwatts": 14400
+    },
+    {
+      "time": 1790109000,
+      "watts": 1440,
+      "deciwatts": 14400
+    },
+    {
+      "time": 1790109600,
+      "watts": 1414,
+      "deciwatts": 14140
+    },
+    {
+      "time": 1790110200,
+      "watts": 1414,
+      "deciwatts": 14140
+    },
+    {
+      "time": 1790110800,
+      "watts": 1414,
+      "deciwatts": 14140
+    },
+    {
+      "time": 1790111400,
+      "watts": 1488,
+      "deciwatts": 14880
+    },
+    {
+      "time": 1790112000,
+      "watts": 1488,
+      "deciwatts": 14880
+    },
+    {
+      "time": 1790112600,
+      "watts": 1488,
+      "deciwatts": 14880
+    },
+    {
+      "time": 1790113200,
+      "watts": 1462,
+      "deciwatts": 14620
+    },
+    {
+      "time": 1790113800,
+      "watts": 1462,
+      "deciwatts": 14620
+    },
+    {
+      "time": 1790114400,
+      "watts": 1462,
+      "deciwatts": 14620
+    },
+    {
+      "time": 1790115000,
+      "watts": 1436,
+      "deciwatts": 14360
+    },
+    {
+      "time": 1790115600,
+      "watts": 1436,
+      "deciwatts": 14360
+    },
+    {
+      "time": 1790116200,
+      "watts": 1436,
+      "deciwatts": 14360
+    },
+    {
+      "time": 1790116800,
+      "watts": 1410,
+      "deciwatts": 14100
+    },
+    {
+      "time": 1790117400,
+      "watts": 1410,
+      "deciwatts": 14100
+    },
+    {
+      "time": 1790118000,
+      "watts": 1410,
+      "deciwatts": 14100
+    },
+    {
+      "time": 1790118600,
+      "watts": 584,
+      "deciwatts": 5840
+    },
+    {
+      "time": 1790119200,
+      "watts": 584,
+      "deciwatts": 5840
+    },
+    {
+      "time": 1790119800,
+      "watts": 584,
+      "deciwatts": 5840
+    },
+    {
+      "time": 1790120400,
+      "watts": 558,
+      "deciwatts": 5580
+    },
+    {
+      "time": 1790121000,
+      "watts": 558,
+      "deciwatts": 5580
+    },
+    {
+      "time": 1790121600,
+      "watts": 558,
+      "deciwatts": 5580
+    },
+    {
+      "time": 1790122200,
+      "watts": 532,
+      "deciwatts": 5320
+    },
+    {
+      "time": 1790122800,
+      "watts": 532,
+      "deciwatts": 5320
+    },
+    {
+      "time": 1790123400,
+      "watts": 532,
+      "deciwatts": 5320
+    },
+    {
+      "time": 1790124000,
+      "watts": 506,
+      "deciwatts": 5060
+    },
+    {
+      "time": 1790124600,
+      "watts": 506,
+      "deciwatts": 5060
+    },
+    {
+      "time": 1790125200,
+      "watts": 506,
+      "deciwatts": 5060
+    },
+    {
+      "time": 1790125800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790126400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790127000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790127600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790128200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790128800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790129400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790130000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790130600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790131200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790131800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790132400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790133000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790133600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790134200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790134800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790135400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790136000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790136600,
+      "watts": 524,
+      "deciwatts": 5240
+    },
+    {
+      "time": 1790137200,
+      "watts": 524,
+      "deciwatts": 5240
+    },
+    {
+      "time": 1790137800,
+      "watts": 524,
+      "deciwatts": 5240
+    },
+    {
+      "time": 1790138400,
+      "watts": 598,
+      "deciwatts": 5980
+    },
+    {
+      "time": 1790139000,
+      "watts": 598,
+      "deciwatts": 5980
+    },
+    {
+      "time": 1790139600,
+      "watts": 598,
+      "deciwatts": 5980
+    },
+    {
+      "time": 1790140200,
+      "watts": 572,
+      "deciwatts": 5720
+    },
+    {
+      "time": 1790140800,
+      "watts": 572,
+      "deciwatts": 5720
+    },
+    {
+      "time": 1790141400,
+      "watts": 572,
+      "deciwatts": 5720
+    },
+    {
+      "time": 1790142000,
+      "watts": 546,
+      "deciwatts": 5460
+    },
+    {
+      "time": 1790142600,
+      "watts": 546,
+      "deciwatts": 5460
+    },
+    {
+      "time": 1790143200,
+      "watts": 546,
+      "deciwatts": 5460
+    },
+    {
+      "time": 1790143800,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790144400,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790145000,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790145600,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790146200,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790146800,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790147400,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790148000,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790148600,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790149200,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790149800,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790150400,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790151000,
+      "watts": 2216,
+      "deciwatts": 22160
+    },
+    {
+      "time": 1790151600,
+      "watts": 2216,
+      "deciwatts": 22160
+    },
+    {
+      "time": 1790152200,
+      "watts": 2216,
+      "deciwatts": 22160
+    },
+    {
+      "time": 1790152800,
+      "watts": 2290,
+      "deciwatts": 22900
+    },
+    {
+      "time": 1790153400,
+      "watts": 2290,
+      "deciwatts": 22900
+    },
+    {
+      "time": 1790154000,
+      "watts": 2290,
+      "deciwatts": 22900
+    },
+    {
+      "time": 1790154600,
+      "watts": 2264,
+      "deciwatts": 22640
+    },
+    {
+      "time": 1790155200,
+      "watts": 2264,
+      "deciwatts": 22640
+    },
+    {
+      "time": 1790155800,
+      "watts": 2264,
+      "deciwatts": 22640
+    },
+    {
+      "time": 1790156400,
+      "watts": 2238,
+      "deciwatts": 22380
+    },
+    {
+      "time": 1790157000,
+      "watts": 2238,
+      "deciwatts": 22380
+    },
+    {
+      "time": 1790157600,
+      "watts": 2238,
+      "deciwatts": 22380
+    },
+    {
+      "time": 1790158200,
+      "watts": 2212,
+      "deciwatts": 22120
+    },
+    {
+      "time": 1790158800,
+      "watts": 2212,
+      "deciwatts": 22120
+    },
+    {
+      "time": 1790159400,
+      "watts": 2212,
+      "deciwatts": 22120
+    },
+    {
+      "time": 1790160000,
+      "watts": 2286,
+      "deciwatts": 22860
+    },
+    {
+      "time": 1790160600,
+      "watts": 2286,
+      "deciwatts": 22860
+    },
+    {
+      "time": 1790161200,
+      "watts": 2286,
+      "deciwatts": 22860
+    },
+    {
+      "time": 1790161800,
+      "watts": 2260,
+      "deciwatts": 22600
+    },
+    {
+      "time": 1790162400,
+      "watts": 2260,
+      "deciwatts": 22600
+    },
+    {
+      "time": 1790163000,
+      "watts": 2260,
+      "deciwatts": 22600
+    },
+    {
+      "time": 1790163600,
+      "watts": 2234,
+      "deciwatts": 22340
+    },
+    {
+      "time": 1790164200,
+      "watts": 2234,
+      "deciwatts": 22340
+    },
+    {
+      "time": 1790164800,
+      "watts": 2234,
+      "deciwatts": 22340
+    },
+    {
+      "time": 1790165400,
+      "watts": 808,
+      "deciwatts": 8080
+    },
+    {
+      "time": 1790166000,
+      "watts": 808,
+      "deciwatts": 8080
+    },
+    {
+      "time": 1790166600,
+      "watts": 808,
+      "deciwatts": 8080
+    },
+    {
+      "time": 1790167200,
+      "watts": 882,
+      "deciwatts": 8820
+    },
+    {
+      "time": 1790167800,
+      "watts": 882,
+      "deciwatts": 8820
+    },
+    {
+      "time": 1790168400,
+      "watts": 882,
+      "deciwatts": 8820
+    },
+    {
+      "time": 1790169000,
+      "watts": 856,
+      "deciwatts": 8560
+    },
+    {
+      "time": 1790169600,
+      "watts": 856,
+      "deciwatts": 8560
+    },
+    {
+      "time": 1790170200,
+      "watts": 856,
+      "deciwatts": 8560
+    },
+    {
+      "time": 1790170800,
+      "watts": 830,
+      "deciwatts": 8300
+    },
+    {
+      "time": 1790171400,
+      "watts": 830,
+      "deciwatts": 8300
+    },
+    {
+      "time": 1790172000,
+      "watts": 830,
+      "deciwatts": 8300
+    },
+    {
+      "time": 1790172600,
+      "watts": 304,
+      "deciwatts": 3040
+    },
+    {
+      "time": 1790173200,
+      "watts": 304,
+      "deciwatts": 3040
+    },
+    {
+      "time": 1790173800,
+      "watts": 304,
+      "deciwatts": 3040
+    },
+    {
+      "time": 1790174400,
+      "watts": 378,
+      "deciwatts": 3780
+    },
+    {
+      "time": 1790175000,
+      "watts": 378,
+      "deciwatts": 3780
+    },
+    {
+      "time": 1790175600,
+      "watts": 378,
+      "deciwatts": 3780
+    },
+    {
+      "time": 1790176200,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790176800,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790177400,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790178000,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790178600,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790179200,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790179800,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790180400,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790181000,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790181600,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790182200,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790182800,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790183400,
+      "watts": 348,
+      "deciwatts": 3480
+    },
+    {
+      "time": 1790184000,
+      "watts": 348,
+      "deciwatts": 3480
+    },
+    {
+      "time": 1790184600,
+      "watts": 348,
+      "deciwatts": 3480
+    },
+    {
+      "time": 1790185200,
+      "watts": 322,
+      "deciwatts": 3220
+    },
+    {
+      "time": 1790185800,
+      "watts": 322,
+      "deciwatts": 3220
+    },
+    {
+      "time": 1790186400,
+      "watts": 322,
+      "deciwatts": 3220
+    },
+    {
+      "time": 1790187000,
+      "watts": 396,
+      "deciwatts": 3960
+    },
+    {
+      "time": 1790187600,
+      "watts": 396,
+      "deciwatts": 3960
+    },
+    {
+      "time": 1790188200,
+      "watts": 396,
+      "deciwatts": 3960
+    },
+    {
+      "time": 1790188800,
+      "watts": 370,
+      "deciwatts": 3700
+    },
+    {
+      "time": 1790189400,
+      "watts": 370,
+      "deciwatts": 3700
+    },
+    {
+      "time": 1790190000,
+      "watts": 370,
+      "deciwatts": 3700
+    },
+    {
+      "time": 1790190600,
+      "watts": 344,
+      "deciwatts": 3440
+    },
+    {
+      "time": 1790191200,
+      "watts": 344,
+      "deciwatts": 3440
+    },
+    {
+      "time": 1790191800,
+      "watts": 344,
+      "deciwatts": 3440
+    },
+    {
+      "time": 1790192400,
+      "watts": 318,
+      "deciwatts": 3180
+    },
+    {
+      "time": 1790193000,
+      "watts": 318,
+      "deciwatts": 3180
+    },
+    {
+      "time": 1790193600,
+      "watts": 318,
+      "deciwatts": 3180
+    },
+    {
+      "time": 1790194200,
+      "watts": 1492,
+      "deciwatts": 14920
+    },
+    {
+      "time": 1790194800,
+      "watts": 1492,
+      "deciwatts": 14920
+    },
+    {
+      "time": 1790195400,
+      "watts": 1492,
+      "deciwatts": 14920
+    },
+    {
+      "time": 1790196000,
+      "watts": 1466,
+      "deciwatts": 14660
+    },
+    {
+      "time": 1790196600,
+      "watts": 1466,
+      "deciwatts": 14660
+    },
+    {
+      "time": 1790197200,
+      "watts": 1466,
+      "deciwatts": 14660
+    },
+    {
+      "time": 1790197800,
+      "watts": 1440,
+      "deciwatts": 14400
+    },
+    {
+      "time": 1790198400,
+      "watts": 1440,
+      "deciwatts": 14400
+    },
+    {
+      "time": 1790199000,
+      "watts": 1440,
+      "deciwatts": 14400
+    },
+    {
+      "time": 1790199600,
+      "watts": 1414,
+      "deciwatts": 14140
+    },
+    {
+      "time": 1790200200,
+      "watts": 1414,
+      "deciwatts": 14140
+    },
+    {
+      "time": 1790200800,
+      "watts": 1414,
+      "deciwatts": 14140
+    },
+    {
+      "time": 1790201400,
+      "watts": 1488,
+      "deciwatts": 14880
+    },
+    {
+      "time": 1790202000,
+      "watts": 1488,
+      "deciwatts": 14880
+    },
+    {
+      "time": 1790202600,
+      "watts": 1488,
+      "deciwatts": 14880
+    },
+    {
+      "time": 1790203200,
+      "watts": 1462,
+      "deciwatts": 14620
+    },
+    {
+      "time": 1790203800,
+      "watts": 1462,
+      "deciwatts": 14620
+    },
+    {
+      "time": 1790204400,
+      "watts": 1462,
+      "deciwatts": 14620
+    },
+    {
+      "time": 1790205000,
+      "watts": 536,
+      "deciwatts": 5360
+    },
+    {
+      "time": 1790205600,
+      "watts": 536,
+      "deciwatts": 5360
+    },
+    {
+      "time": 1790206200,
+      "watts": 536,
+      "deciwatts": 5360
+    },
+    {
+      "time": 1790206800,
+      "watts": 510,
+      "deciwatts": 5100
+    },
+    {
+      "time": 1790207400,
+      "watts": 510,
+      "deciwatts": 5100
+    },
+    {
+      "time": 1790208000,
+      "watts": 510,
+      "deciwatts": 5100
+    },
+    {
+      "time": 1790208600,
+      "watts": 584,
+      "deciwatts": 5840
+    },
+    {
+      "time": 1790209200,
+      "watts": 584,
+      "deciwatts": 5840
+    },
+    {
+      "time": 1790209800,
+      "watts": 584,
+      "deciwatts": 5840
+    },
+    {
+      "time": 1790210400,
+      "watts": 558,
+      "deciwatts": 5580
+    },
+    {
+      "time": 1790211000,
+      "watts": 558,
+      "deciwatts": 5580
+    },
+    {
+      "time": 1790211600,
+      "watts": 558,
+      "deciwatts": 5580
+    },
+    {
+      "time": 1790212200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790212800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790213400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790214000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790214600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790215200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790215800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790216400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790217000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790217600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790218200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790218800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790219400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790220000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790220600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790221200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790221800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790222400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790223000,
+      "watts": 576,
+      "deciwatts": 5760
+    },
+    {
+      "time": 1790223600,
+      "watts": 576,
+      "deciwatts": 5760
+    },
+    {
+      "time": 1790224200,
+      "watts": 576,
+      "deciwatts": 5760
+    },
+    {
+      "time": 1790224800,
+      "watts": 550,
+      "deciwatts": 5500
+    },
+    {
+      "time": 1790225400,
+      "watts": 550,
+      "deciwatts": 5500
+    },
+    {
+      "time": 1790226000,
+      "watts": 550,
+      "deciwatts": 5500
+    },
+    {
+      "time": 1790226600,
+      "watts": 524,
+      "deciwatts": 5240
+    },
+    {
+      "time": 1790227200,
+      "watts": 524,
+      "deciwatts": 5240
+    },
+    {
+      "time": 1790227800,
+      "watts": 524,
+      "deciwatts": 5240
+    },
+    {
+      "time": 1790228400,
+      "watts": 598,
+      "deciwatts": 5980
+    },
+    {
+      "time": 1790229000,
+      "watts": 598,
+      "deciwatts": 5980
+    },
+    {
+      "time": 1790229600,
+      "watts": 598,
+      "deciwatts": 5980
+    },
+    {
+      "time": 1790230200,
+      "watts": 2272,
+      "deciwatts": 22720
+    },
+    {
+      "time": 1790230800,
+      "watts": 2272,
+      "deciwatts": 22720
+    },
+    {
+      "time": 1790231400,
+      "watts": 2272,
+      "deciwatts": 22720
+    },
+    {
+      "time": 1790232000,
+      "watts": 2246,
+      "deciwatts": 22460
+    },
+    {
+      "time": 1790232600,
+      "watts": 2246,
+      "deciwatts": 22460
+    },
+    {
+      "time": 1790233200,
+      "watts": 2246,
+      "deciwatts": 22460
+    },
+    {
+      "time": 1790233800,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790234400,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790235000,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790235600,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790236200,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790236800,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790237400,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790238000,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790238600,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790239200,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790239800,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790240400,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790241000,
+      "watts": 2216,
+      "deciwatts": 22160
+    },
+    {
+      "time": 1790241600,
+      "watts": 2216,
+      "deciwatts": 22160
+    },
+    {
+      "time": 1790242200,
+      "watts": 2216,
+      "deciwatts": 22160
+    },
+    {
+      "time": 1790242800,
+      "watts": 2290,
+      "deciwatts": 22900
+    },
+    {
+      "time": 1790243400,
+      "watts": 2290,
+      "deciwatts": 22900
+    },
+    {
+      "time": 1790244000,
+      "watts": 2290,
+      "deciwatts": 22900
+    },
+    {
+      "time": 1790244600,
+      "watts": 2264,
+      "deciwatts": 22640
+    },
+    {
+      "time": 1790245200,
+      "watts": 2264,
+      "deciwatts": 22640
+    },
+    {
+      "time": 1790245800,
+      "watts": 2264,
+      "deciwatts": 22640
+    },
+    {
+      "time": 1790246400,
+      "watts": 2238,
+      "deciwatts": 22380
+    },
+    {
+      "time": 1790247000,
+      "watts": 2238,
+      "deciwatts": 22380
+    },
+    {
+      "time": 1790247600,
+      "watts": 2238,
+      "deciwatts": 22380
+    },
+    {
+      "time": 1790248200,
+      "watts": 2212,
+      "deciwatts": 22120
+    },
+    {
+      "time": 1790248800,
+      "watts": 2212,
+      "deciwatts": 22120
+    },
+    {
+      "time": 1790249400,
+      "watts": 2212,
+      "deciwatts": 22120
+    },
+    {
+      "time": 1790250000,
+      "watts": 2286,
+      "deciwatts": 22860
+    },
+    {
+      "time": 1790250600,
+      "watts": 2286,
+      "deciwatts": 22860
+    },
+    {
+      "time": 1790251200,
+      "watts": 2286,
+      "deciwatts": 22860
+    },
+    {
+      "time": 1790251800,
+      "watts": 860,
+      "deciwatts": 8600
+    },
+    {
+      "time": 1790252400,
+      "watts": 860,
+      "deciwatts": 8600
+    },
+    {
+      "time": 1790253000,
+      "watts": 860,
+      "deciwatts": 8600
+    },
+    {
+      "time": 1790253600,
+      "watts": 834,
+      "deciwatts": 8340
+    },
+    {
+      "time": 1790254200,
+      "watts": 834,
+      "deciwatts": 8340
+    },
+    {
+      "time": 1790254800,
+      "watts": 834,
+      "deciwatts": 8340
+    },
+    {
+      "time": 1790255400,
+      "watts": 808,
+      "deciwatts": 8080
+    },
+    {
+      "time": 1790256000,
+      "watts": 808,
+      "deciwatts": 8080
+    },
+    {
+      "time": 1790256600,
+      "watts": 808,
+      "deciwatts": 8080
+    },
+    {
+      "time": 1790257200,
+      "watts": 882,
+      "deciwatts": 8820
+    },
+    {
+      "time": 1790257800,
+      "watts": 882,
+      "deciwatts": 8820
+    },
+    {
+      "time": 1790258400,
+      "watts": 882,
+      "deciwatts": 8820
+    },
+    {
+      "time": 1790259000,
+      "watts": 356,
+      "deciwatts": 3560
+    },
+    {
+      "time": 1790259600,
+      "watts": 356,
+      "deciwatts": 3560
+    },
+    {
+      "time": 1790260200,
+      "watts": 356,
+      "deciwatts": 3560
+    },
+    {
+      "time": 1790260800,
+      "watts": 330,
+      "deciwatts": 3300
+    },
+    {
+      "time": 1790261400,
+      "watts": 330,
+      "deciwatts": 3300
+    },
+    {
+      "time": 1790262000,
+      "watts": 330,
+      "deciwatts": 3300
+    },
+    {
+      "time": 1790262600,
+      "watts": 304,
+      "deciwatts": 3040
+    },
+    {
+      "time": 1790263200,
+      "watts": 304,
+      "deciwatts": 3040
+    },
+    {
+      "time": 1790263800,
+      "watts": 304,
+      "deciwatts": 3040
+    },
+    {
+      "time": 1790264400,
+      "watts": 378,
+      "deciwatts": 3780
+    },
+    {
+      "time": 1790265000,
+      "watts": 378,
+      "deciwatts": 3780
+    },
+    {
+      "time": 1790265600,
+      "watts": 378,
+      "deciwatts": 3780
+    },
+    {
+      "time": 1790266200,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790266800,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790267400,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790268000,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790268600,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790269200,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790269800,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790270400,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790271000,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790271600,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790272200,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790272800,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790273400,
+      "watts": 348,
+      "deciwatts": 3480
+    },
+    {
+      "time": 1790274000,
+      "watts": 348,
+      "deciwatts": 3480
+    },
+    {
+      "time": 1790274600,
+      "watts": 348,
+      "deciwatts": 3480
+    },
+    {
+      "time": 1790275200,
+      "watts": 322,
+      "deciwatts": 3220
+    },
+    {
+      "time": 1790275800,
+      "watts": 322,
+      "deciwatts": 3220
+    },
+    {
+      "time": 1790276400,
+      "watts": 322,
+      "deciwatts": 3220
+    },
+    {
+      "time": 1790277000,
+      "watts": 396,
+      "deciwatts": 3960
+    },
+    {
+      "time": 1790277600,
+      "watts": 396,
+      "deciwatts": 3960
+    },
+    {
+      "time": 1790278200,
+      "watts": 396,
+      "deciwatts": 3960
+    },
+    {
+      "time": 1790278800,
+      "watts": 370,
+      "deciwatts": 3700
+    },
+    {
+      "time": 1790279400,
+      "watts": 370,
+      "deciwatts": 3700
+    },
+    {
+      "time": 1790280000,
+      "watts": 370,
+      "deciwatts": 3700
+    },
+    {
+      "time": 1790280600,
+      "watts": 1444,
+      "deciwatts": 14440
+    },
+    {
+      "time": 1790281200,
+      "watts": 1444,
+      "deciwatts": 14440
+    },
+    {
+      "time": 1790281800,
+      "watts": 1444,
+      "deciwatts": 14440
+    },
+    {
+      "time": 1790282400,
+      "watts": 1418,
+      "deciwatts": 14180
+    },
+    {
+      "time": 1790283000,
+      "watts": 1418,
+      "deciwatts": 14180
+    },
+    {
+      "time": 1790283600,
+      "watts": 1418,
+      "deciwatts": 14180
+    },
+    {
+      "time": 1790284200,
+      "watts": 1492,
+      "deciwatts": 14920
+    },
+    {
+      "time": 1790284800,
+      "watts": 1492,
+      "deciwatts": 14920
+    },
+    {
+      "time": 1790285400,
+      "watts": 1492,
+      "deciwatts": 14920
+    },
+    {
+      "time": 1790286000,
+      "watts": 1466,
+      "deciwatts": 14660
+    },
+    {
+      "time": 1790286600,
+      "watts": 1466,
+      "deciwatts": 14660
+    },
+    {
+      "time": 1790287200,
+      "watts": 1466,
+      "deciwatts": 14660
+    },
+    {
+      "time": 1790287800,
+      "watts": 1440,
+      "deciwatts": 14400
+    },
+    {
+      "time": 1790288400,
+      "watts": 1440,
+      "deciwatts": 14400
+    },
+    {
+      "time": 1790289000,
+      "watts": 1440,
+      "deciwatts": 14400
+    },
+    {
+      "time": 1790289600,
+      "watts": 1414,
+      "deciwatts": 14140
+    },
+    {
+      "time": 1790290200,
+      "watts": 1414,
+      "deciwatts": 14140
+    },
+    {
+      "time": 1790290800,
+      "watts": 1414,
+      "deciwatts": 14140
+    },
+    {
+      "time": 1790291400,
+      "watts": 588,
+      "deciwatts": 5880
+    },
+    {
+      "time": 1790292000,
+      "watts": 588,
+      "deciwatts": 5880
+    },
+    {
+      "time": 1790292600,
+      "watts": 588,
+      "deciwatts": 5880
+    },
+    {
+      "time": 1790293200,
+      "watts": 562,
+      "deciwatts": 5620
+    },
+    {
+      "time": 1790293800,
+      "watts": 562,
+      "deciwatts": 5620
+    },
+    {
+      "time": 1790294400,
+      "watts": 562,
+      "deciwatts": 5620
+    },
+    {
+      "time": 1790295000,
+      "watts": 536,
+      "deciwatts": 5360
+    },
+    {
+      "time": 1790295600,
+      "watts": 536,
+      "deciwatts": 5360
+    },
+    {
+      "time": 1790296200,
+      "watts": 536,
+      "deciwatts": 5360
+    },
+    {
+      "time": 1790296800,
+      "watts": 510,
+      "deciwatts": 5100
+    },
+    {
+      "time": 1790297400,
+      "watts": 510,
+      "deciwatts": 5100
+    },
+    {
+      "time": 1790298000,
+      "watts": 510,
+      "deciwatts": 5100
+    },
+    {
+      "time": 1790298600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790299200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790299800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790300400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790301000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790301600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790302200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790302800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790303400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790304000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790304600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790305200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790305800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790306400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790307000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790307600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790308200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790308800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790309400,
+      "watts": 528,
+      "deciwatts": 5280
+    },
+    {
+      "time": 1790310000,
+      "watts": 528,
+      "deciwatts": 5280
+    },
+    {
+      "time": 1790310600,
+      "watts": 528,
+      "deciwatts": 5280
+    },
+    {
+      "time": 1790311200,
+      "watts": 502,
+      "deciwatts": 5020
+    },
+    {
+      "time": 1790311800,
+      "watts": 502,
+      "deciwatts": 5020
+    },
+    {
+      "time": 1790312400,
+      "watts": 502,
+      "deciwatts": 5020
+    },
+    {
+      "time": 1790313000,
+      "watts": 576,
+      "deciwatts": 5760
+    },
+    {
+      "time": 1790313600,
+      "watts": 576,
+      "deciwatts": 5760
+    },
+    {
+      "time": 1790314200,
+      "watts": 576,
+      "deciwatts": 5760
+    },
+    {
+      "time": 1790314800,
+      "watts": 550,
+      "deciwatts": 5500
+    },
+    {
+      "time": 1790315400,
+      "watts": 550,
+      "deciwatts": 5500
+    },
+    {
+      "time": 1790316000,
+      "watts": 550,
+      "deciwatts": 5500
+    },
+    {
+      "time": 1790316600,
+      "watts": 2224,
+      "deciwatts": 22240
+    },
+    {
+      "time": 1790317200,
+      "watts": 2224,
+      "deciwatts": 22240
+    },
+    {
+      "time": 1790317800,
+      "watts": 2224,
+      "deciwatts": 22240
+    },
+    {
+      "time": 1790318400,
+      "watts": 2298,
+      "deciwatts": 22980
+    },
+    {
+      "time": 1790319000,
+      "watts": 2298,
+      "deciwatts": 22980
+    },
+    {
+      "time": 1790319600,
+      "watts": 2298,
+      "deciwatts": 22980
+    },
+    {
+      "time": 1790320200,
+      "watts": 2272,
+      "deciwatts": 22720
+    },
+    {
+      "time": 1790320800,
+      "watts": 2272,
+      "deciwatts": 22720
+    },
+    {
+      "time": 1790321400,
+      "watts": 2272,
+      "deciwatts": 22720
+    },
+    {
+      "time": 1790322000,
+      "watts": 2246,
+      "deciwatts": 22460
+    },
+    {
+      "time": 1790322600,
+      "watts": 2246,
+      "deciwatts": 22460
+    },
+    {
+      "time": 1790323200,
+      "watts": 2246,
+      "deciwatts": 22460
+    },
+    {
+      "time": 1790323800,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790324400,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790325000,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790325600,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790326200,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790326800,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790327400,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790328000,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790328600,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790329200,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790329800,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790330400,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790331000,
+      "watts": 2216,
+      "deciwatts": 22160
+    },
+    {
+      "time": 1790331600,
+      "watts": 2216,
+      "deciwatts": 22160
+    },
+    {
+      "time": 1790332200,
+      "watts": 2216,
+      "deciwatts": 22160
+    },
+    {
+      "time": 1790332800,
+      "watts": 2290,
+      "deciwatts": 22900
+    },
+    {
+      "time": 1790333400,
+      "watts": 2290,
+      "deciwatts": 22900
+    },
+    {
+      "time": 1790334000,
+      "watts": 2290,
+      "deciwatts": 22900
+    },
+    {
+      "time": 1790334600,
+      "watts": 2264,
+      "deciwatts": 22640
+    },
+    {
+      "time": 1790335200,
+      "watts": 2264,
+      "deciwatts": 22640
+    },
+    {
+      "time": 1790335800,
+      "watts": 2264,
+      "deciwatts": 22640
+    },
+    {
+      "time": 1790336400,
+      "watts": 2238,
+      "deciwatts": 22380
+    },
+    {
+      "time": 1790337000,
+      "watts": 2238,
+      "deciwatts": 22380
+    },
+    {
+      "time": 1790337600,
+      "watts": 2238,
+      "deciwatts": 22380
+    },
+    {
+      "time": 1790338200,
+      "watts": 812,
+      "deciwatts": 8120
+    },
+    {
+      "time": 1790338800,
+      "watts": 812,
+      "deciwatts": 8120
+    },
+    {
+      "time": 1790339400,
+      "watts": 812,
+      "deciwatts": 8120
+    },
+    {
+      "time": 1790340000,
+      "watts": 886,
+      "deciwatts": 8860
+    },
+    {
+      "time": 1790340600,
+      "watts": 886,
+      "deciwatts": 8860
+    },
+    {
+      "time": 1790341200,
+      "watts": 886,
+      "deciwatts": 8860
+    },
+    {
+      "time": 1790341800,
+      "watts": 860,
+      "deciwatts": 8600
+    },
+    {
+      "time": 1790342400,
+      "watts": 860,
+      "deciwatts": 8600
+    },
+    {
+      "time": 1790343000,
+      "watts": 860,
+      "deciwatts": 8600
+    },
+    {
+      "time": 1790343600,
+      "watts": 834,
+      "deciwatts": 8340
+    },
+    {
+      "time": 1790344200,
+      "watts": 834,
+      "deciwatts": 8340
+    },
+    {
+      "time": 1790344800,
+      "watts": 834,
+      "deciwatts": 8340
+    },
+    {
+      "time": 1790345400,
+      "watts": 308,
+      "deciwatts": 3080
+    },
+    {
+      "time": 1790346000,
+      "watts": 308,
+      "deciwatts": 3080
+    },
+    {
+      "time": 1790346600,
+      "watts": 308,
+      "deciwatts": 3080
+    },
+    {
+      "time": 1790347200,
+      "watts": 382,
+      "deciwatts": 3820
+    },
+    {
+      "time": 1790347800,
+      "watts": 382,
+      "deciwatts": 3820
+    },
+    {
+      "time": 1790348400,
+      "watts": 382,
+      "deciwatts": 3820
+    },
+    {
+      "time": 1790349000,
+      "watts": 356,
+      "deciwatts": 3560
+    },
+    {
+      "time": 1790349600,
+      "watts": 356,
+      "deciwatts": 3560
+    },
+    {
+      "time": 1790350200,
+      "watts": 356,
+      "deciwatts": 3560
+    },
+    {
+      "time": 1790350800,
+      "watts": 330,
+      "deciwatts": 3300
+    },
+    {
+      "time": 1790351400,
+      "watts": 330,
+      "deciwatts": 3300
+    },
+    {
+      "time": 1790352000,
+      "watts": 330,
+      "deciwatts": 3300
+    },
+    {
+      "time": 1790352600,
+      "watts": 304,
+      "deciwatts": 3040
+    },
+    {
+      "time": 1790353200,
+      "watts": 304,
+      "deciwatts": 3040
+    },
+    {
+      "time": 1790353800,
+      "watts": 304,
+      "deciwatts": 3040
+    },
+    {
+      "time": 1790354400,
+      "watts": 378,
+      "deciwatts": 3780
+    },
+    {
+      "time": 1790355000,
+      "watts": 378,
+      "deciwatts": 3780
+    },
+    {
+      "time": 1790355600,
+      "watts": 378,
+      "deciwatts": 3780
+    },
+    {
+      "time": 1790356200,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790356800,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790357400,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790358000,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790358600,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790359200,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790359800,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790360400,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790361000,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790361600,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790362200,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790362800,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790363400,
+      "watts": 348,
+      "deciwatts": 3480
+    },
+    {
+      "time": 1790364000,
+      "watts": 348,
+      "deciwatts": 3480
+    },
+    {
+      "time": 1790364600,
+      "watts": 348,
+      "deciwatts": 3480
+    },
+    {
+      "time": 1790365200,
+      "watts": 322,
+      "deciwatts": 3220
+    },
+    {
+      "time": 1790365800,
+      "watts": 322,
+      "deciwatts": 3220
+    },
+    {
+      "time": 1790366400,
+      "watts": 322,
+      "deciwatts": 3220
+    },
+    {
+      "time": 1790367000,
+      "watts": 1496,
+      "deciwatts": 14960
+    },
+    {
+      "time": 1790367600,
+      "watts": 1496,
+      "deciwatts": 14960
+    },
+    {
+      "time": 1790368200,
+      "watts": 1496,
+      "deciwatts": 14960
+    },
+    {
+      "time": 1790368800,
+      "watts": 1470,
+      "deciwatts": 14700
+    },
+    {
+      "time": 1790369400,
+      "watts": 1470,
+      "deciwatts": 14700
+    },
+    {
+      "time": 1790370000,
+      "watts": 1470,
+      "deciwatts": 14700
+    },
+    {
+      "time": 1790370600,
+      "watts": 1444,
+      "deciwatts": 14440
+    },
+    {
+      "time": 1790371200,
+      "watts": 1444,
+      "deciwatts": 14440
+    },
+    {
+      "time": 1790371800,
+      "watts": 1444,
+      "deciwatts": 14440
+    },
+    {
+      "time": 1790372400,
+      "watts": 1418,
+      "deciwatts": 14180
+    },
+    {
+      "time": 1790373000,
+      "watts": 1418,
+      "deciwatts": 14180
+    },
+    {
+      "time": 1790373600,
+      "watts": 1418,
+      "deciwatts": 14180
+    },
+    {
+      "time": 1790374200,
+      "watts": 1492,
+      "deciwatts": 14920
+    },
+    {
+      "time": 1790374800,
+      "watts": 1492,
+      "deciwatts": 14920
+    },
+    {
+      "time": 1790375400,
+      "watts": 1492,
+      "deciwatts": 14920
+    },
+    {
+      "time": 1790376000,
+      "watts": 1466,
+      "deciwatts": 14660
+    },
+    {
+      "time": 1790376600,
+      "watts": 1466,
+      "deciwatts": 14660
+    },
+    {
+      "time": 1790377200,
+      "watts": 1466,
+      "deciwatts": 14660
+    },
+    {
+      "time": 1790377800,
+      "watts": 540,
+      "deciwatts": 5400
+    },
+    {
+      "time": 1790378400,
+      "watts": 540,
+      "deciwatts": 5400
+    },
+    {
+      "time": 1790379000,
+      "watts": 540,
+      "deciwatts": 5400
+    },
+    {
+      "time": 1790379600,
+      "watts": 514,
+      "deciwatts": 5140
+    },
+    {
+      "time": 1790380200,
+      "watts": 514,
+      "deciwatts": 5140
+    },
+    {
+      "time": 1790380800,
+      "watts": 514,
+      "deciwatts": 5140
+    },
+    {
+      "time": 1790381400,
+      "watts": 588,
+      "deciwatts": 5880
+    },
+    {
+      "time": 1790382000,
+      "watts": 588,
+      "deciwatts": 5880
+    },
+    {
+      "time": 1790382600,
+      "watts": 588,
+      "deciwatts": 5880
+    },
+    {
+      "time": 1790383200,
+      "watts": 562,
+      "deciwatts": 5620
+    },
+    {
+      "time": 1790383800,
+      "watts": 562,
+      "deciwatts": 5620
+    },
+    {
+      "time": 1790384400,
+      "watts": 562,
+      "deciwatts": 5620
+    },
+    {
+      "time": 1790385000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790385600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790386200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790386800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790387400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790388000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790388600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790389200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790389800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790390400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790391000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790391600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790392200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790392800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790393400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790394000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790394600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790395200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790395800,
+      "watts": 580,
+      "deciwatts": 5800
+    },
+    {
+      "time": 1790396400,
+      "watts": 580,
+      "deciwatts": 5800
+    },
+    {
+      "time": 1790397000,
+      "watts": 580,
+      "deciwatts": 5800
+    },
+    {
+      "time": 1790397600,
+      "watts": 554,
+      "deciwatts": 5540
+    },
+    {
+      "time": 1790398200,
+      "watts": 554,
+      "deciwatts": 5540
+    },
+    {
+      "time": 1790398800,
+      "watts": 554,
+      "deciwatts": 5540
+    },
+    {
+      "time": 1790399400,
+      "watts": 528,
+      "deciwatts": 5280
+    },
+    {
+      "time": 1790400000,
+      "watts": 528,
+      "deciwatts": 5280
+    },
+    {
+      "time": 1790400600,
+      "watts": 528,
+      "deciwatts": 5280
+    },
+    {
+      "time": 1790401200,
+      "watts": 502,
+      "deciwatts": 5020
+    },
+    {
+      "time": 1790401800,
+      "watts": 502,
+      "deciwatts": 5020
+    },
+    {
+      "time": 1790402400,
+      "watts": 502,
+      "deciwatts": 5020
+    },
+    {
+      "time": 1790403000,
+      "watts": 2276,
+      "deciwatts": 22760
+    },
+    {
+      "time": 1790403600,
+      "watts": 2276,
+      "deciwatts": 22760
+    },
+    {
+      "time": 1790404200,
+      "watts": 2276,
+      "deciwatts": 22760
+    },
+    {
+      "time": 1790404800,
+      "watts": 2250,
+      "deciwatts": 22500
+    },
+    {
+      "time": 1790405400,
+      "watts": 2250,
+      "deciwatts": 22500
+    },
+    {
+      "time": 1790406000,
+      "watts": 2250,
+      "deciwatts": 22500
+    },
+    {
+      "time": 1790406600,
+      "watts": 2224,
+      "deciwatts": 22240
+    },
+    {
+      "time": 1790407200,
+      "watts": 2224,
+      "deciwatts": 22240
+    },
+    {
+      "time": 1790407800,
+      "watts": 2224,
+      "deciwatts": 22240
+    },
+    {
+      "time": 1790408400,
+      "watts": 2298,
+      "deciwatts": 22980
+    },
+    {
+      "time": 1790409000,
+      "watts": 2298,
+      "deciwatts": 22980
+    },
+    {
+      "time": 1790409600,
+      "watts": 2298,
+      "deciwatts": 22980
+    },
+    {
+      "time": 1790410200,
+      "watts": 2272,
+      "deciwatts": 22720
+    },
+    {
+      "time": 1790410800,
+      "watts": 2272,
+      "deciwatts": 22720
+    },
+    {
+      "time": 1790411400,
+      "watts": 2272,
+      "deciwatts": 22720
+    },
+    {
+      "time": 1790412000,
+      "watts": 2246,
+      "deciwatts": 22460
+    },
+    {
+      "time": 1790412600,
+      "watts": 2246,
+      "deciwatts": 22460
+    },
+    {
+      "time": 1790413200,
+      "watts": 2246,
+      "deciwatts": 22460
+    },
+    {
+      "time": 1790413800,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790414400,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790415000,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790415600,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790416200,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790416800,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790417400,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790418000,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790418600,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790419200,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790419800,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790420400,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790421000,
+      "watts": 2216,
+      "deciwatts": 22160
+    },
+    {
+      "time": 1790421600,
+      "watts": 2216,
+      "deciwatts": 22160
+    },
+    {
+      "time": 1790422200,
+      "watts": 2216,
+      "deciwatts": 22160
+    },
+    {
+      "time": 1790422800,
+      "watts": 2290,
+      "deciwatts": 22900
+    },
+    {
+      "time": 1790423400,
+      "watts": 2290,
+      "deciwatts": 22900
+    },
+    {
+      "time": 1790424000,
+      "watts": 2290,
+      "deciwatts": 22900
+    },
+    {
+      "time": 1790424600,
+      "watts": 864,
+      "deciwatts": 8640
+    },
+    {
+      "time": 1790425200,
+      "watts": 864,
+      "deciwatts": 8640
+    },
+    {
+      "time": 1790425800,
+      "watts": 864,
+      "deciwatts": 8640
+    },
+    {
+      "time": 1790426400,
+      "watts": 838,
+      "deciwatts": 8380
+    },
+    {
+      "time": 1790427000,
+      "watts": 838,
+      "deciwatts": 8380
+    },
+    {
+      "time": 1790427600,
+      "watts": 838,
+      "deciwatts": 8380
+    },
+    {
+      "time": 1790428200,
+      "watts": 812,
+      "deciwatts": 8120
+    },
+    {
+      "time": 1790428800,
+      "watts": 812,
+      "deciwatts": 8120
+    },
+    {
+      "time": 1790429400,
+      "watts": 812,
+      "deciwatts": 8120
+    },
+    {
+      "time": 1790430000,
+      "watts": 886,
+      "deciwatts": 8860
+    },
+    {
+      "time": 1790430600,
+      "watts": 886,
+      "deciwatts": 8860
+    },
+    {
+      "time": 1790431200,
+      "watts": 886,
+      "deciwatts": 8860
+    },
+    {
+      "time": 1790431800,
+      "watts": 360,
+      "deciwatts": 3600
+    },
+    {
+      "time": 1790432400,
+      "watts": 360,
+      "deciwatts": 3600
+    },
+    {
+      "time": 1790433000,
+      "watts": 360,
+      "deciwatts": 3600
+    },
+    {
+      "time": 1790433600,
+      "watts": 334,
+      "deciwatts": 3340
+    },
+    {
+      "time": 1790434200,
+      "watts": 334,
+      "deciwatts": 3340
+    },
+    {
+      "time": 1790434800,
+      "watts": 334,
+      "deciwatts": 3340
+    },
+    {
+      "time": 1790435400,
+      "watts": 308,
+      "deciwatts": 3080
+    },
+    {
+      "time": 1790436000,
+      "watts": 308,
+      "deciwatts": 3080
+    },
+    {
+      "time": 1790436600,
+      "watts": 308,
+      "deciwatts": 3080
+    },
+    {
+      "time": 1790437200,
+      "watts": 382,
+      "deciwatts": 3820
+    },
+    {
+      "time": 1790437800,
+      "watts": 382,
+      "deciwatts": 3820
+    },
+    {
+      "time": 1790438400,
+      "watts": 382,
+      "deciwatts": 3820
+    },
+    {
+      "time": 1790439000,
+      "watts": 356,
+      "deciwatts": 3560
+    },
+    {
+      "time": 1790439600,
+      "watts": 356,
+      "deciwatts": 3560
+    },
+    {
+      "time": 1790440200,
+      "watts": 356,
+      "deciwatts": 3560
+    },
+    {
+      "time": 1790440800,
+      "watts": 330,
+      "deciwatts": 3300
+    },
+    {
+      "time": 1790441400,
+      "watts": 330,
+      "deciwatts": 3300
+    },
+    {
+      "time": 1790442000,
+      "watts": 330,
+      "deciwatts": 3300
+    },
+    {
+      "time": 1790442600,
+      "watts": 304,
+      "deciwatts": 3040
+    },
+    {
+      "time": 1790443200,
+      "watts": 304,
+      "deciwatts": 3040
+    },
+    {
+      "time": 1790443800,
+      "watts": 304,
+      "deciwatts": 3040
+    },
+    {
+      "time": 1790444400,
+      "watts": 378,
+      "deciwatts": 3780
+    },
+    {
+      "time": 1790445000,
+      "watts": 378,
+      "deciwatts": 3780
+    },
+    {
+      "time": 1790445600,
+      "watts": 378,
+      "deciwatts": 3780
+    },
+    {
+      "time": 1790446200,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790446800,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790447400,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790448000,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790448600,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790449200,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790449800,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790450400,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790451000,
+      "watts": 300,
+      "deciwatts": 3000
+    },
+    {
+      "time": 1790451600,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790452200,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790452800,
+      "watts": 374,
+      "deciwatts": 3740
+    },
+    {
+      "time": 1790453400,
+      "watts": 1448,
+      "deciwatts": 14480
+    },
+    {
+      "time": 1790454000,
+      "watts": 1448,
+      "deciwatts": 14480
+    },
+    {
+      "time": 1790454600,
+      "watts": 1448,
+      "deciwatts": 14480
+    },
+    {
+      "time": 1790455200,
+      "watts": 1422,
+      "deciwatts": 14220
+    },
+    {
+      "time": 1790455800,
+      "watts": 1422,
+      "deciwatts": 14220
+    },
+    {
+      "time": 1790456400,
+      "watts": 1422,
+      "deciwatts": 14220
+    },
+    {
+      "time": 1790457000,
+      "watts": 1496,
+      "deciwatts": 14960
+    },
+    {
+      "time": 1790457600,
+      "watts": 1496,
+      "deciwatts": 14960
+    },
+    {
+      "time": 1790458200,
+      "watts": 1496,
+      "deciwatts": 14960
+    },
+    {
+      "time": 1790458800,
+      "watts": 1470,
+      "deciwatts": 14700
+    },
+    {
+      "time": 1790459400,
+      "watts": 1470,
+      "deciwatts": 14700
+    },
+    {
+      "time": 1790460000,
+      "watts": 1470,
+      "deciwatts": 14700
+    },
+    {
+      "time": 1790460600,
+      "watts": 1444,
+      "deciwatts": 14440
+    },
+    {
+      "time": 1790461200,
+      "watts": 1444,
+      "deciwatts": 14440
+    },
+    {
+      "time": 1790461800,
+      "watts": 1444,
+      "deciwatts": 14440
+    },
+    {
+      "time": 1790462400,
+      "watts": 1418,
+      "deciwatts": 14180
+    },
+    {
+      "time": 1790463000,
+      "watts": 1418,
+      "deciwatts": 14180
+    },
+    {
+      "time": 1790463600,
+      "watts": 1418,
+      "deciwatts": 14180
+    },
+    {
+      "time": 1790464200,
+      "watts": 592,
+      "deciwatts": 5920
+    },
+    {
+      "time": 1790464800,
+      "watts": 592,
+      "deciwatts": 5920
+    },
+    {
+      "time": 1790465400,
+      "watts": 592,
+      "deciwatts": 5920
+    },
+    {
+      "time": 1790466000,
+      "watts": 566,
+      "deciwatts": 5660
+    },
+    {
+      "time": 1790466600,
+      "watts": 566,
+      "deciwatts": 5660
+    },
+    {
+      "time": 1790467200,
+      "watts": 566,
+      "deciwatts": 5660
+    },
+    {
+      "time": 1790467800,
+      "watts": 540,
+      "deciwatts": 5400
+    },
+    {
+      "time": 1790468400,
+      "watts": 540,
+      "deciwatts": 5400
+    },
+    {
+      "time": 1790469000,
+      "watts": 540,
+      "deciwatts": 5400
+    },
+    {
+      "time": 1790469600,
+      "watts": 514,
+      "deciwatts": 5140
+    },
+    {
+      "time": 1790470200,
+      "watts": 514,
+      "deciwatts": 5140
+    },
+    {
+      "time": 1790470800,
+      "watts": 514,
+      "deciwatts": 5140
+    },
+    {
+      "time": 1790471400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790472000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790472600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790473200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790473800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790474400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790475000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790475600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790476200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790476800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790477400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790478000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790478600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790479200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790479800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790480400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790481000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790481600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790482200,
+      "watts": 532,
+      "deciwatts": 5320
+    },
+    {
+      "time": 1790482800,
+      "watts": 532,
+      "deciwatts": 5320
+    },
+    {
+      "time": 1790483400,
+      "watts": 532,
+      "deciwatts": 5320
+    },
+    {
+      "time": 1790484000,
+      "watts": 506,
+      "deciwatts": 5060
+    },
+    {
+      "time": 1790484600,
+      "watts": 506,
+      "deciwatts": 5060
+    },
+    {
+      "time": 1790485200,
+      "watts": 506,
+      "deciwatts": 5060
+    },
+    {
+      "time": 1790485800,
+      "watts": 580,
+      "deciwatts": 5800
+    },
+    {
+      "time": 1790486400,
+      "watts": 580,
+      "deciwatts": 5800
+    },
+    {
+      "time": 1790487000,
+      "watts": 580,
+      "deciwatts": 5800
+    },
+    {
+      "time": 1790487600,
+      "watts": 554,
+      "deciwatts": 5540
+    },
+    {
+      "time": 1790488200,
+      "watts": 554,
+      "deciwatts": 5540
+    },
+    {
+      "time": 1790488800,
+      "watts": 554,
+      "deciwatts": 5540
+    },
+    {
+      "time": 1790489400,
+      "watts": 2228,
+      "deciwatts": 22280
+    },
+    {
+      "time": 1790490000,
+      "watts": 2228,
+      "deciwatts": 22280
+    },
+    {
+      "time": 1790490600,
+      "watts": 2228,
+      "deciwatts": 22280
+    },
+    {
+      "time": 1790491200,
+      "watts": 2202,
+      "deciwatts": 22020
+    },
+    {
+      "time": 1790491800,
+      "watts": 2202,
+      "deciwatts": 22020
+    },
+    {
+      "time": 1790492400,
+      "watts": 2202,
+      "deciwatts": 22020
+    },
+    {
+      "time": 1790493000,
+      "watts": 2276,
+      "deciwatts": 22760
+    },
+    {
+      "time": 1790493600,
+      "watts": 2276,
+      "deciwatts": 22760
+    },
+    {
+      "time": 1790494200,
+      "watts": 2276,
+      "deciwatts": 22760
+    },
+    {
+      "time": 1790494800,
+      "watts": 2250,
+      "deciwatts": 22500
+    },
+    {
+      "time": 1790495400,
+      "watts": 2250,
+      "deciwatts": 22500
+    },
+    {
+      "time": 1790496000,
+      "watts": 2250,
+      "deciwatts": 22500
+    },
+    {
+      "time": 1790496600,
+      "watts": 2224,
+      "deciwatts": 22240
+    },
+    {
+      "time": 1790497200,
+      "watts": 2224,
+      "deciwatts": 22240
+    },
+    {
+      "time": 1790497800,
+      "watts": 2224,
+      "deciwatts": 22240
+    },
+    {
+      "time": 1790498400,
+      "watts": 2298,
+      "deciwatts": 22980
+    },
+    {
+      "time": 1790499000,
+      "watts": 2298,
+      "deciwatts": 22980
+    },
+    {
+      "time": 1790499600,
+      "watts": 2298,
+      "deciwatts": 22980
+    },
+    {
+      "time": 1790500200,
+      "watts": 2272,
+      "deciwatts": 22720
+    },
+    {
+      "time": 1790500800,
+      "watts": 2272,
+      "deciwatts": 22720
+    },
+    {
+      "time": 1790501400,
+      "watts": 2272,
+      "deciwatts": 22720
+    },
+    {
+      "time": 1790502000,
+      "watts": 2246,
+      "deciwatts": 22460
+    },
+    {
+      "time": 1790502600,
+      "watts": 2246,
+      "deciwatts": 22460
+    },
+    {
+      "time": 1790503200,
+      "watts": 2246,
+      "deciwatts": 22460
+    },
+    {
+      "time": 1790503800,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790504400,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790505000,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790505600,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790506200,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790506800,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790507400,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790508000,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790508600,
+      "watts": 2268,
+      "deciwatts": 22680
+    },
+    {
+      "time": 1790509200,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790509800,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790510400,
+      "watts": 2242,
+      "deciwatts": 22420
+    },
+    {
+      "time": 1790511000,
+      "watts": 816,
+      "deciwatts": 8160
+    },
+    {
+      "time": 1790511600,
+      "watts": 816,
+      "deciwatts": 8160
+    },
+    {
+      "time": 1790512200,
+      "watts": 816,
+      "deciwatts": 8160
+    },
+    {
+      "time": 1790512800,
+      "watts": 890,
+      "deciwatts": 8900
+    },
+    {
+      "time": 1790513400,
+      "watts": 890,
+      "deciwatts": 8900
+    },
+    {
+      "time": 1790514000,
+      "watts": 890,
+      "deciwatts": 8900
+    },
+    {
+      "time": 1790514600,
+      "watts": 864,
+      "deciwatts": 8640
+    },
+    {
+      "time": 1790515200,
+      "watts": 864,
+      "deciwatts": 8640
+    },
+    {
+      "time": 1790515800,
+      "watts": 864,
+      "deciwatts": 8640
+    },
+    {
+      "time": 1790516400,
+      "watts": 838,
+      "deciwatts": 8380
+    },
+    {
+      "time": 1790517000,
+      "watts": 838,
+      "deciwatts": 8380
+    },
+    {
+      "time": 1790517600,
+      "watts": 838,
+      "deciwatts": 8380
+    },
+    {
+      "time": 1790518200,
+      "watts": 312,
+      "deciwatts": 3120
+    },
+    {
+      "time": 1790518800,
+      "watts": 312,
+      "deciwatts": 3120
+    },
+    {
+      "time": 1790519400,
+      "watts": 312,
+      "deciwatts": 3120
+    },
+    {
+      "time": 1790520000,
+      "watts": 386,
+      "deciwatts": 3860
+    },
+    {
+      "time": 1790520600,
+      "watts": 386,
+      "deciwatts": 3860
+    },
+    {
+      "time": 1790521200,
+      "watts": 386,
+      "deciwatts": 3860
+    },
+    {
+      "time": 1790521800,
+      "watts": 360,
+      "deciwatts": 3600
+    },
+    {
+      "time": 1790522400,
+      "watts": 360,
+      "deciwatts": 3600
+    },
+    {
+      "time": 1790523000,
+      "watts": 360,
+      "deciwatts": 3600
+    },
+    {
+      "time": 1790523600,
+      "watts": 334,
+      "deciwatts": 3340
+    },
+    {
+      "time": 1790524200,
+      "watts": 334,
+      "deciwatts": 3340
+    },
+    {
+      "time": 1790524800,
+      "watts": 334,
+      "deciwatts": 3340
+    },
+    {
+      "time": 1790525400,
+      "watts": 308,
+      "deciwatts": 3080
+    },
+    {
+      "time": 1790526000,
+      "watts": 308,
+      "deciwatts": 3080
+    },
+    {
+      "time": 1790526600,
+      "watts": 308,
+      "deciwatts": 3080
+    },
+    {
+      "time": 1790527200,
+      "watts": 382,
+      "deciwatts": 3820
+    },
+    {
+      "time": 1790527800,
+      "watts": 382,
+      "deciwatts": 3820
+    },
+    {
+      "time": 1790528400,
+      "watts": 382,
+      "deciwatts": 3820
+    },
+    {
+      "time": 1790529000,
+      "watts": 356,
+      "deciwatts": 3560
+    },
+    {
+      "time": 1790529600,
+      "watts": 356,
+      "deciwatts": 3560
+    },
+    {
+      "time": 1790530200,
+      "watts": 356,
+      "deciwatts": 3560
+    },
+    {
+      "time": 1790530800,
+      "watts": 330,
+      "deciwatts": 3300
+    },
+    {
+      "time": 1790531400,
+      "watts": 330,
+      "deciwatts": 3300
+    },
+    {
+      "time": 1790532000,
+      "watts": 330,
+      "deciwatts": 3300
+    },
+    {
+      "time": 1790532600,
+      "watts": 304,
+      "deciwatts": 3040
+    },
+    {
+      "time": 1790533200,
+      "watts": 304,
+      "deciwatts": 3040
+    },
+    {
+      "time": 1790533800,
+      "watts": 304,
+      "deciwatts": 3040
+    },
+    {
+      "time": 1790534400,
+      "watts": 378,
+      "deciwatts": 3780
+    },
+    {
+      "time": 1790535000,
+      "watts": 378,
+      "deciwatts": 3780
+    },
+    {
+      "time": 1790535600,
+      "watts": 378,
+      "deciwatts": 3780
+    },
+    {
+      "time": 1790536200,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790536800,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790537400,
+      "watts": 352,
+      "deciwatts": 3520
+    },
+    {
+      "time": 1790538000,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790538600,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790539200,
+      "watts": 326,
+      "deciwatts": 3260
+    },
+    {
+      "time": 1790539800,
+      "watts": 1400,
+      "deciwatts": 14000
+    },
+    {
+      "time": 1790540400,
+      "watts": 1400,
+      "deciwatts": 14000
+    },
+    {
+      "time": 1790541000,
+      "watts": 1400,
+      "deciwatts": 14000
+    },
+    {
+      "time": 1790541600,
+      "watts": 1474,
+      "deciwatts": 14740
+    },
+    {
+      "time": 1790542200,
+      "watts": 1474,
+      "deciwatts": 14740
+    },
+    {
+      "time": 1790542800,
+      "watts": 1474,
+      "deciwatts": 14740
+    },
+    {
+      "time": 1790543400,
+      "watts": 1448,
+      "deciwatts": 14480
+    },
+    {
+      "time": 1790544000,
+      "watts": 1448,
+      "deciwatts": 14480
+    },
+    {
+      "time": 1790544600,
+      "watts": 1448,
+      "deciwatts": 14480
+    },
+    {
+      "time": 1790545200,
+      "watts": 1422,
+      "deciwatts": 14220
+    },
+    {
+      "time": 1790545800,
+      "watts": 1422,
+      "deciwatts": 14220
+    },
+    {
+      "time": 1790546400,
+      "watts": 1422,
+      "deciwatts": 14220
+    },
+    {
+      "time": 1790547000,
+      "watts": 1496,
+      "deciwatts": 14960
+    },
+    {
+      "time": 1790547600,
+      "watts": 1496,
+      "deciwatts": 14960
+    },
+    {
+      "time": 1790548200,
+      "watts": 1496,
+      "deciwatts": 14960
+    },
+    {
+      "time": 1790548800,
+      "watts": 1470,
+      "deciwatts": 14700
+    },
+    {
+      "time": 1790549400,
+      "watts": 1470,
+      "deciwatts": 14700
+    },
+    {
+      "time": 1790550000,
+      "watts": 1470,
+      "deciwatts": 14700
+    },
+    {
+      "time": 1790550600,
+      "watts": 544,
+      "deciwatts": 5440
+    },
+    {
+      "time": 1790551200,
+      "watts": 544,
+      "deciwatts": 5440
+    },
+    {
+      "time": 1790551800,
+      "watts": 544,
+      "deciwatts": 5440
+    },
+    {
+      "time": 1790552400,
+      "watts": 518,
+      "deciwatts": 5180
+    },
+    {
+      "time": 1790553000,
+      "watts": 518,
+      "deciwatts": 5180
+    },
+    {
+      "time": 1790553600,
+      "watts": 518,
+      "deciwatts": 5180
+    },
+    {
+      "time": 1790554200,
+      "watts": 592,
+      "deciwatts": 5920
+    },
+    {
+      "time": 1790554800,
+      "watts": 592,
+      "deciwatts": 5920
+    },
+    {
+      "time": 1790555400,
+      "watts": 592,
+      "deciwatts": 5920
+    },
+    {
+      "time": 1790556000,
+      "watts": 566,
+      "deciwatts": 5660
+    },
+    {
+      "time": 1790556600,
+      "watts": 566,
+      "deciwatts": 5660
+    },
+    {
+      "time": 1790557200,
+      "watts": 566,
+      "deciwatts": 5660
+    },
+    {
+      "time": 1790557800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790558400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790559000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790559600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790560200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790560800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790561400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790562000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790562600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790563200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790563800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790564400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790565000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790565600,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790566200,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790566800,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790567400,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790568000,
+      "watts": 0,
+      "deciwatts": 0
+    },
+    {
+      "time": 1790568600,
+      "watts": 584,
+      "deciwatts": 5840
+    },
+    {
+      "time": 1790569200,
+      "watts": 584,
+      "deciwatts": 5840
+    },
+    {
+      "time": 1790569800,
+      "watts": 584,
+      "deciwatts": 5840
+    },
+    {
+      "time": 1790570400,
+      "watts": 558,
+      "deciwatts": 5580
+    },
+    {
+      "time": 1790571000,
+      "watts": 558,
+      "deciwatts": 5580
+    },
+    {
+      "time": 1790571600,
+      "watts": 558,
+      "deciwatts": 5580
+    },
+    {
+      "time": 1790572200,
+      "watts": 532,
+      "deciwatts": 5320
+    },
+    {
+      "time": 1790572800,
+      "watts": 532,
+      "deciwatts": 5320
+    },
+    {
+      "time": 1790573400,
+      "watts": 532,
+      "deciwatts": 5320
+    },
+    {
+      "time": 1790574000,
+      "watts": 506,
+      "deciwatts": 5060
+    },
+    {
+      "time": 1790574600,
+      "watts": 506,
+      "deciwatts": 5060
+    },
+    {
+      "time": 1790575200,
+      "watts": 506,
+      "deciwatts": 5060
+    },
+    {
+      "time": 1790575800,
+      "watts": 2280,
+      "deciwatts": 22800
+    },
+    {
+      "time": 1790576400,
+      "watts": 2280,
+      "deciwatts": 22800
+    },
+    {
+      "time": 1790577000,
+      "watts": 2280,
+      "deciwatts": 22800
+    },
+    {
+      "time": 1790577600,
+      "watts": 2254,
+      "deciwatts": 22540
+    },
+    {
+      "time": 1790578200,
+      "watts": 2254,
+      "deciwatts": 22540
+    },
+    {
+      "time": 1790578800,
+      "watts": 2254,
+      "deciwatts": 22540
+    },
+    {
+      "time": 1790579400,
+      "watts": 2228,
+      "deciwatts": 22280
+    },
+    {
+      "time": 1790580000,
+      "watts": 2228,
+      "deciwatts": 22280
+    },
+    {
+      "time": 1790580600,
+      "watts": 2228,
+      "deciwatts": 22280
+    },
+    {
+      "time": 1790581200,
+      "watts": 2202,
+      "deciwatts": 22020
+    },
+    {
+      "time": 1790581800,
+      "watts": 2202,
+      "deciwatts": 22020
+    },
+    {
+      "time": 1790582400,
+      "watts": 2202,
+      "deciwatts": 22020
+    },
+    {
+      "time": 1790583000,
+      "watts": 2276,
+      "deciwatts": 22760
+    },
+    {
+      "time": 1790583600,
+      "watts": 2276,
+      "deciwatts": 22760
+    },
+    {
+      "time": 1790584200,
+      "watts": 2276,
+      "deciwatts": 22760
+    },
+    {
+      "time": 1790584800,
+      "watts": 2250,
+      "deciwatts": 22500
+    },
+    {
+      "time": 1790585400,
+      "watts": 2250,
+      "deciwatts": 22500
+    },
+    {
+      "time": 1790586000,
+      "watts": 2250,
+      "deciwatts": 22500
+    },
+    {
+      "time": 1790586600,
+      "watts": 2224,
+      "deciwatts": 22240
+    },
+    {
+      "time": 1790587200,
+      "watts": 2224,
+      "deciwatts": 22240
+    },
+    {
+      "time": 1790587800,
+      "watts": 2224,
+      "deciwatts": 22240
+    },
+    {
+      "time": 1790588400,
+      "watts": 2298,
+      "deciwatts": 22980
+    },
+    {
+      "time": 1790589000,
+      "watts": 2298,
+      "deciwatts": 22980
+    },
+    {
+      "time": 1790589600,
+      "watts": 2298,
+      "deciwatts": 22980
+    },
+    {
+      "time": 1790590200,
+      "watts": 2272,
+      "deciwatts": 22720
+    },
+    {
+      "time": 1790590800,
+      "watts": 2272,
+      "deciwatts": 22720
+    },
+    {
+      "time": 1790591400,
+      "watts": 2272,
+      "deciwatts": 22720
+    },
+    {
+      "time": 1790592000,
+      "watts": 2246,
+      "deciwatts": 22460
+    },
+    {
+      "time": 1790592600,
+      "watts": 2246,
+      "deciwatts": 22460
+    },
+    {
+      "time": 1790593200,
+      "watts": 2246,
+      "deciwatts": 22460
+    },
+    {
+      "time": 1790593800,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790594400,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790595000,
+      "watts": 2220,
+      "deciwatts": 22200
+    },
+    {
+      "time": 1790595600,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790596200,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790596800,
+      "watts": 2294,
+      "deciwatts": 22940
+    },
+    {
+      "time": 1790597400,
+      "watts": 868,
+      "deciwatts": 8680
+    },
+    {
+      "time": 1790598000,
+      "watts": 868,
+      "deciwatts": 8680
+    },
+    {
+      "time": 1790598600,
+      "watts": 868,
+      "deciwatts": 8680
+    },
+    {
+      "time": 1790599200,
+      "watts": 842,
+      "deciwatts": 8420
+    },
+    {
+      "time": 1790599800,
+      "watts": 842,
+      "deciwatts": 8420
+    },
+    {
+      "time": 1790600400,
+      "watts": 842,
+      "deciwatts": 8420
+    },
+    {
+      "time": 1790601000,
+      "watts": 816,
+      "deciwatts": 8160
+    },
+    {
+      "time": 1790601600,
+      "watts": 816,
+      "deciwatts": 8160
+    },
+    {
+      "time": 1790602200,
+      "watts": 816,
+      "deciwatts": 8160
+    },
+    {
+      "time": 1790602800,
+      "watts": 890,
+      "deciwatts": 8900
+    },
+    {
+      "time": 1790603400,
+      "watts": 890,
+      "deciwatts": 8900
+    },
+    {
+      "time": 1790604000,
+      "watts": 890,
+      "deciwatts": 8900
+    }
+  ],
+  "restartAfterEntry": null,
+  "beforeRestart": null,
+  "afterRestart": null,
+  "historyStatus": "283809000000000038726130040102020207020f03f203c00f00000000000000000101",
+  "historyEntries": [
+    {
+      "address": 0,
+      "request": "0114000000000000",
+      "reads": [
+        "1501000000010000008138726130000000000000001402000000000000001f00000000b80b000000001403000000580200001f00000000b80b000000001404000000b00400001f00000000b80b000000001405000000080700001f000000009c0e000000001406000000600900001f000000009c0e000000001407000000b80b00001f000000009c0e000000001408000000100e00001f00000000980d000000001409000000681000001f00000000980d00000000140a000000c01200001f00000000980d00000000140b000000181500001f00000000940c00000000",
+        "140c000000701700001f00000000940c00000000140d000000c81900001f00000000940c00000000140e000000201c00001f00000000780f00000000140f000000781e00001f00000000780f000000001410000000d02000001f00000000780f000000001411000000282300001f00000000740e000000001412000000802500001f00000000740e000000001413000000d82700001f00000000740e000000001414000000302a00001f00000000700d000000001415000000882c00001f00000000700d000000001416000000e02e00001f00000000700d00000000",
+        "1417000000383100001f000000006c0c000000001418000000903300001f000000006c0c000000001419000000e83500001f000000006c0c00000000141a000000403800001f00000000500f00000000141b000000983a00001f00000000500f00000000141c000000f03c00001f00000000500f00000000141d000000483f00001f000000004c0e00000000141e000000a04100001f000000004c0e00000000141f000000f84300001f000000004c0e000000001420000000504600001f00000000480d000000001421000000a84800001f00000000480d00000000",
+        "1422000000004b00001f00000000480d000000001423000000584d00001f00000000440c000000001424000000b04f00001f00000000440c000000001425000000085200001f00000000440c000000001426000000605400001f00000000203a000000001427000000b85600001f00000000203a000000001428000000105900001f00000000203a000000001429000000685b00001f000000001c3900000000142a000000c05d00001f000000001c3900000000142b000000186000001f000000001c3900000000142c000000706200001f00000000183800000000",
+        "142d000000c86400001f00000000183800000000142e000000206700001f00000000183800000000142f000000786900001f000000001437000000001430000000d06b00001f000000001437000000001431000000286e00001f000000001437000000001432000000807000001f00000000f839000000001433000000d87200001f00000000f839000000001434000000307500001f00000000f839000000001435000000887700001f00000000f438000000001436000000e07900001f00000000f438000000001437000000387c00001f00000000f43800000000",
+        "1438000000907e00001f00000000c814000000001439000000e88000001f00000000c81400000000143a000000408300001f00000000c81400000000143b000000988500001f00000000c41300000000143c000000f08700001f00000000c41300000000143d000000488a00001f00000000c41300000000143e000000a08c00001f00000000a81600000000143f000000f88e00001f00000000a816000000001440000000509100001f00000000a816000000001441000000a89300001f00000000a415000000001442000000009600001f00000000a41500000000",
+        "1443000000589800001f00000000a415000000001444000000b09a00001f000000000000000000001445000000089d00001f000000000000000000001446000000609f00001f000000000000000000001447000000b8a100001f00000000000000000000144800000010a400001f00000000000000000000144900000068a600001f00000000000000000000144a000000c0a800001f00000000000000000000144b00000018ab00001f00000000000000000000144c00000070ad00001f00000000000000000000144d000000c8af00001f00000000000000000000",
+        "144e00000020b200001f00000000000000000000144f00000078b400001f000000000000000000001450000000d0b600001f00000000000000000000145100000028b900001f00000000000000000000145200000080bb00001f000000000000000000001453000000d8bd00001f00000000000000000000145400000030c000001f00000000000000000000145500000088c200001f000000000000000000001456000000e0c400001f00000000581600000000145700000038c700001f00000000581600000000145800000090c900001f00000000581600000000",
+        "1459000000e8cb00001f00000000541500000000145a00000040ce00001f00000000541500000000145b00000098d000001f00000000541500000000145c000000f0d200001f00000000501400000000145d00000048d500001f00000000501400000000145e000000a0d700001f00000000501400000000145f000000f8d900001f00000000341700000000146000000050dc00001f000000003417000000001461000000a8de00001f00000000341700000000146200000000e100001f00000000985800000000146300000058e300001f00000000985800000000",
+        "1464000000b0e500001f00000000985800000000146500000008e800001f00000000945700000000146600000060ea00001f000000009457000000001467000000b8ec00001f00000000945700000000146800000010ef00001f00000000905600000000146900000068f100001f00000000905600000000146a000000c0f300001f00000000905600000000146b00000018f600001f00000000745900000000146c00000070f800001f00000000745900000000146d000000c8fa00001f00000000745900000000146e00000020fd00001f00000000705800000000",
+        "146f00000078ff00001f000000007058000000001470000000d00101001f000000007058000000001471000000280401001f000000006c57000000001472000000800601001f000000006c57000000001473000000d80801001f000000006c57000000001474000000300b01001f000000006856000000001475000000880d01001f000000006856000000001476000000e00f01001f000000006856000000001477000000381201001f000000004c59000000001478000000901401001f000000004c59000000001479000000e81601001f000000004c5900000000",
+        "147a000000401901001f00000000485800000000147b000000981b01001f00000000485800000000147c000000f01d01001f00000000485800000000147d000000482001001f00000000445700000000147e000000a02201001f00000000445700000000147f000000f82401001f000000004457000000001480000000502701001f000000004056000000001481000000a82901001f000000004056000000001482000000002c01001f000000004056000000001483000000582e01001f000000002459000000001484000000b03001001f00000000245900000000",
+        "1485000000083301001f000000002459000000001486000000603501001f000000007021000000001487000000b83701001f000000007021000000001488000000103a01001f000000007021000000001489000000683c01001f000000006c2000000000148a000000c03e01001f000000006c2000000000148b000000184101001f000000006c2000000000148c000000704301001f00000000681f00000000148d000000c84501001f00000000681f00000000148e000000204801001f00000000681f00000000148f000000784a01001f000000004c2200000000",
+        "1490000000d04c01001f000000004c22000000001491000000284f01001f000000004c22000000001492000000805101001f00000000c00d000000001493000000d85301001f00000000c00d000000001494000000305601001f00000000c00d000000001495000000885801001f00000000bc0c000000001496000000e05a01001f00000000bc0c000000001497000000385d01001f00000000bc0c000000001498000000905f01001f00000000b80b000000001499000000e86101001f00000000b80b00000000149a000000406401001f00000000b80b00000000",
+        "149b000000986601001f000000009c0e00000000149c000000f06801001f000000009c0e00000000149d000000486b01001f000000009c0e00000000149e000000a06d01001f00000000980d00000000149f000000f86f01001f00000000980d0000000014a0000000507201001f00000000980d0000000014a1000000a87401001f00000000940c0000000014a2000000007701001f00000000940c0000000014a3000000587901001f00000000940c0000000014a4000000b07b01001f00000000780f0000000014a5000000087e01001f00000000780f00000000",
+        "14a6000000608001001f00000000780f0000000014a7000000b88201001f00000000740e0000000014a8000000108501001f00000000740e0000000014a9000000688701001f00000000740e0000000014aa000000c08901001f00000000700d0000000014ab000000188c01001f00000000700d0000000014ac000000708e01001f00000000700d0000000014ad000000c89001001f000000006c0c0000000014ae000000209301001f000000006c0c0000000014af000000789501001f000000006c0c0000000014b0000000d09701001f00000000500f00000000",
+        "14b1000000289a01001f00000000500f0000000014b2000000809c01001f00000000500f0000000014b3000000d89e01001f000000004c0e0000000014b400000030a101001f000000004c0e0000000014b500000088a301001f000000004c0e0000000014b6000000e0a501001f0000000040380000000014b700000038a801001f0000000040380000000014b800000090aa01001f0000000040380000000014b9000000e8ac01001f000000003c370000000014ba00000040af01001f000000003c370000000014bb00000098b101001f000000003c3700000000",
+        "14bc000000f0b301001f00000000203a0000000014bd00000048b601001f00000000203a0000000014be000000a0b801001f00000000203a0000000014bf000000f8ba01001f000000001c390000000014c000000050bd01001f000000001c390000000014c1000000a8bf01001f000000001c390000000014c200000000c201001f0000000018380000000014c300000058c401001f0000000018380000000014c4000000b0c601001f0000000018380000000014c500000008c901001f0000000014370000000014c600000060cb01001f00000000143700000000",
+        "14c7000000b8cd01001f0000000014370000000014c800000010d001001f00000000d0160000000014c900000068d201001f00000000d0160000000014ca000000c0d401001f00000000d0160000000014cb00000018d701001f00000000cc150000000014cc00000070d901001f00000000cc150000000014cd000000c8db01001f00000000cc150000000014ce00000020de01001f00000000c8140000000014cf00000078e001001f00000000c8140000000014d0000000d0e201001f00000000c8140000000014d100000028e501001f00000000c41300000000",
+        "14d200000080e701001f00000000c4130000000014d3000000d8e901001f00000000c4130000000014d400000030ec01001f0000000000000000000014d500000088ee01001f0000000000000000000014d6000000e0f001001f0000000000000000000014d700000038f301001f0000000000000000000014d800000090f501001f0000000000000000000014d9000000e8f701001f0000000000000000000014da00000040fa01001f0000000000000000000014db00000098fc01001f0000000000000000000014dc000000f0fe01001f00000000000000000000",
+        "14dd000000480102001f0000000000000000000014de000000a00302001f0000000000000000000014df000000f80502001f0000000000000000000014e0000000500802001f0000000000000000000014e1000000a80a02001f0000000000000000000014e2000000000d02001f0000000000000000000014e3000000580f02001f0000000000000000000014e4000000b01102001f0000000000000000000014e5000000081402001f0000000000000000000014e6000000601602001f0000000078140000000014e7000000b81802001f00000000781400000000",
+        "14e8000000101b02001f0000000078140000000014e9000000681d02001f000000005c170000000014ea000000c01f02001f000000005c170000000014eb000000182202001f000000005c170000000014ec000000702402001f0000000058160000000014ed000000c82602001f0000000058160000000014ee000000202902001f0000000058160000000014ef000000782b02001f0000000054150000000014f0000000d02d02001f0000000054150000000014f1000000283002001f0000000054150000000014f2000000803202001f00000000b85600000000",
+        "14f3000000d83402001f00000000b8560000000014f4000000303702001f00000000b8560000000014f5000000883902001f000000009c590000000014f6000000e03b02001f000000009c590000000014f7000000383e02001f000000009c590000000014f8000000904002001f0000000098580000000014f9000000e84202001f0000000098580000000014fa000000404502001f0000000098580000000014fb000000984702001f0000000094570000000014fc000000f04902001f0000000094570000000014fd000000484c02001f00000000945700000000",
+        "14fe000000a04e02001f0000000090560000000014ff000000f85002001f000000009056000000001400010000505302001f000000009056000000001401010000a85502001f000000007459000000001402010000005802001f000000007459000000001403010000585a02001f000000007459000000001404010000b05c02001f000000007058000000001405010000085f02001f000000007058000000001406010000606102001f000000007058000000001407010000b86302001f000000006c57000000001408010000106602001f000000006c5700000000",
+        "1409010000686802001f000000006c5700000000140a010000c06a02001f00000000685600000000140b010000186d02001f00000000685600000000140c010000706f02001f00000000685600000000140d010000c87102001f000000004c5900000000140e010000207402001f000000004c5900000000140f010000787602001f000000004c59000000001410010000d07802001f000000004858000000001411010000287b02001f000000004858000000001412010000807d02001f000000004858000000001413010000d87f02001f00000000445700000000",
+        "1414010000308202001f000000004457000000001415010000888402001f000000004457000000001416010000e08602001f00000000901f000000001417010000388902001f00000000901f000000001418010000908b02001f00000000901f000000001419010000e88d02001f00000000742200000000141a010000409002001f00000000742200000000141b010000989202001f00000000742200000000141c010000f09402001f00000000702100000000141d010000489702001f00000000702100000000141e010000a09902001f00000000702100000000",
+        "141f010000f89b02001f000000006c20000000001420010000509e02001f000000006c20000000001421010000a8a002001f000000006c2000000000142201000000a302001f00000000e00b00000000142301000058a502001f00000000e00b000000001424010000b0a702001f00000000e00b00000000142501000008aa02001f00000000c40e00000000142601000060ac02001f00000000c40e000000001427010000b8ae02001f00000000c40e00000000142801000010b102001f00000000c00d00000000142901000068b302001f00000000c00d00000000",
+        "142a010000c0b502001f00000000c00d00000000142b01000018b802001f00000000bc0c00000000142c01000070ba02001f00000000bc0c00000000142d010000c8bc02001f00000000bc0c00000000142e01000020bf02001f00000000b80b00000000142f01000078c102001f00000000b80b000000001430010000d0c302001f00000000b80b00000000143101000028c602001f000000009c0e00000000143201000080c802001f000000009c0e000000001433010000d8ca02001f000000009c0e00000000143401000030cd02001f00000000980d00000000",
+        "143501000088cf02001f00000000980d000000001436010000e0d102001f00000000980d00000000143701000038d402001f00000000940c00000000143801000090d602001f00000000940c000000001439010000e8d802001f00000000940c00000000143a01000040db02001f00000000780f00000000143b01000098dd02001f00000000780f00000000143c010000f0df02001f00000000780f00000000143d01000048e202001f00000000740e00000000143e010000a0e402001f00000000740e00000000143f010000f8e602001f00000000740e00000000",
+        "144001000050e902001f00000000700d000000001441010000a8eb02001f00000000700d00000000144201000000ee02001f00000000700d00000000144301000058f002001f000000006c0c000000001444010000b0f202001f000000006c0c00000000144501000008f502001f000000006c0c00000000144601000060f702001f00000000483a000000001447010000b8f902001f00000000483a00000000144801000010fc02001f00000000483a00000000144901000068fe02001f00000000443900000000144a010000c00003001f00000000443900000000",
+        "144b010000180303001f00000000443900000000144c010000700503001f00000000403800000000144d010000c80703001f00000000403800000000144e010000200a03001f00000000403800000000144f010000780c03001f000000003c37000000001450010000d00e03001f000000003c37000000001451010000281103001f000000003c37000000001452010000801303001f00000000203a000000001453010000d81503001f00000000203a000000001454010000301803001f00000000203a000000001455010000881a03001f000000001c3900000000",
+        "1456010000e01c03001f000000001c39000000001457010000381f03001f000000001c39000000001458010000902103001f00000000f014000000001459010000e82303001f00000000f01400000000145a010000402603001f00000000f01400000000145b010000982803001f00000000ec1300000000145c010000f02a03001f00000000ec1300000000145d010000482d03001f00000000ec1300000000145e010000a02f03001f00000000d01600000000145f010000f83103001f00000000d016000000001460010000503403001f00000000d01600000000",
+        "1461010000a83603001f00000000cc15000000001462010000003903001f00000000cc15000000001463010000583b03001f00000000cc15000000001464010000b03d03001f000000000000000000001465010000084003001f000000000000000000001466010000604203001f000000000000000000001467010000b84403001f000000000000000000001468010000104703001f000000000000000000001469010000684903001f00000000000000000000146a010000c04b03001f00000000000000000000146b010000184e03001f00000000000000000000",
+        "146c010000705003001f00000000000000000000146d010000c85203001f00000000000000000000146e010000205503001f00000000000000000000146f010000785703001f000000000000000000001470010000d05903001f000000000000000000001471010000285c03001f000000000000000000001472010000805e03001f000000000000000000001473010000d86003001f000000000000000000001474010000306303001f000000000000000000001475010000886503001f000000000000000000001476010000e06703001f00000000801600000000",
+        "1477010000386a03001f000000008016000000001478010000906c03001f000000008016000000001479010000e86e03001f000000007c1500000000147a010000407103001f000000007c1500000000147b010000987303001f000000007c1500000000147c010000f07503001f00000000781400000000147d010000487803001f00000000781400000000147e010000a07a03001f00000000781400000000147f010000f87c03001f000000005c17000000001480010000507f03001f000000005c17000000001481010000a88103001f000000005c1700000000",
+        "1482010000008403001f00000000c058000000001483010000588603001f00000000c058000000001484010000b08803001f00000000c058000000001485010000088b03001f00000000bc57000000001486010000608d03001f00000000bc57000000001487010000b88f03001f00000000bc57000000001488010000109203001f00000000b856000000001489010000689403001f00000000b85600000000148a010000c09603001f00000000b85600000000148b010000189903001f000000009c5900000000148c010000709b03001f000000009c5900000000",
+        "148d010000c89d03001f000000009c5900000000148e01000020a003001f00000000985800000000148f01000078a203001f000000009858000000001490010000d0a403001f00000000985800000000149101000028a703001f00000000945700000000149201000080a903001f000000009457000000001493010000d8ab03001f00000000945700000000149401000030ae03001f00000000905600000000149501000088b003001f000000009056000000001496010000e0b203001f00000000905600000000149701000038b503001f00000000745900000000",
+        "149801000090b703001f000000007459000000001499010000e8b903001f00000000745900000000149a01000040bc03001f00000000705800000000149b01000098be03001f00000000705800000000149c010000f0c003001f00000000705800000000149d01000048c303001f000000006c5700000000149e010000a0c503001f000000006c5700000000149f010000f8c703001f000000006c570000000014a001000050ca03001f0000000068560000000014a1010000a8cc03001f0000000068560000000014a201000000cf03001f00000000685600000000",
+        "14a301000058d103001f000000004c590000000014a4010000b0d303001f000000004c590000000014a501000008d603001f000000004c590000000014a601000060d803001f0000000098210000000014a7010000b8da03001f0000000098210000000014a801000010dd03001f0000000098210000000014a901000068df03001f0000000094200000000014aa010000c0e103001f0000000094200000000014ab01000018e403001f0000000094200000000014ac01000070e603001f00000000901f0000000014ad010000c8e803001f00000000901f00000000",
+        "14ae01000020eb03001f00000000901f0000000014af01000078ed03001f0000000074220000000014b0010000d0ef03001f0000000074220000000014b101000028f203001f0000000074220000000014b201000080f403001f00000000e80d0000000014b3010000d8f603001f00000000e80d0000000014b401000030f903001f00000000e80d0000000014b501000088fb03001f00000000e40c0000000014b6010000e0fd03001f00000000e40c0000000014b7010000380004001f00000000e40c0000000014b8010000900204001f00000000e00b00000000",
+        "14b9010000e80404001f00000000e00b0000000014ba010000400704001f00000000e00b0000000014bb010000980904001f00000000c40e0000000014bc010000f00b04001f00000000c40e0000000014bd010000480e04001f00000000c40e0000000014be010000a01004001f00000000c00d0000000014bf010000f81204001f00000000c00d0000000014c0010000501504001f00000000c00d0000000014c1010000a81704001f00000000bc0c0000000014c2010000001a04001f00000000bc0c0000000014c3010000581c04001f00000000bc0c00000000",
+        "14c4010000b01e04001f00000000b80b0000000014c5010000082104001f00000000b80b0000000014c6010000602304001f00000000b80b0000000014c7010000b82504001f000000009c0e0000000014c8010000102804001f000000009c0e0000000014c9010000682a04001f000000009c0e0000000014ca010000c02c04001f00000000980d0000000014cb010000182f04001f00000000980d0000000014cc010000703104001f00000000980d0000000014cd010000c83304001f00000000940c0000000014ce010000203604001f00000000940c00000000",
+        "14cf010000783804001f00000000940c0000000014d0010000d03a04001f00000000780f0000000014d1010000283d04001f00000000780f0000000014d2010000803f04001f00000000780f0000000014d3010000d84104001f00000000740e0000000014d4010000304404001f00000000740e0000000014d5010000884604001f00000000740e0000000014d6010000e04804001f0000000068380000000014d7010000384b04001f0000000068380000000014d8010000904d04001f0000000068380000000014d9010000e84f04001f00000000643700000000",
+        "14da010000405204001f0000000064370000000014db010000985404001f0000000064370000000014dc010000f05604001f00000000483a0000000014dd010000485904001f00000000483a0000000014de010000a05b04001f00000000483a0000000014df010000f85d04001f0000000044390000000014e0010000506004001f0000000044390000000014e1010000a86204001f0000000044390000000014e2010000006504001f0000000040380000000014e3010000586704001f0000000040380000000014e4010000b06904001f00000000403800000000",
+        "14e5010000086c04001f000000003c370000000014e6010000606e04001f000000003c370000000014e7010000b87004001f000000003c370000000014e8010000107304001f00000000f8160000000014e9010000687504001f00000000f8160000000014ea010000c07704001f00000000f8160000000014eb010000187a04001f00000000f4150000000014ec010000707c04001f00000000f4150000000014ed010000c87e04001f00000000f4150000000014ee010000208104001f00000000f0140000000014ef010000788304001f00000000f01400000000",
+        "14f0010000d08504001f00000000f0140000000014f1010000288804001f00000000ec130000000014f2010000808a04001f00000000ec130000000014f3010000d88c04001f00000000ec130000000014f4010000308f04001f0000000000000000000014f5010000889104001f0000000000000000000014f6010000e09304001f0000000000000000000014f7010000389604001f0000000000000000000014f8010000909804001f0000000000000000000014f9010000e89a04001f0000000000000000000014fa010000409d04001f00000000000000000000",
+        "14fb010000989f04001f0000000000000000000014fc010000f0a104001f0000000000000000000014fd01000048a404001f0000000000000000000014fe010000a0a604001f0000000000000000000014ff010000f8a804001f00000000000000000000140002000050ab04001f000000000000000000001401020000a8ad04001f00000000000000000000140202000000b004001f00000000000000000000140302000058b204001f000000000000000000001404020000b0b404001f00000000000000000000140502000008b704001f00000000000000000000",
+        "140602000060b904001f00000000a014000000001407020000b8bb04001f00000000a01400000000140802000010be04001f00000000a01400000000140902000068c004001f000000009c1300000000140a020000c0c204001f000000009c1300000000140b02000018c504001f000000009c1300000000140c02000070c704001f00000000801600000000140d020000c8c904001f00000000801600000000140e02000020cc04001f00000000801600000000140f02000078ce04001f000000007c15000000001410020000d0d004001f000000007c1500000000",
+        "141102000028d304001f000000007c1500000000141202000080d504001f00000000e056000000001413020000d8d704001f00000000e05600000000141402000030da04001f00000000e05600000000141502000088dc04001f00000000c459000000001416020000e0de04001f00000000c45900000000141702000038e104001f00000000c45900000000141802000090e304001f00000000c058000000001419020000e8e504001f00000000c05800000000141a02000040e804001f00000000c05800000000141b02000098ea04001f00000000bc5700000000",
+        "141c020000f0ec04001f00000000bc5700000000141d02000048ef04001f00000000bc5700000000141e020000a0f104001f00000000b85600000000141f020000f8f304001f00000000b85600000000142002000050f604001f00000000b856000000001421020000a8f804001f000000009c5900000000142202000000fb04001f000000009c5900000000142302000058fd04001f000000009c59000000001424020000b0ff04001f000000009858000000001425020000080205001f000000009858000000001426020000600405001f00000000985800000000",
+        "1427020000b80605001f000000009457000000001428020000100905001f000000009457000000001429020000680b05001f00000000945700000000142a020000c00d05001f00000000905600000000142b020000181005001f00000000905600000000142c020000701205001f00000000905600000000142d020000c81405001f00000000745900000000142e020000201705001f00000000745900000000142f020000781905001f000000007459000000001430020000d01b05001f000000007058000000001431020000281e05001f00000000705800000000",
+        "1432020000802005001f000000007058000000001433020000d82205001f000000006c57000000001434020000302505001f000000006c57000000001435020000882705001f000000006c57000000001436020000e02905001f00000000b81f000000001437020000382c05001f00000000b81f000000001438020000902e05001f00000000b81f000000001439020000e83005001f000000009c2200000000143a020000403305001f000000009c2200000000143b020000983505001f000000009c2200000000143c020000f03705001f00000000982100000000",
+        "143d020000483a05001f00000000982100000000143e020000a03c05001f00000000982100000000143f020000f83e05001f000000009420000000001440020000504105001f000000009420000000001441020000a84305001f000000009420000000001442020000004605001f00000000080c000000001443020000584805001f00000000080c000000001444020000b04a05001f00000000080c000000001445020000084d05001f00000000ec0e000000001446020000604f05001f00000000ec0e000000001447020000b85105001f00000000ec0e00000000",
+        "1448020000105405001f00000000e80d000000001449020000685605001f00000000e80d00000000144a020000c05805001f00000000e80d00000000144b020000185b05001f00000000e40c00000000144c020000705d05001f00000000e40c00000000144d020000c85f05001f00000000e40c00000000144e020000206205001f00000000e00b00000000144f020000786405001f00000000e00b000000001450020000d06605001f00000000e00b000000001451020000286905001f00000000c40e000000001452020000806b05001f00000000c40e00000000",
+        "1453020000d86d05001f00000000c40e000000001454020000307005001f00000000c00d000000001455020000887205001f00000000c00d000000001456020000e07405001f00000000c00d000000001457020000387705001f00000000bc0c000000001458020000907905001f00000000bc0c000000001459020000e87b05001f00000000bc0c00000000145a020000407e05001f00000000b80b00000000145b020000988005001f00000000b80b00000000145c020000f08205001f00000000b80b00000000145d020000488505001f000000009c0e00000000",
+        "145e020000a08705001f000000009c0e00000000145f020000f88905001f000000009c0e000000001460020000508c05001f00000000980d000000001461020000a88e05001f00000000980d000000001462020000009105001f00000000980d000000001463020000589305001f00000000940c000000001464020000b09505001f00000000940c000000001465020000089805001f00000000940c000000001466020000609a05001f00000000703a000000001467020000b89c05001f00000000703a000000001468020000109f05001f00000000703a00000000",
+        "146902000068a105001f000000006c3900000000146a020000c0a305001f000000006c3900000000146b02000018a605001f000000006c3900000000146c02000070a805001f00000000683800000000146d020000c8aa05001f00000000683800000000146e02000020ad05001f00000000683800000000146f02000078af05001f000000006437000000001470020000d0b105001f00000000643700000000147102000028b405001f00000000643700000000147202000080b605001f00000000483a000000001473020000d8b805001f00000000483a00000000",
+        "147402000030bb05001f00000000483a00000000147502000088bd05001f000000004439000000001476020000e0bf05001f00000000443900000000147702000038c205001f00000000443900000000147802000090c405001f000000001815000000001479020000e8c605001f00000000181500000000147a02000040c905001f00000000181500000000147b02000098cb05001f00000000141400000000147c020000f0cd05001f00000000141400000000147d02000048d005001f00000000141400000000147e020000a0d205001f00000000f81600000000",
+        "147f020000f8d405001f00000000f81600000000148002000050d705001f00000000f816000000001481020000a8d905001f00000000f41500000000148202000000dc05001f00000000f41500000000148302000058de05001f00000000f415000000001484020000b0e005001f00000000000000000000148502000008e305001f00000000000000000000148602000060e505001f000000000000000000001487020000b8e705001f00000000000000000000148802000010ea05001f00000000000000000000148902000068ec05001f00000000000000000000",
+        "148a020000c0ee05001f00000000000000000000148b02000018f105001f00000000000000000000148c02000070f305001f00000000000000000000148d020000c8f505001f00000000000000000000148e02000020f805001f00000000000000000000148f02000078fa05001f000000000000000000001490020000d0fc05001f00000000000000000000149102000028ff05001f000000000000000000001492020000800106001f000000000000000000001493020000d80306001f000000000000000000001494020000300606001f00000000000000000000",
+        "1495020000880806001f000000000000000000001496020000e00a06001f00000000a816000000001497020000380d06001f00000000a816000000001498020000900f06001f00000000a816000000001499020000e81106001f00000000a41500000000149a020000401406001f00000000a41500000000149b020000981606001f00000000a41500000000149c020000f01806001f00000000a01400000000149d020000481b06001f00000000a01400000000149e020000a01d06001f00000000a01400000000149f020000f81f06001f000000009c1300000000",
+        "14a0020000502206001f000000009c130000000014a1020000a82406001f000000009c130000000014a2020000002706001f00000000e8580000000014a3020000582906001f00000000e8580000000014a4020000b02b06001f00000000e8580000000014a5020000082e06001f00000000e4570000000014a6020000603006001f00000000e4570000000014a7020000b83206001f00000000e4570000000014a8020000103506001f00000000e0560000000014a9020000683706001f00000000e0560000000014aa020000c03906001f00000000e05600000000",
+        "14ab020000183c06001f00000000c4590000000014ac020000703e06001f00000000c4590000000014ad020000c84006001f00000000c4590000000014ae020000204306001f00000000c0580000000014af020000784506001f00000000c0580000000014b0020000d04706001f00000000c0580000000014b1020000284a06001f00000000bc570000000014b2020000804c06001f00000000bc570000000014b3020000d84e06001f00000000bc570000000014b4020000305106001f00000000b8560000000014b5020000885306001f00000000b85600000000",
+        "14b6020000e05506001f00000000b8560000000014b7020000385806001f000000009c590000000014b8020000905a06001f000000009c590000000014b9020000e85c06001f000000009c590000000014ba020000405f06001f0000000098580000000014bb020000986106001f0000000098580000000014bc020000f06306001f0000000098580000000014bd020000486606001f0000000094570000000014be020000a06806001f0000000094570000000014bf020000f86a06001f0000000094570000000014c0020000506d06001f00000000905600000000",
+        "14c1020000a86f06001f0000000090560000000014c2020000007206001f0000000090560000000014c3020000587406001f0000000074590000000014c4020000b07606001f0000000074590000000014c5020000087906001f0000000074590000000014c6020000607b06001f00000000c0210000000014c7020000b87d06001f00000000c0210000000014c8020000108006001f00000000c0210000000014c9020000688206001f00000000bc200000000014ca020000c08406001f00000000bc200000000014cb020000188706001f00000000bc2000000000",
+        "14cc020000708906001f00000000b81f0000000014cd020000c88b06001f00000000b81f0000000014ce020000208e06001f00000000b81f0000000014cf020000789006001f000000009c220000000014d0020000d09206001f000000009c220000000014d1020000289506001f000000009c220000000014d2020000809706001f00000000100e0000000014d3020000d89906001f00000000100e0000000014d4020000309c06001f00000000100e0000000014d5020000889e06001f000000000c0d0000000014d6020000e0a006001f000000000c0d00000000",
+        "14d702000038a306001f000000000c0d0000000014d802000090a506001f00000000080c0000000014d9020000e8a706001f00000000080c0000000014da02000040aa06001f00000000080c0000000014db02000098ac06001f00000000ec0e0000000014dc020000f0ae06001f00000000ec0e0000000014dd02000048b106001f00000000ec0e0000000014de020000a0b306001f00000000e80d0000000014df020000f8b506001f00000000e80d0000000014e002000050b806001f00000000e80d0000000014e1020000a8ba06001f00000000e40c00000000",
+        "14e202000000bd06001f00000000e40c0000000014e302000058bf06001f00000000e40c0000000014e4020000b0c106001f00000000e00b0000000014e502000008c406001f00000000e00b0000000014e602000060c606001f00000000e00b0000000014e7020000b8c806001f00000000c40e0000000014e802000010cb06001f00000000c40e0000000014e902000068cd06001f00000000c40e0000000014ea020000c0cf06001f00000000c00d0000000014eb02000018d206001f00000000c00d0000000014ec02000070d406001f00000000c00d00000000",
+        "14ed020000c8d606001f00000000bc0c0000000014ee02000020d906001f00000000bc0c0000000014ef02000078db06001f00000000bc0c0000000014f0020000d0dd06001f00000000b80b0000000014f102000028e006001f00000000b80b0000000014f202000080e206001f00000000b80b0000000014f3020000d8e406001f000000009c0e0000000014f402000030e706001f000000009c0e0000000014f502000088e906001f000000009c0e0000000014f6020000e0eb06001f0000000090380000000014f702000038ee06001f00000000903800000000",
+        "14f802000090f006001f0000000090380000000014f9020000e8f206001f000000008c370000000014fa02000040f506001f000000008c370000000014fb02000098f706001f000000008c370000000014fc020000f0f906001f00000000703a0000000014fd02000048fc06001f00000000703a0000000014fe020000a0fe06001f00000000703a0000000014ff020000f80007001f000000006c39000000001400030000500307001f000000006c39000000001401030000a80507001f000000006c39000000001402030000000807001f00000000683800000000",
+        "1403030000580a07001f000000006838000000001404030000b00c07001f000000006838000000001405030000080f07001f000000006437000000001406030000601107001f000000006437000000001407030000b81307001f000000006437000000001408030000101607001f000000002017000000001409030000681807001f00000000201700000000140a030000c01a07001f00000000201700000000140b030000181d07001f000000001c1600000000140c030000701f07001f000000001c1600000000140d030000c82107001f000000001c1600000000",
+        "140e030000202407001f00000000181500000000140f030000782607001f000000001815000000001410030000d02807001f000000001815000000001411030000282b07001f000000001414000000001412030000802d07001f000000001414000000001413030000d82f07001f000000001414000000001414030000303207001f000000000000000000001415030000883407001f000000000000000000001416030000e03607001f000000000000000000001417030000383907001f000000000000000000001418030000903b07001f00000000000000000000",
+        "1419030000e83d07001f00000000000000000000141a030000404007001f00000000000000000000141b030000984207001f00000000000000000000141c030000f04407001f00000000000000000000141d030000484707001f00000000000000000000141e030000a04907001f00000000000000000000141f030000f84b07001f000000000000000000001420030000504e07001f000000000000000000001421030000a85007001f000000000000000000001422030000005307001f000000000000000000001423030000585507001f00000000000000000000",
+        "1424030000b05707001f000000000000000000001425030000085a07001f000000000000000000001426030000605c07001f00000000c814000000001427030000b85e07001f00000000c814000000001428030000106107001f00000000c814000000001429030000686307001f00000000c41300000000142a030000c06507001f00000000c41300000000142b030000186807001f00000000c41300000000142c030000706a07001f00000000a81600000000142d030000c86c07001f00000000a81600000000142e030000206f07001f00000000a81600000000",
+        "142f030000787107001f00000000a415000000001430030000d07307001f00000000a415000000001431030000287607001f00000000a415000000001432030000807807001f000000000857000000001433030000d87a07001f000000000857000000001434030000307d07001f000000000857000000001435030000887f07001f000000000456000000001436030000e08107001f000000000456000000001437030000388407001f000000000456000000001438030000908607001f00000000e858000000001439030000e88807001f00000000e85800000000",
+        "143a030000408b07001f00000000e85800000000143b030000988d07001f00000000e45700000000143c030000f08f07001f00000000e45700000000143d030000489207001f00000000e45700000000143e030000a09407001f00000000e05600000000143f030000f89607001f00000000e056000000001440030000509907001f00000000e056000000001441030000a89b07001f00000000c459000000001442030000009e07001f00000000c45900000000144303000058a007001f00000000c459000000001444030000b0a207001f00000000c05800000000",
+        "144503000008a507001f00000000c05800000000144603000060a707001f00000000c058000000001447030000b8a907001f00000000bc5700000000144803000010ac07001f00000000bc5700000000144903000068ae07001f00000000bc5700000000144a030000c0b007001f00000000b85600000000144b03000018b307001f00000000b85600000000144c03000070b507001f00000000b85600000000144d030000c8b707001f000000009c5900000000144e03000020ba07001f000000009c5900000000144f03000078bc07001f000000009c5900000000",
+        "1450030000d0be07001f00000000985800000000145103000028c107001f00000000985800000000145203000080c307001f000000009858000000001453030000d8c507001f00000000945700000000145403000030c807001f00000000945700000000145503000088ca07001f000000009457000000001456030000e0cc07001f00000000e01f00000000145703000038cf07001f00000000e01f00000000145803000090d107001f00000000e01f000000001459030000e8d307001f00000000c42200000000145a03000040d607001f00000000c42200000000",
+        "145b03000098d807001f00000000c42200000000145c030000f0da07001f00000000c02100000000145d03000048dd07001f00000000c02100000000145e030000a0df07001f00000000c02100000000145f030000f8e107001f00000000bc2000000000146003000050e407001f00000000bc20000000001461030000a8e607001f00000000bc2000000000146203000000e907001f00000000300c00000000146303000058eb07001f00000000300c000000001464030000b0ed07001f00000000300c00000000146503000008f007001f00000000140f00000000",
+        "146603000060f207001f00000000140f000000001467030000b8f407001f00000000140f00000000146803000010f707001f00000000100e00000000146903000068f907001f00000000100e00000000146a030000c0fb07001f00000000100e00000000146b03000018fe07001f000000000c0d00000000146c030000700008001f000000000c0d00000000146d030000c80208001f000000000c0d00000000146e030000200508001f00000000080c00000000146f030000780708001f00000000080c000000001470030000d00908001f00000000080c00000000",
+        "1471030000280c08001f00000000ec0e000000001472030000800e08001f00000000ec0e000000001473030000d81008001f00000000ec0e000000001474030000301308001f00000000e80d000000001475030000881508001f00000000e80d000000001476030000e01708001f00000000e80d000000001477030000381a08001f00000000e40c000000001478030000901c08001f00000000e40c000000001479030000e81e08001f00000000e40c00000000147a030000402108001f00000000e00b00000000147b030000982308001f00000000e00b00000000",
+        "147c030000f02508001f00000000e00b00000000147d030000482808001f00000000c40e00000000147e030000a02a08001f00000000c40e00000000147f030000f82c08001f00000000c40e000000001480030000502f08001f00000000c00d000000001481030000a83108001f00000000c00d000000001482030000003408001f00000000c00d000000001483030000583608001f00000000bc0c000000001484030000b03808001f00000000bc0c000000001485030000083b08001f00000000bc0c000000001486030000603d08001f00000000b03600000000",
+        "1487030000b83f08001f00000000b036000000001488030000104208001f00000000b036000000001489030000684408001f00000000943900000000148a030000c04608001f00000000943900000000148b030000184908001f00000000943900000000148c030000704b08001f00000000903800000000148d030000c84d08001f00000000903800000000148e030000205008001f00000000903800000000148f030000785208001f000000008c37000000001490030000d05408001f000000008c37000000001491030000285708001f000000008c3700000000",
+        "1492030000805908001f00000000703a000000001493030000d85b08001f00000000703a000000001494030000305e08001f00000000703a000000001495030000886008001f000000006c39000000001496030000e06208001f000000006c39000000001497030000386508001f000000006c39000000001498030000906708001f000000004015000000001499030000e86908001f00000000401500000000149a030000406c08001f00000000401500000000149b030000986e08001f000000003c1400000000149c030000f07008001f000000003c1400000000",
+        "149d030000487308001f000000003c1400000000149e030000a07508001f00000000201700000000149f030000f87708001f0000000020170000000014a0030000507a08001f0000000020170000000014a1030000a87c08001f000000001c160000000014a2030000007f08001f000000001c160000000014a3030000588108001f000000001c160000000014a4030000b08308001f0000000000000000000014a5030000088608001f0000000000000000000014a6030000608808001f0000000000000000000014a7030000b88a08001f00000000000000000000",
+        "14a8030000108d08001f0000000000000000000014a9030000688f08001f0000000000000000000014aa030000c09108001f0000000000000000000014ab030000189408001f0000000000000000000014ac030000709608001f0000000000000000000014ad030000c89808001f0000000000000000000014ae030000209b08001f0000000000000000000014af030000789d08001f0000000000000000000014b0030000d09f08001f0000000000000000000014b103000028a208001f0000000000000000000014b203000080a408001f00000000000000000000",
+        "14b3030000d8a608001f0000000000000000000014b403000030a908001f0000000000000000000014b503000088ab08001f0000000000000000000014b6030000e0ad08001f00000000d0160000000014b703000038b008001f00000000d0160000000014b803000090b208001f00000000d0160000000014b9030000e8b408001f00000000cc150000000014ba03000040b708001f00000000cc150000000014bb03000098b908001f00000000cc150000000014bc030000f0bb08001f00000000c8140000000014bd03000048be08001f00000000c81400000000",
+        "14be030000a0c008001f00000000c8140000000014bf030000f8c208001f00000000c4130000000014c003000050c508001f00000000c4130000000014c1030000a8c708001f00000000c4130000000014c203000000ca08001f0000000010590000000014c303000058cc08001f0000000010590000000014c4030000b0ce08001f0000000010590000000014c503000008d108001f000000000c580000000014c603000060d308001f000000000c580000000014c7030000b8d508001f000000000c580000000014c803000010d808001f00000000085700000000",
+        "14c903000068da08001f0000000008570000000014ca030000c0dc08001f0000000008570000000014cb03000018df08001f0000000004560000000014cc03000070e108001f0000000004560000000014cd030000c8e308001f0000000004560000000014ce03000020e608001f00000000e8580000000014cf03000078e808001f00000000e8580000000014d0030000d0ea08001f00000000e8580000000014d103000028ed08001f00000000e4570000000014d203000080ef08001f00000000e4570000000014d3030000d8f108001f00000000e45700000000",
+        "14d403000030f408001f00000000e0560000000014d503000088f608001f00000000e0560000000014d6030000e0f808001f00000000e0560000000014d703000038fb08001f00000000c4590000000014d803000090fd08001f00000000c4590000000014d9030000e8ff08001f00000000c4590000000014da030000400209001f00000000c0580000000014db030000980409001f00000000c0580000000014dc030000f00609001f00000000c0580000000014dd030000480909001f00000000bc570000000014de030000a00b09001f00000000bc5700000000",
+        "14df030000f80d09001f00000000bc570000000014e0030000501009001f00000000b8560000000014e1030000a81209001f00000000b8560000000014e2030000001509001f00000000b8560000000014e3030000581709001f000000009c590000000014e4030000b01909001f000000009c590000000014e5030000081c09001f000000009c590000000014e6030000601e09001f00000000e8210000000014e7030000b82009001f00000000e8210000000014e8030000102309001f00000000e8210000000014e9030000682509001f00000000e42000000000",
+        "14ea030000c02709001f00000000e4200000000014eb030000182a09001f00000000e4200000000014ec030000702c09001f00000000e01f0000000014ed030000c82e09001f00000000e01f0000000014ee030000203109001f00000000e01f0000000014ef030000783309001f00000000c4220000000014f0030000d03509001f00000000c4220000000014f1030000283809001f00000000c42200000000",
+        "00"
+      ]
+    },
+    {
+      "address": 1000,
+      "request": "0114e80300000000",
+      "reads": [
+        "14e8030000102309001f00000000e8210000000014e9030000682509001f00000000e4200000000014ea030000c02709001f00000000e4200000000014eb030000182a09001f00000000e4200000000014ec030000702c09001f00000000e01f0000000014ed030000c82e09001f00000000e01f0000000014ee030000203109001f00000000e01f0000000014ef030000783309001f00000000c4220000000014f0030000d03509001f00000000c4220000000014f1030000283809001f00000000c42200000000",
+        "00"
+      ]
+    },
+    {
+      "address": 1010,
+      "request": "0114f20300000000",
+      "reads": [
+        "00"
+      ]
+    }
+  ],
+  "state": {
+    "firstEntry": 0,
+    "lastEntry": 1009,
+    "usedMemory": 1009,
+    "refTime": 811692600,
+    "initialTime": 1789999800
+  }
+}

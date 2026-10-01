@@ -1,0 +1,57 @@
+{
+  "pluginAlias": "FlippedEnergy",
+  "pluginType": "platform",
+  "singular": false,
+  "strictValidation": false,
+  "headerDisplay": "Create a developer token in the Flipped portal under **APIs and MCPs → Tokens**. Choose scope **Read** and the longest expiry (365 days). Run this plugin as a child bridge.",
+  "schema": {
+    "type": "object",
+    "required": ["name", "token"],
+    "properties": {
+      "name": { "title": "Name", "type": "string", "default": "Flipped Energy" },
+      "token": {
+        "title": "Developer token",
+        "type": "string",
+        "pattern": "^fdk_",
+        "description": "Starts with fdk_. A read token is enough.",
+        "x-schema-form": { "type": "password" }
+      },
+      "accountNumber": {
+        "title": "Account number",
+        "type": "string",
+        "description": "Needed only when your login has more than one account. The log lists the account numbers to choose from."
+      },
+      "nmi": {
+        "title": "NMI",
+        "type": "string",
+        "description": "Needed only when the account has more than one meter. The log lists the NMIs to choose from. Set it before you build automations: adding, changing or removing it later removes every Flipped Energy accessory and creates new ones, and Apple Home deletes the automations that used the old ones."
+      },
+      "priceHighThresholdCentsPerKwh": {
+        "title": "Wholesale Price High threshold (c/kWh, wholesale, excluding GST)",
+        "type": "number",
+        "description": "Leave empty to use the market's own Elevated / Spike level."
+      },
+      "priceLowThresholdCentsPerKwh": {
+        "title": "Wholesale Price Low threshold (c/kWh, wholesale, excluding GST)",
+        "type": "number",
+        "description": "May be negative. Leave empty to use Unusually low or negative."
+      },
+      "signalService": {
+        "title": "Show the on/off signals as",
+        "type": "string",
+        "default": "switch",
+        "oneOf": [
+          { "title": "Switches", "enum": ["switch"] },
+          { "title": "Occupancy sensors", "enum": ["occupancySensor"] },
+          { "title": "Contact sensors", "enum": ["contactSensor"] }
+        ]
+      },
+      "availabilitySensors": { "title": "Rates Unavailable and Wholesale Price Unavailable sensors", "type": "boolean", "default": true },
+      "tokenExpiringSensor": { "title": "Token Expiring Soon sensor", "type": "boolean", "default": false },
+      "wholesalePriceSensor": { "title": "Wholesale Price as a light sensor (c/kWh shown as lux)", "type": "boolean", "default": true },
+      "wholesalePriceLevelSensor": { "title": "Wholesale Price Level as an air quality sensor", "type": "boolean", "default": false },
+      "eveHistory": { "title": "Energy history for the Eve app", "type": "boolean", "default": true },
+      "matterEnergy": { "title": "Energy as Matter electrical sensors (experimental; needs this platform on a child bridge with Matter enabled)", "type": "boolean", "default": false }
+    }
+  }
+}

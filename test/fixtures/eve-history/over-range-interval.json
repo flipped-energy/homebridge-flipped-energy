@@ -1,0 +1,135 @@
+{
+  "name": "over-range-interval",
+  "description": "Four 30-minute intervals: 0.412 kWh (824 W), 3.5 kWh (7,000 W, above the 6,553.5 W limit of the 16-bit deciwatt field: no entries, listed under overflow), 3.276 kWh (6,552 W, the largest even in-range value) and 0.6 kWh (1,200 W). Nine entries reach the history; the over-range half hour leaves a gap. Addresses read in order: 0, one past the newest.",
+  "generator": {
+    "fakegato-history": "0.6.7",
+    "homebridge": "2.4.0",
+    "@homebridge/hap-nodejs": "2.2.2",
+    "node": "v24.19.0",
+    "accessoryType": "energy",
+    "disableTimer": true,
+    "storage": null,
+    "historyStatusShape": "S1"
+  },
+  "format": {
+    "intervals": "the ledger input, in order: start instant (Z), durationMinutes, kwh of imported energy",
+    "overflow": "intervals whose average power exceeds 6,553.5 W: no entries are written for them",
+    "entries": "every entry fed to fakegato-history addEntry({ time, power }) in this order: time is Unix seconds at the end of its 10-minute slot (start + 600 k), watts is the power given, deciwatts = watts * 10 is the 16-bit field value",
+    "restartAfterEntry": "null, or the number of entries after which the instance was dropped and a new one loaded the persisted file",
+    "beforeRestart": "null, or historyStatus, historyEntries and state read before the restart",
+    "afterRestart": "null, or historyEntries and state read right after the reload, before any further entry",
+    "historyStatus": "E863F116 bytes (hex, little-endian fields) as published after the last entry",
+    "historyEntries": "in replay order on one running instance: for each History Request, the address requested, the exact E863F11C bytes written (hex: 01 14, u32 address, 00 00) and every E863F117 read (hex) until the terminator 00",
+    "state": "the library counters after the last entry: firstEntry, lastEntry, usedMemory, refTime (first entry time minus epoch), initialTime"
+  },
+  "memorySize": 4032,
+  "epoch": 978307200,
+  "signature": "04 0102 0202 0702 0f03",
+  "entryType": "1f",
+  "intervals": [
+    {
+      "start": "2026-09-29T01:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.412
+    },
+    {
+      "start": "2026-09-29T01:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 3.5
+    },
+    {
+      "start": "2026-09-29T02:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 3.276
+    },
+    {
+      "start": "2026-09-29T02:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.6
+    }
+  ],
+  "overflow": [
+    {
+      "start": "2026-09-29T01:30:00Z",
+      "durationMinutes": 30,
+      "kwh": 3.5,
+      "watts": 7000,
+      "deciwatts": 70000
+    }
+  ],
+  "entries": [
+    {
+      "time": 1790644200,
+      "watts": 824,
+      "deciwatts": 8240
+    },
+    {
+      "time": 1790644800,
+      "watts": 824,
+      "deciwatts": 8240
+    },
+    {
+      "time": 1790645400,
+      "watts": 824,
+      "deciwatts": 8240
+    },
+    {
+      "time": 1790647800,
+      "watts": 6552,
+      "deciwatts": 65520
+    },
+    {
+      "time": 1790648400,
+      "watts": 6552,
+      "deciwatts": 65520
+    },
+    {
+      "time": 1790649000,
+      "watts": 6552,
+      "deciwatts": 65520
+    },
+    {
+      "time": 1790649600,
+      "watts": 1200,
+      "deciwatts": 12000
+    },
+    {
+      "time": 1790650200,
+      "watts": 1200,
+      "deciwatts": 12000
+    },
+    {
+      "time": 1790650800,
+      "watts": 1200,
+      "deciwatts": 12000
+    }
+  ],
+  "restartAfterEntry": null,
+  "beforeRestart": null,
+  "afterRestart": null,
+  "historyStatus": "c81900000000000068476b30040102020207020f030b00c00f00000000000000000101",
+  "historyEntries": [
+    {
+      "address": 0,
+      "request": "0114000000000000",
+      "reads": [
+        "1501000000010000008168476b30000000000000001402000000000000001f000000003020000000001403000000580200001f000000003020000000001404000000b00400001f000000003020000000001405000000100e00001f00000000f0ff000000001406000000681000001f00000000f0ff000000001407000000c01200001f00000000f0ff000000001408000000181500001f00000000e02e000000001409000000701700001f00000000e02e00000000140a000000c81900001f00000000e02e00000000",
+        "00"
+      ]
+    },
+    {
+      "address": 11,
+      "request": "01140b0000000000",
+      "reads": [
+        "00"
+      ]
+    }
+  ],
+  "state": {
+    "firstEntry": 0,
+    "lastEntry": 10,
+    "usedMemory": 10,
+    "refTime": 812337000,
+    "initialTime": 1790644200
+  }
+}

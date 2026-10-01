@@ -1,0 +1,98 @@
+{
+  "name": "three-entries",
+  "description": "One 30-minute interval of 0.412 kWh (824 W) starting 2026-09-29T01:00:00Z written as three back-dated entries, memory size 4032; the example of [01] 6.2 with the third entry in range. Requests are replayed in order on one running instance; address 0 is what Eve writes first.",
+  "generator": {
+    "fakegato-history": "0.6.7",
+    "homebridge": "2.4.0",
+    "@homebridge/hap-nodejs": "2.2.2",
+    "node": "v24.19.0",
+    "accessoryType": "energy",
+    "disableTimer": true,
+    "storage": null,
+    "historyStatusShape": "S1"
+  },
+  "format": {
+    "intervals": "the ledger input, in order: start instant (Z), durationMinutes, kwh of imported energy",
+    "overflow": "intervals whose average power exceeds 6,553.5 W: no entries are written for them",
+    "entries": "every entry fed to fakegato-history addEntry({ time, power }) in this order: time is Unix seconds at the end of its 10-minute slot (start + 600 k), watts is the power given, deciwatts = watts * 10 is the 16-bit field value",
+    "restartAfterEntry": "null, or the number of entries after which the instance was dropped and a new one loaded the persisted file",
+    "beforeRestart": "null, or historyStatus, historyEntries and state read before the restart",
+    "afterRestart": "null, or historyEntries and state read right after the reload, before any further entry",
+    "historyStatus": "E863F116 bytes (hex, little-endian fields) as published after the last entry",
+    "historyEntries": "in replay order on one running instance: for each History Request, the address requested, the exact E863F11C bytes written (hex: 01 14, u32 address, 00 00) and every E863F117 read (hex) until the terminator 00",
+    "state": "the library counters after the last entry: firstEntry, lastEntry, usedMemory, refTime (first entry time minus epoch), initialTime"
+  },
+  "memorySize": 4032,
+  "epoch": 978307200,
+  "signature": "04 0102 0202 0702 0f03",
+  "entryType": "1f",
+  "intervals": [
+    {
+      "start": "2026-09-29T01:00:00Z",
+      "durationMinutes": 30,
+      "kwh": 0.412
+    }
+  ],
+  "overflow": [],
+  "entries": [
+    {
+      "time": 1790644200,
+      "watts": 824,
+      "deciwatts": 8240
+    },
+    {
+      "time": 1790644800,
+      "watts": 824,
+      "deciwatts": 8240
+    },
+    {
+      "time": 1790645400,
+      "watts": 824,
+      "deciwatts": 8240
+    }
+  ],
+  "restartAfterEntry": null,
+  "beforeRestart": null,
+  "afterRestart": null,
+  "historyStatus": "b00400000000000068476b30040102020207020f030500c00f00000000000000000101",
+  "historyEntries": [
+    {
+      "address": 0,
+      "request": "0114000000000000",
+      "reads": [
+        "1501000000010000008168476b30000000000000001402000000000000001f000000003020000000001403000000580200001f000000003020000000001404000000b00400001f00000000302000000000",
+        "00"
+      ]
+    },
+    {
+      "address": 2,
+      "request": "0114020000000000",
+      "reads": [
+        "1402000000000000001f000000003020000000001403000000580200001f000000003020000000001404000000b00400001f00000000302000000000",
+        "00"
+      ]
+    },
+    {
+      "address": 4,
+      "request": "0114040000000000",
+      "reads": [
+        "1404000000b00400001f00000000302000000000",
+        "00"
+      ]
+    },
+    {
+      "address": 5,
+      "request": "0114050000000000",
+      "reads": [
+        "00"
+      ]
+    }
+  ],
+  "state": {
+    "firstEntry": 0,
+    "lastEntry": 4,
+    "usedMemory": 4,
+    "refTime": 812337000,
+    "initialTime": 1790644200
+  }
+}

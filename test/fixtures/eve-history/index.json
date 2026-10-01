@@ -1,0 +1,62 @@
+[
+  {
+    "path": "over-range-interval.json",
+    "sha256": "57cd2c65e388bbd364ae933b4d0994edf43a62527a0078479bba84dae93cf60e",
+    "generator": {
+      "fakegato-history": "0.6.7",
+      "homebridge": "2.4.0",
+      "@homebridge/hap-nodejs": "2.2.2",
+      "node": "v24.19.0"
+    }
+  },
+  {
+    "path": "restart-from-persisted-state.json",
+    "sha256": "5b4510d6321a156419bae2601140fcdd8684ef82f10a1e9178a8eda8c2a23900",
+    "generator": {
+      "fakegato-history": "0.6.7",
+      "homebridge": "2.4.0",
+      "@homebridge/hap-nodejs": "2.2.2",
+      "node": "v24.19.0"
+    }
+  },
+  {
+    "path": "restart-then-wrap-16.json",
+    "sha256": "9af6ce9e343a7ff8cab4853627e8cf840c80ffbd59a8c33ce8be354d6be2d927",
+    "generator": {
+      "fakegato-history": "0.6.7",
+      "homebridge": "2.4.0",
+      "@homebridge/hap-nodejs": "2.2.2",
+      "node": "v24.19.0"
+    }
+  },
+  {
+    "path": "seven-day-fill.json",
+    "sha256": "76a4979457929df041280bb97301f97e628dcba3bb4e5ffbb24fc4c0860684ff",
+    "generator": {
+      "fakegato-history": "0.6.7",
+      "homebridge": "2.4.0",
+      "@homebridge/hap-nodejs": "2.2.2",
+      "node": "v24.19.0"
+    }
+  },
+  {
+    "path": "three-entries.json",
+    "sha256": "1acad73354c871600e4af6329477a46c04cdfb94f57b4466ed157ec9d7956ab1",
+    "generator": {
+      "fakegato-history": "0.6.7",
+      "homebridge": "2.4.0",
+      "@homebridge/hap-nodejs": "2.2.2",
+      "node": "v24.19.0"
+    }
+  },
+  {
+    "path": "wrap-around-16.json",
+    "sha256": "e1b25903189c8f2417a1b8b1d441f9b8644f9d561705143bd978a16526dc27d3",
+    "generator": {
+      "fakegato-history": "0.6.7",
+      "homebridge": "2.4.0",
+      "@homebridge/hap-nodejs": "2.2.2",
+      "node": "v24.19.0"
+    }
+  }
+]
