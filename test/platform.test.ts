@@ -9,7 +9,7 @@ import type { Signals } from '../src/core/types.ts'
 import { valueCharacteristicUuids } from '../src/hap/fault.ts'
 import { GroupAccessory } from '../src/hap/groupAccessory.ts'
 import { type PlatformEnvironment, Platform } from '../src/platform.ts'
-import { PLATFORM_NAME, PLUGIN_NAME } from '../src/settings.ts'
+import { PLATFORM_NAME, PLUGIN_NAME, PRODUCT_NAME } from '../src/settings.ts'
 import { FakeClock } from './helpers/fakeClock.ts'
 import { HomebridgeAPI, LogRecorder, associate, emitterOf, readStatus, restoreFromCache, storagePath } from './helpers/homebridgeHarness.ts'
 import { loadSequence } from './helpers/sequenceReplay.ts'
@@ -24,7 +24,7 @@ const FAULTED = { status: -70402 }
 
 const storage = storagePath()
 const configPath = join(storage, 'config.json')
-const pluginDirectory = join(storage, PLUGIN_NAME)
+const pluginDirectory = join(storage, PRODUCT_NAME)
 const { hap } = new HomebridgeAPI()
 
 function block(fields: Record<string, unknown>): Block {

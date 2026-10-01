@@ -1,5 +1,5 @@
 {
-  "name": "homebridge-flipped-energy",
+  "name": "@flipped-energy/homebridge-flipped-energy",
   "displayName": "Flipped Energy",
   "version": "0.1.0",
   "description": "Flipped Energy tariff periods, wholesale price signals and metered energy history for Homebridge.",
@@ -38,6 +38,9 @@
     "README.md",
     "CHANGELOG.md"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": "^22 || ^24 || ^26",
     "homebridge": "^2.4.0"

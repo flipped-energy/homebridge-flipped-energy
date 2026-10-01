@@ -1,5 +1,5 @@
 import { MS_PER_SECOND } from '../core/constants.ts'
-import { PLUGIN_NAME } from '../settings.ts'
+import { PRODUCT_NAME } from '../settings.ts'
 import { VERSION } from '../version.ts'
 import { type ApiRequest, requestUrl } from './endpoints.ts'
 
@@ -39,7 +39,7 @@ export interface ApiClientOptions {
   waitHttpTimeoutS: number
 }
 
-export const USER_AGENT = `${PLUGIN_NAME}/${VERSION}`
+export const USER_AGENT = `${PRODUCT_NAME}/${VERSION}`
 
 const RETRY_AFTER_PATTERN = /^[0-9]+$/
 const decoder = new TextDecoder('utf-8', { ignoreBOM: true })

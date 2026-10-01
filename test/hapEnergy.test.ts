@@ -13,7 +13,7 @@ import { STATUS_READ_ONLY_CHARACTERISTIC } from '../src/hap/constants.ts'
 import { faultCachedAccessory } from '../src/hap/fault.ts'
 import { Platform } from '../src/platform.ts'
 import { instanceHash } from '../src/runtime/stateStore.ts'
-import { PLATFORM_NAME, PLUGIN_NAME } from '../src/settings.ts'
+import { PLATFORM_NAME, PRODUCT_NAME } from '../src/settings.ts'
 import { FakeClock } from './helpers/fakeClock.ts'
 import { HomebridgeAPI, LogRecorder, associate, emitterOf, readStatus, restoreFromCache, storagePath } from './helpers/homebridgeHarness.ts'
 import { loadSequence } from './helpers/sequenceReplay.ts'
@@ -149,7 +149,7 @@ test('a cached energy accessory is faulted before binding and keeps one set of s
 async function runPlatform(failUsage: boolean, halfHourly: unknown[] | null, until: (record: { level: string; message: string }) => boolean): Promise<{ registered: PlatformAccessory[]; platform: Platform<number> }> {
   const storage = storagePath()
   const configPath = join(storage, 'config.json')
-  rmSync(join(storage, PLUGIN_NAME), { recursive: true, force: true })
+  rmSync(join(storage, PRODUCT_NAME), { recursive: true, force: true })
   const config = { platform: PLATFORM_NAME, name: 'Flipped Energy', token: 'fdk_SEQUENCEFIXTURE000000000000000000wXyZ' }
   writeFileSync(configPath, JSON.stringify({ bridge: { name: 'Test Bridge' }, platforms: [config] }))
   const sequence = loadSequence('first-run-account-pinning')
@@ -199,14 +199,14 @@ test('no energy accessory exists before the energy group has been ok', async () 
     ['Flipped Energy Rates', 'Flipped Energy Wholesale', 'Flipped Energy Status'],
   )
   assert.equal(platform.accessories.length, 3)
-  assert.equal(existsSync(join(storagePath(), PLUGIN_NAME, `instance-${instanceHash(INSTANCE_KEY)}.json`)), false)
+  assert.equal(existsSync(join(storagePath(), PRODUCT_NAME, `instance-${instanceHash(INSTANCE_KEY)}.json`)), false)
 })
 
 test('the first usage sync with the energy group ok runs the ledger, writes the Eve history and the state file, and publishes Total Consumption', async () => {
   const { registered } = await runPlatform(false, USAGE_ROWS, (record) => record.message === 'energy: ok')
   const grid = registered.find((accessory) => accessory.displayName === 'Flipped Energy Grid Import')
   if (grid === undefined) throw new Error('no Grid Import accessory')
-  const file = JSON.parse(readFileSync(join(storagePath(), PLUGIN_NAME, `instance-${instanceHash(INSTANCE_KEY)}.json`), 'utf8'))
+  const file = JSON.parse(readFileSync(join(storagePath(), PRODUCT_NAME, `instance-${instanceHash(INSTANCE_KEY)}.json`), 'utf8'))
   const channel = readChannelState(file.channels.grid_import, 'grid_import')
   assert.equal(channel.totalKwh, 0.412 + 0.5)
   assert.equal(channel.through, '2026-09-29T02:00:00Z')

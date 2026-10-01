@@ -1,6 +1,6 @@
 # Flipped Energy for Homebridge
 
-`homebridge-flipped-energy` shows your Flipped Energy tariff periods and the regional wholesale electricity price in Apple Home through Homebridge, as switches or sensors that automations can use, and gives the Eve app your meter's half-hourly energy history. It is read-only: it cannot change anything in your Flipped account, your plan or your meter, and a tap on one of its switches is refused.
+`@flipped-energy/homebridge-flipped-energy` shows your Flipped Energy tariff periods and the regional wholesale electricity price in Apple Home through Homebridge, as switches or sensors that automations can use, and gives the Eve app your meter's half-hourly energy history. It is read-only: it cannot change anything in your Flipped account, your plan or your meter, and a tap on one of its switches is refused.
 
 ## Requirements
 
@@ -66,7 +66,7 @@ Run the plugin as a **child bridge** (`_bridge` in its block, as in the example)
 
 **Set `nmi` (if the log asks for it) before you build automations.** Adding or changing `nmi` or `accountNumber` later replaces every Flipped Energy accessory with a new one, and Apple Home deletes the automations that used the old ones. The same happens to a single tile when a later settings change removes it: changing `signalService`, or turning off the option that adds it.
 
-**Several accounts:** one block per account. Every block runs on its own child bridge (its own `_bridge` with its own `username` and `port`) and sets its `accountNumber`. If a block without a child bridge comes before another block, Homebridge refuses the second one with this message: "The dynamic platform FlippedEnergy from the plugin homebridge-flipped-energy is configured multiple times in your config.json." Accessories of the first block are named `Flipped Energy ...`; those of later blocks carry the last four digits of the account number (and, when `nmi` is set, the last four characters of the NMI), for example `Flipped Energy 1234 Rates`.
+**Several accounts:** one block per account. Every block runs on its own child bridge (its own `_bridge` with its own `username` and `port`) and sets its `accountNumber`. If a block without a child bridge comes before another block, Homebridge refuses the second one with this message: "The dynamic platform FlippedEnergy from the plugin @flipped-energy/homebridge-flipped-energy is configured multiple times in your config.json." Accessories of the first block are named `Flipped Energy ...`; those of later blocks carry the last four digits of the account number (and, when `nmi` is set, the last four characters of the NMI), for example `Flipped Energy 1234 Rates`.
 
 When the configuration is invalid, the log lists every error and the plugin calls nothing; its accessories show "No Response".
 

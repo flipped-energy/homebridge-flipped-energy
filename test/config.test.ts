@@ -137,7 +137,7 @@ test('with more than one block every block must set accountNumber, counting the 
     platforms: [
       block({ accountNumber: '36200000000001', _bridge: { username: '0E:00:00:00:00:01' } }),
       { platform: 'Other', name: 'Other' },
-      { ...block({}), platform: 'homebridge-flipped-energy.FlippedEnergy' },
+      { ...block({}), platform: '@flipped-energy/homebridge-flipped-energy.FlippedEnergy' },
     ],
   }
   assert.deepEqual(blockRuleErrors(file, SOURCE), [

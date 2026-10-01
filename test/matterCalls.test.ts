@@ -10,7 +10,7 @@ import { ENERGY_CLUSTER, MatterEnergy, type MatterEnergyApi, nullPayload } from 
 import { matterName, matterUuidSeed } from '../src/matter/names.ts'
 import { Platform, type PlatformApi } from '../src/platform.ts'
 import { CHANNEL_NAMES, type ChannelName } from '../src/runtime/stateStore.ts'
-import { PLATFORM_NAME, PLUGIN_NAME } from '../src/settings.ts'
+import { PLATFORM_NAME, PLUGIN_NAME, PRODUCT_NAME } from '../src/settings.ts'
 import { FakeClock } from './helpers/fakeClock.ts'
 import { HomebridgeAPI, LogRecorder, emitterOf, storagePath } from './helpers/homebridgeHarness.ts'
 import { loadSequence } from './helpers/sequenceReplay.ts'
@@ -121,7 +121,7 @@ test('a cached accessory of another instance, of a channel not in the state file
 
 const storage = storagePath()
 const configPath = join(storage, 'config.json')
-const pluginDirectory = join(storage, PLUGIN_NAME)
+const pluginDirectory = join(storage, PRODUCT_NAME)
 const BLOCK = { platform: PLATFORM_NAME, name: 'Flipped Energy', token: 'fdk_SEQUENCEFIXTURE000000000000000000wXyZ', matterEnergy: true, _bridge: { name: 'Flipped Energy Bridge', username: '0E:11:22:33:44:55', pin: '031-45-154', port: 51900, matter: {} } }
 
 function fixtureStub(): Promise<StubServer> {

@@ -20,7 +20,7 @@ import { Instance } from './runtime/instance.ts'
 import type { Transport } from './runtime/requestGate.ts'
 import { type Scheduler, type TimerApi, createScheduler, systemTimers } from './runtime/scheduler.ts'
 import { CHANNEL_NAMES, type ChannelName, type InstanceState, STATE_VERSION, StateStore, instanceKeyOf } from './runtime/stateStore.ts'
-import { PLATFORM_NAME, PLUGIN_NAME } from './settings.ts'
+import { PLATFORM_NAME, PLUGIN_NAME, PRODUCT_NAME } from './settings.ts'
 
 export interface PlatformApi extends Pick<API, 'hap' | 'user' | 'platformAccessory' | 'registerPlatformAccessories' | 'updatePlatformAccessories' | 'unregisterPlatformAccessories' | 'isMatterEnabled'> {
   readonly matter?: MatterEnergyApi | undefined
@@ -158,7 +158,7 @@ export class Platform<Handle> implements DynamicPlatformPlugin {
       return
     }
     this.#firstInstance = isFirstBlock(file, configPath, config)
-    const store = new StateStore(join(this.api.user.storagePath(), PLUGIN_NAME))
+    const store = new StateStore(join(this.api.user.storagePath(), PRODUCT_NAME))
     this.#store = store
     const accountNumber = config.accountNumber === null ? store.readPin() : config.accountNumber
     if (accountNumber !== null) this.#bind(config, store, accountNumber)
