@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { API, DynamicPlatformPlugin, Logging, MatterAccessory, PlatformAccessory, PlatformConfig } from 'homebridge'
 import { ApiClient } from './api/client.ts'
-import { type Config, blockRuleErrors, isFlippedBlock, parseConfig } from './config.ts'
+import { type Config, blockRuleErrors, matterBridgeErrors, ownBlock, parseConfig } from './config.ts'
 import { BASE_URL, HTTP_TIMEOUT_S, WAIT_HTTP_TIMEOUT_S } from './core/constants.ts'
 import type { EnergyOk, Signals } from './core/types.ts'
 import { type Advance, CHANNEL_PICKS, type ChannelState, advance, channelExists, channelRecord, emptyLedger, overflowLine, readChannelStates } from './energy/ledger.ts'
@@ -31,21 +31,6 @@ export interface PlatformApi extends Pick<API, 'hap' | 'user' | 'platformAccesso
 export interface PlatformEnvironment<Handle> {
   createTransport(token: string): Transport
   timers: TimerApi<Handle>
-}
-
-function flippedBlocks(file: unknown, source: string): unknown[] {
-  if (typeof file !== 'object' || file === null || !('platforms' in file) || !Array.isArray(file.platforms)) {
-    throw new Error(`${source}: "platforms" is not an array`)
-  }
-  const blocks: unknown[] = file.platforms
-  return blocks.filter((block) => isFlippedBlock(block))
-}
-
-function isFirstBlock(file: unknown, source: string, config: Config): boolean {
-  const [first, second] = flippedBlocks(file, source)
-  if (second === undefined) return true
-  const parsed = parseConfig(first)
-  return parsed.kind === 'ok' && parsed.config.accountNumber === config.accountNumber && parsed.config.nmi === config.nmi
 }
 
 export class Platform<Handle> implements DynamicPlatformPlugin {
@@ -132,6 +117,7 @@ export class Platform<Handle> implements DynamicPlatformPlugin {
     this.#instance = null
     for (const presenter of [...this.#presenters.values(), ...this.#energy.values()]) faultCachedAccessory(this.api.hap, presenter.accessory)
     for (const accessory of this.#cache.values()) faultCachedAccessory(this.api.hap, accessory)
+    for (const key of CHANNEL_NAMES) this.#matter?.pushNull(key)
   }
 
   #stop(): void {
@@ -153,11 +139,16 @@ export class Platform<Handle> implements DynamicPlatformPlugin {
     const file: unknown = JSON.parse(readFileSync(configPath, 'utf8'))
     const ruleErrors = blockRuleErrors(file, configPath)
     if (ruleErrors.length > 0) {
-      logErrors(this.log, ruleErrors)
-      this.#idle()
+      this.#configErrors(ruleErrors)
       return
     }
-    this.#firstInstance = isFirstBlock(file, configPath, config)
+    const own = ownBlock(file, configPath, config)
+    const matterErrors = matterBridgeErrors(own, configPath, config)
+    if (matterErrors.length > 0) {
+      this.#configErrors(matterErrors)
+      return
+    }
+    this.#firstInstance = own.first
     const store = new StateStore(join(this.api.user.storagePath(), PRODUCT_NAME))
     this.#store = store
     const accountNumber = config.accountNumber === null ? store.readPin() : config.accountNumber
@@ -174,6 +165,11 @@ export class Platform<Handle> implements DynamicPlatformPlugin {
     })
     this.#instance = instance
     instance.start()
+  }
+
+  #configErrors(errors: string[]): void {
+    logErrors(this.log, errors)
+    this.#idle()
   }
 
   #scheduler(): Scheduler {
@@ -265,7 +261,7 @@ export class Platform<Handle> implements DynamicPlatformPlugin {
     this.#matter?.confirm().then(undefined, (error: unknown) => logThrown(this.log, 'Matter confirmation', error))
     if (signals.energy.status === 'ok') {
       const fetchedAt = instance.snapshots.usageHalfHourly.fetchedAt
-      if (fetchedAt !== null && fetchedAt !== this.#usageFetchedAt) {
+      if (this.#instanceKey !== null && fetchedAt !== null && fetchedAt !== this.#usageFetchedAt) {
         this.#usageFetchedAt = fetchedAt
         this.#energySynced(config, instance, signals.energy)
       }

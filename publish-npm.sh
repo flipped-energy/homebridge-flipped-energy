@@ -15,4 +15,5 @@ console.log(patches.length === 0 ? 0 : Math.max(...patches) + 1)
 ' "$published")
 node --experimental-strip-types --no-warnings=ExperimentalWarning ../scripts/version.ts stamp "$build"
 ./build.sh
-npm publish --access public --ignore-scripts --userconfig "$npmrc" --registry "$registry"
+version=$(node -p "require('./package.json').version")
+node --experimental-strip-types --no-warnings=ExperimentalWarning ../scripts/npm-publish.ts "$name@$version" --access public --ignore-scripts --userconfig "$npmrc" --registry "$registry"

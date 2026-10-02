@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { test } from 'node:test'
 import type { MatterAccessory } from 'homebridge'
@@ -124,6 +124,12 @@ const configPath = join(storage, 'config.json')
 const pluginDirectory = join(storage, PRODUCT_NAME)
 const BLOCK = { platform: PLATFORM_NAME, name: 'Flipped Energy', token: 'fdk_SEQUENCEFIXTURE000000000000000000wXyZ', matterEnergy: true, _bridge: { name: 'Flipped Energy Bridge', username: '0E:11:22:33:44:55', pin: '031-45-154', port: 51900, matter: {} } }
 
+function handed(block: { platform: string } & Record<string, unknown>): { platform: string } & Record<string, unknown> {
+  const copy: { platform: string } & Record<string, unknown> = { ...block }
+  delete copy._bridge
+  return copy
+}
+
 function fixtureStub(): Promise<StubServer> {
   const sequence = loadSequence('first-run-account-pinning')
   return startStub((request, response) => {
@@ -139,7 +145,7 @@ function fixtureStub(): Promise<StubServer> {
   })
 }
 
-function launch(baseUrl: string, recorder: Recorder, enabled: boolean, cached: MatterAccessory[]): { homebridge: HomebridgeAPI; log: LogRecorder } {
+function launch(baseUrl: string, recorder: Recorder, enabled: boolean, cached: MatterAccessory[]): { homebridge: HomebridgeAPI; log: LogRecorder; platform: Platform<number> } {
   const homebridge = new HomebridgeAPI()
   const api: PlatformApi = {
     hap: homebridge.hap,
@@ -153,13 +159,13 @@ function launch(baseUrl: string, recorder: Recorder, enabled: boolean, cached: M
     on: (event: 'didFinishLaunching' | 'shutdown', listener: () => void) => emitterOf(homebridge).on(event, listener),
   }
   const log = new LogRecorder()
-  const platform = new Platform(log.logging, BLOCK, api, {
+  const platform = new Platform(log.logging, handed(BLOCK), api, {
     createTransport: (token) => new ApiClient({ baseUrl, token, httpTimeoutS: HTTP_TIMEOUT_S, waitHttpTimeoutS: WAIT_HTTP_TIMEOUT_S }),
     timers: new FakeClock(Date.parse('2026-10-01T02:30:00Z')),
   })
   for (const accessory of cached) platform.configureMatterAccessory(accessory)
   homebridge.signalFinished()
-  return { homebridge, log }
+  return { homebridge, log, platform }
 }
 
 test('a channel first seen at run time is not registered; at the next start it is, alone in its call and with no update', async () => {
@@ -199,6 +205,55 @@ test('no call when Matter is not enabled', async () => {
       run.log.messages('error').filter((line) => line.includes('Matter')),
       ['matterEnergy is true and Matter is not enabled on this bridge: no Matter accessory is registered'],
     )
+  } finally {
+    await stub.close()
+  }
+})
+
+test('matterEnergy whose block in config.json has no _bridge.matter: a configuration error, IDLE, no request and only the cached endpoint nulled', async () => {
+  rmSync(pluginDirectory, { recursive: true, force: true })
+  writeFileSync(configPath, JSON.stringify({ bridge: { name: 'Test Bridge' }, platforms: [handed(BLOCK)] }))
+  const stub = await startStub((_request, response) => {
+    response.writeHead(500)
+    response.end('no request is expected in this test')
+  })
+  try {
+    const recorder = new Recorder()
+    const cached = cachedAccessory('grid_import')
+    const run = launch(stub.url, recorder, true, [cached])
+    run.homebridge.signalShutdown()
+    assert.equal(run.platform.idle, true)
+    assert.deepEqual(stub.requests, [])
+    assert.deepEqual(run.log.messages('error'), [
+      `${configPath} platforms[0]: matterEnergy: true needs this block on a child bridge with Matter enabled, and the block has no "_bridge" object with a "matter" object in it`,
+    ])
+    assert.deepEqual(recorder.calls, [{ method: 'update', uuids: [cached.UUID], attributes: { cumulativeEnergyImported: null, periodicEnergyImported: null } }])
+  } finally {
+    await stub.close()
+  }
+})
+
+test('a throw at run time puts the plugin into IDLE and every Matter endpoint to null', async () => {
+  rmSync(pluginDirectory, { recursive: true, force: true })
+  writeFileSync(configPath, JSON.stringify({ bridge: { name: 'Test Bridge' }, platforms: [BLOCK] }))
+  const stub = await fixtureStub()
+  try {
+    const first = launch(stub.url, new Recorder(), true, [])
+    await first.log.until((record) => record.message === 'energy: ok')
+    first.homebridge.signalShutdown()
+    const [stateFile] = readdirSync(pluginDirectory).filter((name) => name.startsWith('instance-') && name.endsWith('.json'))
+    if (stateFile === undefined) throw new Error(`no instance state file in ${pluginDirectory} after the first run`)
+    const recorder = new Recorder()
+    const run = launch(stub.url, recorder, true, [])
+    mkdirSync(join(pluginDirectory, `${stateFile}.tmp`))
+    await run.log.until((record) => record.level === 'error' && record.message === 'signalsChanged')
+    run.homebridge.signalShutdown()
+    const uuid = hap.uuid.generate(matterUuidSeed(ACCOUNT_NUMBER, 'grid_import'))
+    assert.equal(run.platform.idle, true)
+    assert.deepEqual(recorder.calls, [
+      { method: 'register', uuids: [uuid] },
+      { method: 'update', uuids: [uuid], attributes: nullPayload('grid_import') },
+    ])
   } finally {
     await stub.close()
   }

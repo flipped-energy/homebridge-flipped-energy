@@ -154,9 +154,6 @@ export function parseConfig(raw: unknown): ParsedConfig {
   if (high !== null && low !== null && low >= high) {
     errors.push(`priceLowThresholdCentsPerKwh (${low}) must be less than priceHighThresholdCentsPerKwh (${high})`)
   }
-  if (config.matterEnergy && !hasMatterBridge(raw)) {
-    errors.push('matterEnergy: true needs this block on a child bridge with Matter enabled, and the block has no "_bridge" object with a "matter" object in it')
-  }
   return errors.length > 0 ? { kind: 'error', errors } : { kind: 'ok', config }
 }
 
@@ -172,14 +169,28 @@ function settingOf(value: unknown): string {
   return value === undefined || value === null ? 'not set' : JSON.stringify(value)
 }
 
-export function blockRuleErrors(file: unknown, source: string): string[] {
+export interface FileBlock {
+  index: number
+  block: Fields
+}
+
+export interface OwnBlock extends FileBlock {
+  first: boolean
+}
+
+function fileBlocks(file: unknown, source: string): FileBlock[] {
   if (!isObject(file)) throw new Error(`${source}: expected a JSON object, got ${typeName(file)}`)
   const platforms = file.platforms
   if (!Array.isArray(platforms)) throw new Error(`${source}: "platforms" is not an array, got ${platforms === undefined ? 'missing' : typeName(platforms)}`)
-  const blocks: { index: number; block: Fields }[] = []
+  const blocks: FileBlock[] = []
   platforms.forEach((block: unknown, index) => {
     if (isObject(block) && isFlippedBlock(block)) blocks.push({ index, block })
   })
+  return blocks
+}
+
+export function blockRuleErrors(file: unknown, source: string): string[] {
+  const blocks = fileBlocks(file, source)
   const errors: string[] = []
   if (blocks.length > 1) {
     for (const { index, block } of blocks) {
@@ -204,6 +215,21 @@ export function blockRuleErrors(file: unknown, source: string): string[] {
     }
   }
   return errors
+}
+
+export function ownBlock(file: unknown, source: string, config: Config): OwnBlock {
+  const blocks = fileBlocks(file, source)
+  const matching = blocks.length === 1 ? blocks : blocks.filter(({ block }) => block.accountNumber === config.accountNumber && (block.nmi ?? null) === config.nmi)
+  const [own, other] = matching
+  if (own === undefined || other !== undefined) {
+    throw new Error(`${source}: ${matching.length} ${PLATFORM_NAME} blocks have accountNumber ${settingOf(config.accountNumber)} and nmi ${settingOf(config.nmi)}; expected exactly 1`)
+  }
+  return { ...own, first: own === blocks[0] }
+}
+
+export function matterBridgeErrors(own: OwnBlock, source: string, config: Config): string[] {
+  if (!config.matterEnergy || hasMatterBridge(own.block)) return []
+  return [`${source} platforms[${own.index}]: matterEnergy: true needs this block on a child bridge with Matter enabled, and the block has no "_bridge" object with a "matter" object in it`]
 }
 
 export function readBlockRuleErrors(configPath: string): string[] {

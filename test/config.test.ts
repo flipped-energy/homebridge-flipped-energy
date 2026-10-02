@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { test } from 'node:test'
-import { type Config, blockRuleErrors, parseConfig, readBlockRuleErrors, tokenPreview } from '../src/config.ts'
+import { type Config, blockRuleErrors, matterBridgeErrors, ownBlock, parseConfig, readBlockRuleErrors, tokenPreview } from '../src/config.ts'
 
 const TOKEN = 'fdk_Ab12CONFIGTEST000000000000000000wXyZ'
 const SOURCE = '/homebridge/config.json'
@@ -17,6 +17,14 @@ function errorsOf(raw: unknown): string[] {
 function block(fields: Record<string, unknown>): Record<string, unknown> {
   return { platform: 'FlippedEnergy', name: 'Flipped Energy', token: TOKEN, ...fields }
 }
+
+function configOf(raw: Record<string, unknown>): Config {
+  const parsed = parseConfig(raw)
+  if (parsed.kind === 'error') throw new Error(parsed.errors.join('\n'))
+  return parsed.config
+}
+
+const CHILD = { username: '0E:12:34:56:78:9A', port: 51234 }
 
 test('a block with only a token parses with the schema defaults', () => {
   const expected: Config = {
@@ -51,7 +59,6 @@ test('every option is read as given', () => {
     wholesalePriceLevelSensor: true,
     eveHistory: false,
     matterEnergy: true,
-    _bridge: { username: '0E:12:34:56:78:9A', port: 51234, matter: { port: 5540 } },
   })
   assert.deepEqual(parseConfig(raw), {
     kind: 'ok',
@@ -104,11 +111,33 @@ test('a boolean option that is not a boolean is an error', () => {
   for (const key of keys) assert.deepEqual(errorsOf(block({ [key]: 'true' })), [`${key}: expected a boolean, got "true"`])
 })
 
-test('matterEnergy without a _bridge object holding a matter object is an error', () => {
-  const message = 'matterEnergy: true needs this block on a child bridge with Matter enabled, and the block has no "_bridge" object with a "matter" object in it'
-  assert.deepEqual(errorsOf(block({ matterEnergy: true })), [message])
-  assert.deepEqual(errorsOf(block({ matterEnergy: true, _bridge: { username: '0E:12:34:56:78:9A' } })), [message])
-  assert.equal(parseConfig(block({ matterEnergy: true, _bridge: { username: '0E:12:34:56:78:9A', matter: {} } })).kind, 'ok')
+test('matterEnergy parses without a _bridge object, as Homebridge deletes _bridge before it builds the platform', () => {
+  assert.equal(parseConfig(block({ matterEnergy: true })).kind, 'ok')
+})
+
+test('matterEnergy whose block in config.json has no _bridge object holding a matter object is an error', () => {
+  const config = configOf(block({ matterEnergy: true }))
+  const message = `${SOURCE} platforms[1]: matterEnergy: true needs this block on a child bridge with Matter enabled, and the block has no "_bridge" object with a "matter" object in it`
+  const file = (fields: Record<string, unknown>): unknown => ({ platforms: [{ platform: 'Other' }, block({ matterEnergy: true, ...fields })] })
+  assert.deepEqual(matterBridgeErrors(ownBlock(file({}), SOURCE, config), SOURCE, config), [message])
+  assert.deepEqual(matterBridgeErrors(ownBlock(file({ _bridge: CHILD }), SOURCE, config), SOURCE, config), [message])
+  assert.deepEqual(matterBridgeErrors(ownBlock(file({ _bridge: { ...CHILD, matter: {} } }), SOURCE, config), SOURCE, config), [])
+  const off = configOf(block({}))
+  assert.deepEqual(matterBridgeErrors(ownBlock({ platforms: [block({})] }, SOURCE, off), SOURCE, off), [])
+})
+
+test('the own block in config.json is the single block, or the one with the same accountNumber and nmi', () => {
+  const first = block({ accountNumber: '36200000000001', nmi: '4102000000', _bridge: CHILD })
+  const second = block({ accountNumber: '36200000000001', _bridge: CHILD })
+  const third = block({ accountNumber: '36200000000002', _bridge: CHILD })
+  const file = { platforms: [first, { platform: 'Other' }, second, third] }
+  assert.deepEqual(ownBlock(file, SOURCE, configOf(block({ accountNumber: '36200000000001', nmi: '4102000000' }))), { index: 0, block: first, first: true })
+  assert.deepEqual(ownBlock(file, SOURCE, configOf(block({ accountNumber: '36200000000001' }))), { index: 2, block: second, first: false })
+  assert.deepEqual(ownBlock(file, SOURCE, configOf(block({ accountNumber: '36200000000002' }))), { index: 3, block: third, first: false })
+  assert.deepEqual(ownBlock({ platforms: [first] }, SOURCE, configOf(block({}))), { index: 0, block: first, first: true })
+  assert.throws(() => ownBlock(file, SOURCE, configOf(block({ accountNumber: '36200000000003' }))), {
+    message: `${SOURCE}: 0 FlippedEnergy blocks have accountNumber "36200000000003" and nmi not set; expected exactly 1`,
+  })
 })
 
 test('accountNumber, nmi and name of the wrong type are errors, and every error is listed', () => {

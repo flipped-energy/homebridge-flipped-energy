@@ -5,6 +5,7 @@
 First release line; releases are numbered `0.1.<patch>`.
 
 - `Peak Rate` and `Off-Peak Rate` from your Flipped tariff.
+- `Shoulder Rate`, on while a rate between the cheapest and the dearest applies on a plan with three or more rates.
 - `Wholesale Price High`, `Wholesale Price Low` and `Wholesale Price Negative` from the regional wholesale price, with optional thresholds in c/kWh.
 - `Wholesale Price` as a light sensor (1 lux = 1 c/kWh) and, opt-in, `Wholesale Price Level` as an air quality sensor.
 - The on/off signals as switches, occupancy sensors or contact sensors.

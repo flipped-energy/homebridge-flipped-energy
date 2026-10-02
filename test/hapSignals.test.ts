@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import type { Characteristic, PlatformAccessory, Service } from 'homebridge'
 import { SIGNAL_SERVICES } from '../src/config.ts'
-import type { AccountSignals, PriceSignals, PriceTier, Signals, TariffSignals } from '../src/core/types.ts'
+import type { AccountSignals, Band, PriceSignals, PriceTier, Signals, TariffSignals } from '../src/core/types.ts'
 import { booleanCharacteristic, booleanServiceType, booleanValue } from '../src/hap/booleanSignal.ts'
 import { STATUS_READ_ONLY_CHARACTERISTIC, STATUS_SERVICE_COMMUNICATION_FAILURE } from '../src/hap/constants.ts'
 import { faultCachedAccessory, valueCharacteristicUuids } from '../src/hap/fault.ts'
@@ -62,8 +62,8 @@ function account(tokenExpiringSoon: boolean | null): AccountSignals {
   }
 }
 
-function tariff(peak: boolean | null, offPeak = false): TariffSignals {
-  if (peak === null) {
+function tariff(band: Band | null): TariffSignals {
+  if (band === null) {
     return { status: 'faulted', fault: { code: 'billing_unit_overlap' }, structure: null, spotLinked: null, peak: null, offPeak: null, period: null, nextChange: null, schedule: null }
   }
   return {
@@ -71,11 +71,11 @@ function tariff(peak: boolean | null, offPeak = false): TariffSignals {
     fault: null,
     structure: 'timeOfUse',
     spotLinked: false,
-    peak,
-    offPeak,
+    peak: band === 'peak',
+    offPeak: band === 'offPeak',
     period: {
-      band: peak ? 'peak' : 'offPeak',
-      name: peak ? 'Peak' : 'Off Peak',
+      band,
+      name: band,
       rateCentsPerKwh: 30,
       kwhLimit: null,
       rateAfterLimitCentsPerKwh: null,
@@ -110,7 +110,7 @@ function price(centsPerKwh: number | null, tier: PriceTier = 'Normal'): PriceSig
 function signals(parts: { account?: AccountSignals; tariff?: TariffSignals; price?: PriceSignals }): Signals {
   return {
     account: parts.account ?? account(false),
-    tariff: parts.tariff ?? tariff(true),
+    tariff: parts.tariff ?? tariff('peak'),
     price: parts.price ?? price(8.4321),
     energy: { status: 'faulted', fault: { code: 'not_loaded' }, nmi: null, intervals: null, days: null, latestIntervalEnd: null },
     nextEvaluation: null,
@@ -146,17 +146,37 @@ test('each signalService carries true, false and unknown on its own service and 
     const rates = group('tariff', { ...ALL_ON, signalService: kind })
     const type = booleanServiceType(hap, kind)
     const sensor = kind !== 'switch'
-    for (const key of ['peak_rate', 'off_peak_rate'] as const) {
+    for (const key of ['peak_rate', 'off_peak_rate', 'shoulder_rate'] as const) {
       assert.equal(service(rates.accessory, key).UUID, type.uuid, `${kind} ${key}`)
       assert.equal(valueOf(rates.accessory, key).UUID, booleanCharacteristic(hap, kind).UUID)
     }
-    rates.publish(signals({ tariff: tariff(true, false) }))
+    rates.publish(signals({ tariff: tariff('peak') }))
     assert.deepEqual(await readStatus(valueOf(rates.accessory, 'peak_rate')), { value: booleanValue(hap, kind, true) })
     assert.deepEqual(await readStatus(valueOf(rates.accessory, 'off_peak_rate')), { value: booleanValue(hap, kind, false) })
+    assert.deepEqual(await readStatus(valueOf(rates.accessory, 'shoulder_rate')), { value: booleanValue(hap, kind, false) })
     if (sensor) assert.deepEqual(await sensorStatus(service(rates.accessory, 'peak_rate')), [C.StatusFault.NO_FAULT, true])
     rates.publish(signals({ tariff: tariff(null) }))
     assert.deepEqual(await readStatus(valueOf(rates.accessory, 'peak_rate')), FAULTED)
     if (sensor) assert.deepEqual(await sensorStatus(service(rates.accessory, 'peak_rate')), [C.StatusFault.GENERAL_FAULT, false])
+  }
+})
+
+test('Shoulder Rate is on only in a shoulder period, and off in peak, off-peak and anytime periods', async () => {
+  const rates = group('tariff')
+  const read = async (): Promise<unknown[]> => [
+    await readStatus(valueOf(rates.accessory, 'peak_rate')),
+    await readStatus(valueOf(rates.accessory, 'off_peak_rate')),
+    await readStatus(valueOf(rates.accessory, 'shoulder_rate')),
+  ]
+  const cases: readonly (readonly [Band, readonly boolean[]])[] = [
+    ['shoulder', [false, false, true]],
+    ['peak', [true, false, false]],
+    ['offPeak', [false, true, false]],
+    ['anytime', [false, false, false]],
+  ]
+  for (const [band, values] of cases) {
+    rates.publish(signals({ tariff: tariff(band) }))
+    assert.deepEqual(await read(), values.map((value) => ({ value })), band)
   }
 })
 
@@ -174,18 +194,18 @@ test('a tariff fault leaves every Wholesale characteristic readable, and the rev
   const faultedTariff = signals({ tariff: tariff(null) })
   rates.publish(faultedTariff)
   wholesale.publish(faultedTariff)
-  assert.deepEqual(await readAll(rates.accessory), [FAULTED, FAULTED])
+  assert.deepEqual(await readAll(rates.accessory), [FAULTED, FAULTED, FAULTED])
   assert.deepEqual(await readAll(wholesale.accessory), [{ value: false }, { value: false }, { value: false }, { value: 8.4321 }, { value: C.AirQuality.GOOD }])
   const faultedPrice = signals({ price: price(null) })
   rates.publish(faultedPrice)
   wholesale.publish(faultedPrice)
-  assert.deepEqual(await readAll(rates.accessory), [{ value: true }, { value: false }])
+  assert.deepEqual(await readAll(rates.accessory), [{ value: true }, { value: false }, { value: false }])
   assert.deepEqual(await readAll(wholesale.accessory), [FAULTED, FAULTED, FAULTED, FAULTED, FAULTED])
 })
 
 test('an unknown value sets status -70402 and emits no change event', async () => {
   const rates = group('tariff')
-  rates.publish(signals({ tariff: tariff(true) }))
+  rates.publish(signals({ tariff: tariff('peak') }))
   const on = valueOf(rates.accessory, 'peak_rate')
   const changes = changesOf(on)
   rates.publish(signals({ tariff: tariff(null) }))
@@ -195,11 +215,11 @@ test('an unknown value sets status -70402 and emits no change event', async () =
 
 test('recovery emits a change event with reason event for an unchanged value', async () => {
   const rates = group('tariff')
-  rates.publish(signals({ tariff: tariff(true) }))
+  rates.publish(signals({ tariff: tariff('peak') }))
   rates.publish(signals({ tariff: tariff(null) }))
   const on = valueOf(rates.accessory, 'peak_rate')
   const changes = changesOf(on)
-  rates.publish(signals({ tariff: tariff(true) }))
+  rates.publish(signals({ tariff: tariff('peak') }))
   assert.deepEqual(
     changes.map(({ oldValue, newValue, reason }) => ({ oldValue, newValue, reason })),
     [{ oldValue: true, newValue: true, reason: 'event' }],
@@ -209,7 +229,7 @@ test('recovery emits a change event with reason event for an unchanged value', a
 
 test('a write is refused with -70404 and the value stays readable and unchanged, with no event', async () => {
   const rates = group('tariff')
-  rates.publish(signals({ tariff: tariff(true) }))
+  rates.publish(signals({ tariff: tariff('peak') }))
   const on = valueOf(rates.accessory, 'peak_rate')
   const changes = changesOf(on)
   await assert.rejects(on.handleSetRequest(false), (status: unknown) => status === STATUS_READ_ONLY_CHARACTERISTIC)
@@ -317,12 +337,13 @@ test('ConfiguredName is set on a new service and left alone on a restored one', 
   const bound = group('tariff', ALL_ON, restored)
   assert.equal(await service(bound.accessory, 'peak_rate').getCharacteristic(C.ConfiguredName).handleGetRequest(), 'Hot Water Window')
   assert.equal(await service(bound.accessory, 'off_peak_rate').getCharacteristic(C.ConfiguredName).handleGetRequest(), 'Off-Peak Rate')
+  assert.equal(await service(bound.accessory, 'shoulder_rate').getCharacteristic(C.ConfiguredName).handleGetRequest(), 'Shoulder Rate')
 })
 
 test('a cached accessory reads its cached value until it is faulted, then -70402; a cached status accessory reads 1', async () => {
   const rates = group('tariff')
   rates.accessory.context = { schema: 1, instanceKey: '10001234', kind: 'tariff' }
-  rates.publish(signals({ tariff: tariff(true) }))
+  rates.publish(signals({ tariff: tariff('peak') }))
   const status = new StatusAccessory(hap, accessory('status'))
   status.accessory.context = { schema: 1, instanceKey: '10001234', kind: 'status' }
   status.publish(signals({}))

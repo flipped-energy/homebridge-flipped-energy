@@ -15,6 +15,7 @@ export const GROUP_NAMES = {
 export type SignalKey =
   | 'peak_rate'
   | 'off_peak_rate'
+  | 'shoulder_rate'
   | 'wholesale_price_high'
   | 'wholesale_price_low'
   | 'wholesale_price_negative'
@@ -29,6 +30,7 @@ export type ServiceKey = SignalKey | StatusKey
 export const SERVICE_NAMES: Readonly<Record<ServiceKey, string>> = {
   peak_rate: 'Peak Rate',
   off_peak_rate: 'Off-Peak Rate',
+  shoulder_rate: 'Shoulder Rate',
   wholesale_price_high: 'Wholesale Price High',
   wholesale_price_low: 'Wholesale Price Low',
   wholesale_price_negative: 'Wholesale Price Negative',

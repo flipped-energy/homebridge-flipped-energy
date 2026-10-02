@@ -74,7 +74,7 @@ When the configuration is invalid, the log lists every error and the plugin call
 
 | Accessory | Tiles | Shown as | Present |
 |---|---|---|---|
-| `Flipped Energy Rates` | `Peak Rate`, `Off-Peak Rate` | switch or sensor (`signalService`) | always, also on a flat plan (then both off) |
+| `Flipped Energy Rates` | `Peak Rate`, `Off-Peak Rate`, `Shoulder Rate` | switch or sensor (`signalService`) | always, also on a flat plan (then all three off) |
 | `Flipped Energy Wholesale` | `Wholesale Price High`, `Wholesale Price Low` | switch or sensor (`signalService`) | always |
 | `Flipped Energy Wholesale` | `Wholesale Price Negative` | switch or sensor (`signalService`) | with `wholesalePriceSensor` |
 | `Flipped Energy Wholesale` | `Wholesale Price` | light sensor reading "N lx", where N is the wholesale price in c/kWh excluding GST; a zero or negative price reads 0.0001 lx, with `Wholesale Price Negative` on when it is below zero | with `wholesalePriceSensor` |
@@ -109,6 +109,8 @@ In the Home app: **Automation → Add**.
 - **EV charging:** the same two automations on the charger's switch or outlet.
 - **Pool pump:** on when `Off-Peak Rate` turns on; off when `Peak Rate` turns on.
 - **Grid-friendly:** `Wholesale Price Negative` turns on → run the pump; `Wholesale Price High` turns on → set the air conditioner to an eco scene.
+
+`Shoulder Rate` is on while a rate between your cheapest and dearest applies, for example overnight on a plan with a cheap day rate, a dear evening rate and a middle overnight rate. On a flat or two-rate plan it is always off.
 
 On the plan Flipped sells today, `Off-Peak Rate` is on in the midday window, 11:00-14:00 (12:00-15:00 in South Australia). The window has a daily allowance: energy beyond it is charged at the balance rate while `Off-Peak Rate` is still on.
 

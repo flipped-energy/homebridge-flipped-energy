@@ -99,7 +99,11 @@ function booleanSpec(key: SignalKey, read: (signals: Signals) => boolean | null,
 const always = (): boolean => true
 
 export const GROUP_SERVICES: Readonly<Record<GroupKind, readonly ServiceSpec[]>> = {
-  tariff: [booleanSpec('peak_rate', (s) => s.tariff.peak, always), booleanSpec('off_peak_rate', (s) => s.tariff.offPeak, always)],
+  tariff: [
+    booleanSpec('peak_rate', (s) => s.tariff.peak, always),
+    booleanSpec('off_peak_rate', (s) => s.tariff.offPeak, always),
+    booleanSpec('shoulder_rate', (s) => (s.tariff.period === null ? null : s.tariff.period.band === 'shoulder'), always),
+  ],
   wholesale: [
     booleanSpec('wholesale_price_high', (s) => s.price.priceHigh, always),
     booleanSpec('wholesale_price_low', (s) => s.price.priceLow, always),

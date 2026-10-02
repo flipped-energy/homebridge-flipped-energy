@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { test } from 'node:test'
 import type { Characteristic, PlatformAccessory } from 'homebridge'
@@ -116,7 +116,7 @@ function refusingStub(): Promise<StubServer> {
   })
 }
 
-function fixtureStub(): Promise<StubServer> {
+function fixtureStub(edits: Readonly<Record<string, (body: unknown) => string>> = {}): Promise<StubServer> {
   const sequence = loadSequence('first-run-account-pinning')
   return startStub((request, response) => {
     const path = new URL(request.url ?? '', 'http://stub').pathname
@@ -127,7 +127,9 @@ function fixtureStub(): Promise<StubServer> {
       return
     }
     response.writeHead(answer.status, answer.headers)
-    response.end(typeof answer.body === 'string' ? answer.body : JSON.stringify(answer.body))
+    const edit = edits[path]
+    const body = edit === undefined ? answer.body : edit(answer.body)
+    response.end(typeof body === 'string' ? body : JSON.stringify(body))
   })
 }
 
@@ -156,6 +158,7 @@ test('accessories appear after E1 and carry the signals', async () => {
     if (rates === undefined || wholesale === undefined || status === undefined) throw new Error('three accessories expected')
     assert.deepEqual(await readStatus(valueOf(rates, 'peak_rate')), { value: false })
     assert.deepEqual(await readStatus(valueOf(rates, 'off_peak_rate')), { value: false })
+    assert.deepEqual(await readStatus(valueOf(rates, 'shoulder_rate')), { value: false })
     assert.equal(typeof (await valueOf(wholesale, 'wholesale_price_high').handleGetRequest()), 'boolean')
     assert.equal(typeof (await valueOf(wholesale, 'wholesale_price').handleGetRequest()), 'number')
     assert.deepEqual(await readStatus(valueOf(status, 'tariff_unavailable')), { value: 0 })
@@ -249,6 +252,27 @@ test('a throwing step is logged with its stack and not rethrown', async () => {
     assert.equal(step, 'didFinishLaunching')
     assert.match(error ?? '', /ENOENT[\s\S]*config\.json[\s\S]*\n\s+at /)
   } finally {
+    await stub.close()
+  }
+})
+
+test('energy ok while the account group is faulted on a fresh install: no throw, nothing bound, no IDLE', async () => {
+  const config = block({ token: TOKEN })
+  prepare([config])
+  const stub = await fixtureStub({ '/api/MyAccount/GetAccountData': (body) => JSON.stringify(body).replace('"accountState":"ACTIVE",', '') })
+  const { api, log, platform } = launch(config, stub.url, [])
+  try {
+    await log.until((record) => record.message === 'energy: ok')
+    assert.equal(platform.idle, false)
+    assert.deepEqual(platform.accessories, [])
+    assert.equal(platform.instanceState, null)
+    assert.equal(existsSync(join(pluginDirectory, 'pin.json')), false)
+    assert.deepEqual(log.messages('error'), [
+      'account: invalid_response accountState: expected a string, got missing',
+      'tariff: invalid_response accountState: expected a string, got missing',
+    ])
+  } finally {
+    api.signalShutdown()
     await stub.close()
   }
 })
