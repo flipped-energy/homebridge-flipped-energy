@@ -16,7 +16,7 @@ parent=$(git rev-parse FETCH_HEAD)
 GIT_INDEX_FILE="$work/index" git add -A .
 tree=$(GIT_INDEX_FILE="$work/index" git write-tree --prefix=homebridge-flipped-energy/)
 commit=$(git "${identity[@]}" commit-tree "$tree" -p "$parent" -m "Release v$version")
-notes=$(git log --no-merges --format='- %s' "$RELEASE_RANGE" -- .)
+notes=$(node --experimental-strip-types --no-warnings=ExperimentalWarning ../scripts/changelog-section.ts CHANGELOG.md "$version")
 printf '%s\n\nnpm: [`%s@%s`](https://www.npmjs.com/package/%s/v/%s)\n' "$notes" "$name" "$version" "$name" "$version" > "$work/notes"
 git "${identity[@]}" tag -a "v$version" -F "$work/notes" "$commit"
 git push "$remote" "$commit:refs/heads/main" "refs/tags/v$version"

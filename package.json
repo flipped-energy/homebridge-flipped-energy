@@ -1,7 +1,7 @@
 {
   "name": "@flipped-energy/homebridge-flipped-energy",
   "displayName": "Flipped Energy",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Flipped Energy tariff periods, wholesale price signals and metered energy history for Homebridge.",
   "author": "Flipped Energy",
   "license": "Apache-2.0",

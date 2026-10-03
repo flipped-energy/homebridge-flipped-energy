@@ -4,7 +4,7 @@
 
 ## Requirements
 
-- Homebridge 2.4.0 or later.
+- Homebridge 1.11, or 2.4.0 or later. Matter needs Homebridge 2.
 - Node.js 22, 24 or 26.
 - An Apple home hub, for automations.
 - A Flipped account with **APIs and MCPs** turned on in the Flipped portal.
