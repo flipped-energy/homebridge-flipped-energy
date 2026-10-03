@@ -4,6 +4,7 @@ import type { API, DynamicPlatformPlugin, Logging, MatterAccessory, PlatformAcce
 import { ApiClient } from './api/client.ts'
 import { type Config, blockRuleErrors, matterBridgeErrors, ownBlock, parseConfig } from './config.ts'
 import { BASE_URL, HTTP_TIMEOUT_S, WAIT_HTTP_TIMEOUT_S } from './core/constants.ts'
+import { tariffEnergy, tariffHistoryIntervals } from './energy/tariff.ts'
 import type { EnergyOk, Signals } from './core/types.ts'
 import { type Advance, CHANNEL_PICKS, type ChannelState, advance, channelExists, channelRecord, emptyLedger, overflowLine, readChannelStates } from './energy/ledger.ts'
 import { EveEnergyAccessory } from './eve/energyAccessory.ts'
@@ -55,6 +56,7 @@ export class Platform<Handle> implements DynamicPlatformPlugin {
   #channelsAtStart: ReadonlySet<ChannelName> = new Set()
   #usageFetchedAt: string | null = null
   #energyOk = false
+  #spotPrices = false
 
   constructor(log: Logging, config: PlatformConfig, api: PlatformApi, environment: PlatformEnvironment<Handle>) {
     this.log = log
@@ -183,6 +185,8 @@ export class Platform<Handle> implements DynamicPlatformPlugin {
   }
 
   #wanted(config: Config, kind: AccessoryKind): boolean {
+    if (config.virtualDevices === false) return false
+    if (kind === 'wholesale') return config.spotPrices ?? this.#spotPrices
     if (kind === 'status') return config.availabilitySensors
     if (kind === 'token') return config.tokenExpiringSensor
     if (kind === 'energy') return config.eveHistory
@@ -199,6 +203,10 @@ export class Platform<Handle> implements DynamicPlatformPlugin {
 
   #bind(config: Config, store: StateStore, accountNumber: string): void {
     const instanceKey = instanceKeyOf(accountNumber, config.nmi)
+    this.#spotPrices = [...this.#cache.values()].some((accessory) => {
+      const context = readContext(accessory)
+      return context?.instanceKey === instanceKey && context.kind === 'wholesale'
+    })
     const state = store.readInstance(instanceKey)
     this.#instanceState = state
     this.#instanceKey = instanceKey
@@ -239,7 +247,7 @@ export class Platform<Handle> implements DynamicPlatformPlugin {
       return
     }
     const instanceKey = accountNumber === null ? null : instanceKeyOf(accountNumber, config.nmi)
-    matter.bind(instanceKey, this.#channelsAtStart, config.matterEnergy, (key) => {
+    matter.bind(instanceKey, this.#channelsAtStart, config.matterEnergy && config.virtualDevices !== false, (key) => {
       if (accountNumber === null) throw new Error(`Matter name for ${key} without an account number`)
       return matterName(this.#firstInstance, accountNumber, config.nmi, key)
     })
@@ -257,6 +265,13 @@ export class Platform<Handle> implements DynamicPlatformPlugin {
     const config = this.#config
     const instance = this.#instance
     if (config === null || instance === null) return
+    if (signals.tariff.status === 'ok') this.#spotPrices = signals.tariff.spotLinked === true
+    for (const [kind, presenter] of this.#presenters) {
+      if (!this.#wanted(config, kind)) {
+        this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [presenter.accessory])
+        this.#presenters.delete(kind)
+      }
+    }
     if (signals.account.status === 'ok') this.#ensureAccessories(config, instance)
     this.#matter?.confirm().then(undefined, (error: unknown) => logThrown(this.log, 'Matter confirmation', error))
     if (signals.energy.status === 'ok') {
@@ -269,8 +284,16 @@ export class Platform<Handle> implements DynamicPlatformPlugin {
       for (const key of CHANNEL_NAMES) this.#matter?.pushNull(key)
     }
     this.#energyOk = signals.energy.status === 'ok'
-    for (const presenter of this.#presenters.values()) presenter.publish(signals)
-    for (const [key, accessory] of this.#energy) accessory.publish(this.#energyOk ? (this.#channels[key]?.totalKwh ?? null) : null)
+    for (const presenter of this.#presenters.values()) {
+      if (presenter instanceof StatusAccessory) presenter.setSpotPrices(this.#wanted(config, 'wholesale'))
+      presenter.publish(signals)
+    }
+    const latest = signals.energy.status === 'ok' ? signals.energy.intervals.at(-1) : undefined
+    const bandEnergy = tariffEnergy({ ...config, accountNumber: instance.accountNumber, tokenPreview: null }, instance.snapshots.account)
+    for (const [key, accessory] of this.#energy) {
+      const watts = latest === undefined ? null : (key === 'peak' || key === 'off_peak' || key === 'shoulder' ? bandEnergy(latest, key) : CHANNEL_PICKS[key](latest))
+      accessory.publish(this.#energyOk ? (this.#channels[key]?.totalKwh ?? null) : null, watts === null || latest === undefined ? null : watts * 60000 / latest.durationMinutes)
+    }
     this.#logAccountSync(instance, signals)
   }
 
@@ -278,11 +301,27 @@ export class Platform<Handle> implements DynamicPlatformPlugin {
     const store = this.#store
     const instanceKey = this.#instanceKey
     if (store === null || instanceKey === null) throw new Error('energy group is ok before the instance is bound')
+    if (instance.historyStart !== undefined && this.#instanceState?.historyStart !== instance.historyStart) {
+      this.#channels = {}
+      for (const history of this.#histories.values()) history.reset()
+    }
     const taken = new Map<ChannelName, Advance>()
     const appeared: ChannelName[] = []
+    const bandEnergy = tariffEnergy({ ...config, accountNumber: instance.accountNumber, tokenPreview: null }, instance.snapshots.account)
+    const bandIntervals = tariffHistoryIntervals(energy.intervals, { ...config, accountNumber: instance.accountNumber, tokenPreview: null }, instance.snapshots.account)
     for (const name of CHANNEL_NAMES) {
       const prior = this.#channels[name]
-      const result = advance(prior ?? emptyLedger(), energy.intervals, CHANNEL_PICKS[name])
+      const isBand = name === 'peak' || name === 'off_peak' || name === 'shoulder'
+      const values = (isBand ? bandIntervals : energy.intervals).flatMap((entry) => {
+        const kwh = isBand ? bandEnergy(entry, name) : CHANNEL_PICKS[name](entry)
+        return kwh === null ? [] : [{ entry, kwh }]
+      })
+      const amounts = new Map(values.map(({ entry, kwh }) => [entry, kwh]))
+      const result = advance(prior ?? emptyLedger(), values.map(({ entry }) => entry), (entry) => {
+        const amount = amounts.get(entry)
+        if (amount === undefined) throw new Error(`Missing ${name} energy for ${entry.start}`)
+        return amount
+      })
       if (!channelExists(name, result.channel)) continue
       const history = this.#history(name)
       for (const entry of result.entries) history.add(entry.time, entry.deciwatts)
@@ -296,13 +335,14 @@ export class Platform<Handle> implements DynamicPlatformPlugin {
       const channel = this.#channels[name]
       if (channel !== undefined) channels[name] = channelRecord(channel)
     }
-    const state: InstanceState = { version: STATE_VERSION, instanceKey, channels }
+    const historyStart = instance.historyStart ?? this.#instanceState?.historyStart
+    const state: InstanceState = { version: STATE_VERSION, instanceKey, channels, ...(historyStart === undefined ? {} : { historyStart }) }
     store.writeInstance(state)
     this.#instanceState = state
-    if (config.eveHistory) this.#ensureEnergyAccessories(config, instance, instanceKey)
+    if (this.#wanted(config, 'energy')) this.#ensureEnergyAccessories(config, instance, instanceKey)
     for (const accessory of this.#energy.values()) accessory.historyChanged()
     const matter = this.#matter
-    if (matter === null || !config.matterEnergy) return
+    if (matter === null || !config.matterEnergy || config.virtualDevices === false) return
     for (const [name, result] of taken) {
       if (!this.#channelsAtStart.has(name)) {
         if (appeared.includes(name)) matter.channelAppeared(name)

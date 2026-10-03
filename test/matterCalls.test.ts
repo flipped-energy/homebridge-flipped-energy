@@ -81,6 +81,9 @@ test('one accessory per register call', () => {
       ['register', 1],
       ['register', 1],
       ['register', 1],
+      ['register', 1],
+      ['register', 1],
+      ['register', 1],
     ],
   )
 })

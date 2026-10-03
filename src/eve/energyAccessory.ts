@@ -33,6 +33,7 @@ export class EveEnergyAccessory {
   readonly #log: RuntimeLog
   readonly #on: ValueCarrier
   readonly #total: ValueCarrier
+  readonly #power: ValueCarrier
   readonly #status: Characteristic
 
   constructor(hap: HAP, accessory: PlatformAccessory, key: ChannelName, instanceKey: string, history: EveHistory, log: RuntimeLog) {
@@ -55,11 +56,15 @@ export class EveEnergyAccessory {
       if (!outlet.optionalCharacteristics.some((characteristic) => characteristic.UUID === C.ConfiguredName.UUID)) outlet.addOptionalCharacteristic(C.ConfiguredName)
       outlet.getCharacteristic(C.ConfiguredName).updateValue(identity.suffix)
     }
+    accessory.displayName = accessory.displayName.replace(/Grid Import$/, identity.suffix)
+    outlet.getCharacteristic(C.Name).updateValue(identity.suffix)
+    outlet.getCharacteristic(C.ConfiguredName).updateValue(identity.suffix)
     outlet.getCharacteristic(C.OutletInUse).updateValue(true)
     this.#on = new ValueCarrier(hap, outlet, outlet.getCharacteristic(C.On))
     this.#on.refuseWrites()
     if (!outlet.optionalCharacteristics.some((characteristic) => characteristic.UUID === types.TotalConsumption.UUID)) outlet.addOptionalCharacteristic(types.TotalConsumption)
     this.#total = new ValueCarrier(hap, outlet, characteristicOf(outlet, types.TotalConsumption))
+    this.#power = new ValueCarrier(hap, outlet, characteristicOf(outlet, types.PowerConsumption))
     const historyService = serviceOf(accessory, EVE_UUIDS.historyService, key) ?? accessory.addService(new hap.Service(HISTORY_SERVICE_NAME, EVE_UUIDS.historyService, key))
     this.#status = characteristicOf(historyService, types.HistoryStatus)
     characteristicOf(historyService, types.HistoryEntries).onGet(() => base64(this.#history.read()))
@@ -75,7 +80,8 @@ export class EveEnergyAccessory {
     return this.#history
   }
 
-  publish(totalKwh: number | null): void {
+  publish(totalKwh: number | null, averageWatts: number | null = null): void {
+    this.#power.publish(totalKwh === null ? null : averageWatts)
     if (totalKwh === null) {
       this.#on.publish(null)
       this.#total.publish(null)

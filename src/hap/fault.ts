@@ -1,11 +1,13 @@
 import type { Characteristic, CharacteristicValue, HAP, PlatformAccessory, Service } from 'homebridge'
 import { STATUS_READ_ONLY_CHARACTERISTIC, STATUS_SERVICE_COMMUNICATION_FAILURE } from './constants.ts'
 
+export const EVE_POWER_CONSUMPTION_UUID = 'E863F10D-079E-48FF-8F27-9C2605A29F52'
+
 export const EVE_TOTAL_CONSUMPTION_UUID = 'E863F10C-079E-48FF-8F27-9C2605A29F52'
 
 export function valueCharacteristicUuids(hap: HAP): ReadonlySet<string> {
   const { Characteristic: C } = hap
-  return new Set([C.On.UUID, C.OccupancyDetected.UUID, C.ContactSensorState.UUID, C.CurrentAmbientLightLevel.UUID, C.AirQuality.UUID, EVE_TOTAL_CONSUMPTION_UUID])
+  return new Set([C.On.UUID, C.OccupancyDetected.UUID, C.ContactSensorState.UUID, C.CurrentAmbientLightLevel.UUID, C.AirQuality.UUID, EVE_TOTAL_CONSUMPTION_UUID, EVE_POWER_CONSUMPTION_UUID])
 }
 
 export function isSensor(hap: HAP, service: Service): boolean {

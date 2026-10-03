@@ -65,7 +65,10 @@ export const ACCESSORY_IDENTITIES: Readonly<Record<HapAccessoryKind, AccessoryId
 export const ENERGY_MODEL = 'Energy History'
 
 export const CHANNEL_IDENTITIES: Readonly<Record<ChannelName, AccessoryIdentity>> = {
-  grid_import: { suffix: 'Grid Import', model: ENERGY_MODEL, tag: 'GI' },
+  peak: { suffix: 'Peak Usage', model: ENERGY_MODEL, tag: 'PK' },
+  off_peak: { suffix: 'Off-Peak Usage', model: ENERGY_MODEL, tag: 'OP' },
+  shoulder: { suffix: 'Shoulder Usage', model: ENERGY_MODEL, tag: 'SH' },
+  grid_import: { suffix: 'Power Usage', model: ENERGY_MODEL, tag: 'GI' },
   solar_export: { suffix: 'Solar Export', model: ENERGY_MODEL, tag: 'SE' },
   controlled_load: { suffix: 'Controlled Load', model: ENERGY_MODEL, tag: 'CL' },
 }

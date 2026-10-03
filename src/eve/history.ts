@@ -1,7 +1,7 @@
 import { isRecord } from '../core/types.ts'
 
 export const EVE_EPOCH = 978307200
-export const HISTORY_MEMORY_SIZE = 4032
+export const HISTORY_MEMORY_SIZE = 65535
 export const ENERGY_SIGNATURE = '040102020207020f03'
 export const ENERGY_ENTRY_TYPE = '1f'
 export const RECORDS_PER_READ = 11
@@ -99,6 +99,14 @@ export class EveHistory {
 
   constructor(state: HistoryState) {
     this.#state = state
+  }
+
+  reset(): void {
+    Object.assign(this.#state, emptyHistoryState(HISTORY_MEMORY_SIZE))
+    this.#currentEntry = 1
+    this.#transfer = false
+    this.#setTime = true
+    this.#restarted = true
   }
 
   get state(): HistoryState {

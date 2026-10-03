@@ -10,7 +10,7 @@ const STATUS_KEYS: readonly StatusKey[] = ['tariff_unavailable', 'wholesale_unav
 export class StatusAccessory implements Presenter {
   readonly accessory: PlatformAccessory
   readonly #hap: HAP
-  readonly #services: Readonly<Record<StatusKey, Service>>
+  readonly #services: Partial<Record<StatusKey, Service>>
 
   constructor(hap: HAP, accessory: PlatformAccessory) {
     this.accessory = accessory
@@ -23,14 +23,28 @@ export class StatusAccessory implements Presenter {
     }
     for (const key of STATUS_KEYS) {
       const service = this.#services[key]
+      if (service === undefined) continue
       markSensor(hap, service, true)
       this.#set(service, true)
     }
   }
 
   publish(signals: Signals): void {
-    this.#set(this.#services.tariff_unavailable, signals.tariff.status === 'faulted')
-    this.#set(this.#services.wholesale_unavailable, signals.price.status === 'faulted')
+    const tariff = this.#services.tariff_unavailable
+    const wholesale = this.#services.wholesale_unavailable
+    if (tariff !== undefined) this.#set(tariff, signals.tariff.status === 'faulted')
+    if (wholesale !== undefined) this.#set(wholesale, signals.price.status === 'faulted')
+  }
+
+  setSpotPrices(enabled: boolean): void {
+    const service = this.#services.wholesale_unavailable
+    if (enabled && service === undefined) {
+      this.#services.wholesale_unavailable = ensureService(this.#hap, this.accessory, booleanServiceType(this.#hap, 'occupancySensor'), 'wholesale_unavailable')
+      markSensor(this.#hap, this.#services.wholesale_unavailable, true)
+    } else if (!enabled && service !== undefined) {
+      this.accessory.removeService(service)
+      delete this.#services.wholesale_unavailable
+    }
   }
 
   #set(service: Service, unavailable: boolean): void {

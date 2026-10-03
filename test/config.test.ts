@@ -29,6 +29,7 @@ const CHILD = { username: '0E:12:34:56:78:9A', port: 51234 }
 test('a block with only a token parses with the schema defaults', () => {
   const expected: Config = {
     name: 'Flipped Energy',
+    virtualDevices: true,
     token: TOKEN,
     accountNumber: null,
     nmi: null,
@@ -48,6 +49,7 @@ test('a block with only a token parses with the schema defaults', () => {
 test('every option is read as given', () => {
   const raw = block({
     name: 'Home',
+    virtualDevices: true,
     accountNumber: '36200000000001',
     nmi: '4102000000',
     priceHighThresholdCentsPerKwh: 30,
@@ -64,6 +66,7 @@ test('every option is read as given', () => {
     kind: 'ok',
     config: {
       name: 'Home',
+    virtualDevices: true,
       token: TOKEN,
       accountNumber: '36200000000001',
       nmi: '4102000000',

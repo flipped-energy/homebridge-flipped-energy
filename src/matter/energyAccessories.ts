@@ -63,6 +63,9 @@ const PAIRS: Readonly<Record<ChannelName, { cumulative: MeasurementKey; periodic
   grid_import: { cumulative: 'cumulativeEnergyImported', periodic: 'periodicEnergyImported' },
   controlled_load: { cumulative: 'cumulativeEnergyImported', periodic: 'periodicEnergyImported' },
   solar_export: { cumulative: 'cumulativeEnergyExported', periodic: 'periodicEnergyExported' },
+  peak: { cumulative: 'cumulativeEnergyImported', periodic: 'periodicEnergyImported' },
+  off_peak: { cumulative: 'cumulativeEnergyImported', periodic: 'periodicEnergyImported' },
+  shoulder: { cumulative: 'cumulativeEnergyImported', periodic: 'periodicEnergyImported' },
 }
 
 const MEASUREMENT_KEYS: readonly MeasurementKey[] = ['cumulativeEnergyImported', 'periodicEnergyImported', 'cumulativeEnergyExported', 'periodicEnergyExported']

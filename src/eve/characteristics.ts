@@ -1,9 +1,10 @@
 import type { Characteristic, CharacteristicProps, HAP } from 'homebridge'
 import { FORMAT_DATA, FORMAT_FLOAT, PERM_HIDDEN, PERM_NOTIFY, PERM_PAIRED_READ, PERM_PAIRED_WRITE } from '../hap/constants.ts'
-import { EVE_TOTAL_CONSUMPTION_UUID } from '../hap/fault.ts'
+import { EVE_POWER_CONSUMPTION_UUID, EVE_TOTAL_CONSUMPTION_UUID } from '../hap/fault.ts'
 
 export const EVE_UUIDS = {
   totalConsumption: EVE_TOTAL_CONSUMPTION_UUID,
+  powerConsumption: EVE_POWER_CONSUMPTION_UUID,
   historyService: 'E863F007-079E-48FF-8F27-9C2605A29F52',
   historyStatus: 'E863F116-079E-48FF-8F27-9C2605A29F52',
   historyEntries: 'E863F117-079E-48FF-8F27-9C2605A29F52',
@@ -19,6 +20,7 @@ export type CharacteristicType = (new () => Characteristic) & { readonly UUID: s
 
 export interface EveTypes {
   TotalConsumption: CharacteristicType
+  PowerConsumption: CharacteristicType
   HistoryStatus: CharacteristicType
   HistoryEntries: CharacteristicType
   HistoryRequest: CharacteristicType
@@ -49,6 +51,14 @@ export function eveTypes(hap: HAP): EveTypes {
       minValue: 0,
       maxValue: TOTAL_CONSUMPTION_MAX,
       minStep: TOTAL_CONSUMPTION_STEP,
+      perms: [PERM_PAIRED_READ, PERM_NOTIFY],
+    }),
+    PowerConsumption: characteristicType(hap, 'Power Usage (last metered interval)', EVE_UUIDS.powerConsumption, {
+      format: FORMAT_FLOAT,
+      unit: 'W',
+      minValue: 0,
+      maxValue: 1000000,
+      minStep: 0.1,
       perms: [PERM_PAIRED_READ, PERM_NOTIFY],
     }),
     HistoryStatus: characteristicType(hap, 'History Status', EVE_UUIDS.historyStatus, data([PERM_PAIRED_READ, PERM_NOTIFY, PERM_HIDDEN])),

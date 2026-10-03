@@ -46,6 +46,8 @@
           { "title": "Contact sensors", "enum": ["contactSensor"] }
         ]
       },
+      "virtualDevices": { "title": "Expose virtual devices", "type": "boolean", "default": true },
+      "spotPrices": { "title": "Show spot prices", "type": "boolean", "description": "Leave unset to show spot prices only when the account uses spot pricing." },
       "availabilitySensors": { "title": "Rates Unavailable and Wholesale Price Unavailable sensors", "type": "boolean", "default": true },
       "tokenExpiringSensor": { "title": "Token Expiring Soon sensor", "type": "boolean", "default": false },
       "wholesalePriceSensor": { "title": "Wholesale Price as a light sensor (c/kWh shown as lux)", "type": "boolean", "default": true },

@@ -39,6 +39,8 @@ From 14 days before the token expires, the log has a warning line each time the 
 | Token Expiring Soon sensor (`tokenExpiringSensor`) | off | A sensor that detects during the last 14 days of the token. |
 | Wholesale Price as a light sensor (`wholesalePriceSensor`) | on | The wholesale price as a light sensor (1 lux = 1 c/kWh), and the `Wholesale Price Negative` signal. |
 | Wholesale Price Level as an air quality sensor (`wholesalePriceLevelSensor`) | off | The market's price level as an air quality sensor. |
+| Expose virtual devices (`virtualDevices`) | on | Show the virtual switches, sensors and energy accessories. Turn off to remove them. |
+| Show spot prices (`spotPrices`) | automatic | Leave unset to follow the selected account’s spot-plan status; explicitly enable or disable to override it. |
 | Energy history for the Eve app (`eveHistory`) | on | Energy accessories with half-hourly history for the Eve app. |
 | Energy as Matter electrical sensors (`matterEnergy`) | off | Experimental; see "Matter energy". Needs this block on a child bridge with Matter enabled. |
 
@@ -81,8 +83,8 @@ When the configuration is invalid, the log lists every error and the plugin call
 | `Flipped Energy Wholesale` | `Wholesale Price Level` | air quality sensor in Apple's words: Excellent (unusually low), Good (normal), Inferior (elevated), Poor (spike) | with `wholesalePriceLevelSensor` |
 | `Flipped Energy Status` | `Rates Unavailable`, `Wholesale Price Unavailable` | occupancy sensors, "Occupancy Detected" while that group is unknown | with `availabilitySensors` |
 | `Flipped Energy Token` | `Token Expiring Soon` | occupancy sensor | with `tokenExpiringSensor` |
-| `Flipped Energy Grid Import`, `Solar Export`, `Controlled Load` | one outlet tile each, always on | outlet; Apple Home shows **no kWh, no history and no cost** for it, only the Eve app does | with `eveHistory`; Grid Import once the first meter data has arrived, Solar Export and Controlled Load once the meter first reports energy for them |
-| `Grid Import Energy`, `Solar Export Energy`, `Controlled Load Energy` | one Matter electrical sensor each, reading "Not Supported" | see "Matter energy" | with `matterEnergy` |
+| `Flipped Energy Power Usage`, `Solar Export`, `Controlled Load` | one outlet tile each, always on | outlet; Apple Home shows **no kWh, no history and no cost** for it, only the Eve app does | with `eveHistory`; Power Usage once the first meter data has arrived, Solar Export and Controlled Load once the meter first reports energy for them |
+| `Power Usage Energy`, `Solar Export Energy`, `Controlled Load Energy` | one Matter electrical sensor each, reading "Not Supported" | see "Matter energy" | with `matterEnergy` |
 
 With both `eveHistory` and `matterEnergy` on, each energy channel has two tiles: the outlet and the Matter sensor.
 
@@ -118,7 +120,9 @@ The `Wholesale ...` signals describe the regional wholesale market, not your bil
 
 ## Eve app
 
-- The Eve app shows energy history per half hour for Grid Import, and for Solar Export and Controlled Load when your meter reports them. Apple Home does not.
+- The Eve app shows energy history for Power Usage, Solar Export and Controlled Load, plus separate Peak Usage, Off-Peak Usage and Shoulder Usage meters when those bands have usage. Tariff meters include only the matching hours; history before the earliest tariff plan supplied by the API is unclassified and excluded from those band totals. Apple Home does not show these graphs.
+- On the first sync, the plugin requests all available usage from the account start date. Upgrading replaces partial totals with that backfill without double-counting. Later syncs read recent intervals. Eve’s protocol limits the downloadable buffer to 65,535 records (about 450 days at ten-minute resolution); lifetime totals retain all fetched usage.
+- The W value is the average power of the latest metered interval, derived from its kWh and duration. It is delayed meter data, not a live instantaneous reading.
 - Meter data reaches Flipped a day or more after the fact. The plugin reads it at start-up, at 00:01 and at 12:01 local time, so the history is always a day or more behind.
 - Limit: an Eve history entry holds at most 6,553.5 W of average power, so a half hour above 3.27675 kWh (6.55 kW, for example an EV charging in the free window) has no entry in the Eve graph. It still counts in the total, and the log has a warning line with the number and kWh of such half hours.
 - Totals are not corrected when the meter data is later revised (an estimated read replaced by an actual one). The Flipped app and your bill are the authority for billed figures.
@@ -138,13 +142,13 @@ Off by default. To turn it on:
 }
 ```
 
-Each energy channel then gets a Matter electrical sensor: `Grid Import Energy`, `Solar Export Energy`, `Controlled Load Energy`. A channel's Matter accessory is added at the **next Homebridge restart** after the channel first appears; the log has an info line saying so. On a new install, restart Homebridge once after the first energy data has arrived.
+Each energy channel, including the tariff-band channels, then gets a Matter electrical sensor: `Power Usage Energy`, `Solar Export Energy`, `Controlled Load Energy`. A channel's Matter accessory is added at the **next Homebridge restart** after the channel first appears; the log has an info line saying so. On a new install, restart Homebridge once after the first energy data has arrived.
 
 What Apple Home does with it (none of this is documented by Apple):
 
 - The tile reads "Not Supported".
 - The energy is added to the whole-home total of the Home app's Energy view. Whether the sensor also gets its own row there is not confirmed.
-- Grid Import is the whole house: if you already have metered plugs in Home, their energy is counted twice in that total.
+- Power Usage is the whole house: if you already have metered plugs in Home, their energy is counted twice in that total.
 - The data is a day or more old, and Home may place it at the time it arrives rather than when it was used.
 - Energy cannot trigger or condition an automation, and Home shows no cost, tariff or price from it.
 

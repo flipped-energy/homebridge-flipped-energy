@@ -13,7 +13,7 @@ const MS_PER_MINUTE = 60000
 
 export type EnergyPick = (entry: EnergyEntry) => number
 
-export const CHANNEL_PICKS: Readonly<Record<ChannelName, EnergyPick>> = {
+export const CHANNEL_PICKS: Readonly<Record<Exclude<ChannelName, 'peak' | 'off_peak' | 'shoulder'>, EnergyPick>> = {
   grid_import: (entry) => entry.gridImportKwh,
   solar_export: (entry) => entry.solarExportKwh,
   controlled_load: (entry) => entry.controlledLoadKwh,

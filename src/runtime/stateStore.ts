@@ -7,9 +7,9 @@ export const STATE_VERSION = 1
 export const PIN_FILE = 'pin.json'
 export const STATE_FILE_MODE = 0o600
 
-export type ChannelName = 'grid_import' | 'solar_export' | 'controlled_load'
+export type ChannelName = 'grid_import' | 'solar_export' | 'controlled_load' | 'peak' | 'off_peak' | 'shoulder'
 
-export const CHANNEL_NAMES: readonly ChannelName[] = ['grid_import', 'solar_export', 'controlled_load']
+export const CHANNEL_NAMES: readonly ChannelName[] = ['grid_import', 'solar_export', 'controlled_load', 'peak', 'off_peak', 'shoulder']
 
 export interface PinState {
   version: typeof STATE_VERSION
@@ -20,6 +20,7 @@ export interface InstanceState {
   version: typeof STATE_VERSION
   instanceKey: string
   channels: Partial<Record<ChannelName, JsonRecord>>
+  historyStart?: string
 }
 
 export class StateFileError extends Error {
@@ -115,7 +116,8 @@ export class StateStore {
       if (!isRecord(channel)) throw new StateFileError(path, `channels.${name}: expected an object, got ${JSON.stringify(channel)}`)
       channels[name] = channel
     }
-    return { version: STATE_VERSION, instanceKey, channels }
+    if (state.historyStart !== undefined && typeof state.historyStart !== 'string') throw new StateFileError(path, 'historyStart must be a string')
+    return { version: STATE_VERSION, instanceKey, channels, ...(typeof state.historyStart === 'string' ? { historyStart: state.historyStart } : {}) }
   }
 
   writeInstance(state: InstanceState): void {

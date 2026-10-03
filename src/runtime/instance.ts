@@ -10,7 +10,7 @@ import { type Fault, type SignalConfig, type Signals, type Snapshot, type Snapsh
 import { PriceLoop } from './priceLoop.ts'
 import { type Answer, type GateMode, type RuntimeLog, type Transport, RequestGate } from './requestGate.ts'
 import type { ArmedTimer, Scheduler } from './scheduler.ts'
-import type { StateStore } from './stateStore.ts'
+import { instanceKeyOf, type StateStore } from './stateStore.ts'
 import { type AccountTarget, type UsageTarget, Sync } from './sync.ts'
 
 export interface InstanceConfig {
@@ -79,6 +79,7 @@ export class Instance {
   #priceLoop: PriceLoop | null = null
   #dailyLimitRemaining: number | null = null
   #stopped = false
+  historyStart: string | undefined
 
   constructor(deps: InstanceDeps) {
     this.#deps = deps
@@ -269,6 +270,13 @@ export class Instance {
   #usageTarget(): UsageTarget | null {
     const s = this.#snapshots
     const source = usageSource(this.#signalConfig(), s.account, s.meters)
-    return 'fault' in source ? null : source
+    if ('fault' in source) return null
+    const selection = selectAccount(s.account.body, this.#signalConfig())
+    if ('fault' in selection) return null
+    const startDate = readNullableString(selection.selected.account.startDate, 'account.startDate')
+    const key = instanceKeyOf(selection.selected.accountNumber, this.#deps.config.nmi)
+    const stored = this.#deps.store.readInstance(key)
+    this.historyStart = startDate !== null && stored?.historyStart !== startDate ? startDate : undefined
+    return this.historyStart === undefined ? source : { ...source, startDate: this.historyStart }
   }
 }

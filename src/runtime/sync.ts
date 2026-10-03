@@ -13,6 +13,7 @@ export interface AccountTarget {
 export interface UsageTarget {
   nmi: string
   zone: string
+  startDate?: string
 }
 
 export interface SyncHost {
@@ -120,7 +121,8 @@ export class Sync {
     const target = this.#host.usageTarget()
     if (target === null) return
     await this.#host.gate.session(async (send) => {
-      const window = usageWindow(this.#host.scheduler.now(), target.zone)
+      const recent = usageWindow(this.#host.scheduler.now(), target.zone)
+      const window = target.startDate === undefined ? recent : { ...recent, start: `${target.startDate.slice(0, 10)}T00:00:00` }
       await send(usageHalfHourly(window, target.nmi), 'normal')
       await send(usageDaily(window, target.nmi), 'normal')
     })

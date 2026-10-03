@@ -21,13 +21,16 @@ export interface Config {
   wholesalePriceLevelSensor: boolean
   eveHistory: boolean
   matterEnergy: boolean
+  virtualDevices?: boolean
+  spotPrices?: boolean
 }
 
 export type ParsedConfig = { kind: 'ok'; config: Config } | { kind: 'error'; errors: string[] }
 
-type BooleanKey = 'availabilitySensors' | 'tokenExpiringSensor' | 'wholesalePriceSensor' | 'wholesalePriceLevelSensor' | 'eveHistory' | 'matterEnergy'
+type BooleanKey = 'virtualDevices' | 'availabilitySensors' | 'tokenExpiringSensor' | 'wholesalePriceSensor' | 'wholesalePriceLevelSensor' | 'eveHistory' | 'matterEnergy'
 
 const BOOLEAN_DEFAULTS: Readonly<Record<BooleanKey, boolean>> = {
+  virtualDevices: true,
   availabilitySensors: true,
   tokenExpiringSensor: false,
   wholesalePriceSensor: true,
@@ -136,6 +139,8 @@ export function parseConfig(raw: unknown): ParsedConfig {
   const errors: string[] = []
   const config: Config = {
     name: readName(raw, errors),
+    virtualDevices: readBoolean(raw, 'virtualDevices', errors),
+    ...(typeof raw.spotPrices === 'boolean' ? { spotPrices: raw.spotPrices } : {}),
     token: readToken(raw.token, errors),
     accountNumber: readOptionalText(raw, 'accountNumber', errors),
     nmi: readOptionalText(raw, 'nmi', errors),
@@ -149,6 +154,7 @@ export function parseConfig(raw: unknown): ParsedConfig {
     eveHistory: readBoolean(raw, 'eveHistory', errors),
     matterEnergy: readBoolean(raw, 'matterEnergy', errors),
   }
+  if (raw.spotPrices !== undefined && typeof raw.spotPrices !== 'boolean') errors.push('spotPrices: expected a boolean')
   const high = config.priceHighThresholdCentsPerKwh
   const low = config.priceLowThresholdCentsPerKwh
   if (high !== null && low !== null && low >= high) {

@@ -134,7 +134,7 @@ function fixtureStub(edits: Readonly<Record<string, (body: unknown) => string>> 
 }
 
 test('accessories appear after E1 and carry the signals', async () => {
-  const config = block({ token: TOKEN })
+  const config = block({ token: TOKEN, spotPrices: true })
   prepare([config])
   const stub = await fixtureStub()
   const api = new HomebridgeAPI()
@@ -151,7 +151,7 @@ test('accessories appear after E1 and carry the signals', async () => {
     assert.equal(stub.requests[0]?.url, '/api/MyAccount/GetAccountData')
     assert.deepEqual(
       registered.map((accessory) => accessory.displayName),
-      ['Flipped Energy Rates', 'Flipped Energy Wholesale', 'Flipped Energy Status', 'Flipped Energy Grid Import'],
+      ['Flipped Energy Rates', 'Flipped Energy Wholesale', 'Flipped Energy Status', 'Flipped Energy Power Usage'],
     )
     assert.deepEqual(platform.accessories, registered)
     const [rates, wholesale, status] = registered
@@ -189,7 +189,7 @@ test('on a Homebridge 1.x API without isMatterEnabled the HAP accessories still 
     await log.until((record) => record.message === 'energy: ok')
     assert.deepEqual(
       registered.map((accessory) => accessory.displayName),
-      ['Flipped Energy Rates', 'Flipped Energy Wholesale', 'Flipped Energy Status', 'Flipped Energy Grid Import'],
+      ['Flipped Energy Rates', 'Flipped Energy Status', 'Flipped Energy Power Usage'],
     )
     assert.deepEqual(log.messages('error'), [])
   } finally {
@@ -276,3 +276,34 @@ test('energy ok while the account group is faulted on a fresh install: no throw,
     await stub.close()
   }
 })
+
+for (const spotPrices of [undefined, false] as const) {
+  test(`cached wholesale survives unavailable tariff unless explicitly disabled (${spotPrices})`, async () => {
+    const config = block({ token: TOKEN, ...(spotPrices === undefined ? {} : { spotPrices }) })
+    prepare([config])
+    mkdirSync(pluginDirectory, { recursive: true })
+    writeFileSync(join(pluginDirectory, 'pin.json'), JSON.stringify({ version: 1, accountNumber: ACCOUNT_NUMBER }))
+    const api = new HomebridgeAPI()
+    const accessory = new api.platformAccessory('Flipped Energy Wholesale', api.hap.uuid.generate(`flipped:${ACCOUNT_NUMBER}:wholesale`))
+    accessory.context = { schema: 1, instanceKey: ACCOUNT_NUMBER, kind: 'wholesale' }
+    const removed: PlatformAccessory[] = []
+    emitterOf(api).on('unregisterPlatformAccessories', (accessories: PlatformAccessory[]) => removed.push(...accessories))
+    const log = new LogRecorder()
+    const stub = await refusingStub()
+    const platform = new Platform(log.logging, config, api, {
+      createTransport: (token) => new ApiClient({ baseUrl: stub.url, token, httpTimeoutS: HTTP_TIMEOUT_S, waitHttpTimeoutS: WAIT_HTTP_TIMEOUT_S }),
+      timers: new FakeClock(START),
+    })
+    try {
+      platform.configureAccessory(accessory)
+      api.signalFinished()
+      assert.equal(platform.accessories.includes(accessory), spotPrices !== false)
+      await log.until((record) => record.message.startsWith('account:'))
+      assert.equal(platform.accessories.includes(accessory), spotPrices !== false)
+      assert.equal(removed.includes(accessory), spotPrices === false)
+    } finally {
+      api.signalShutdown()
+      await stub.close()
+    }
+  })
+}

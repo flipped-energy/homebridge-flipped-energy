@@ -36,7 +36,7 @@ const threeEntries: { entries: { time: number; deciwatts: number }[]; historySta
 )
 
 function created(history: EveHistory): { accessory: PlatformAccessory; energy: EveEnergyAccessory } {
-  const accessory = new api.platformAccessory('Flipped Energy Grid Import', hap.uuid.generate(`flipped:${INSTANCE_KEY}:grid_import`))
+  const accessory = new api.platformAccessory('Flipped Energy Power Usage', hap.uuid.generate(`flipped:${INSTANCE_KEY}:grid_import`))
   accessory.context = { schema: 1, instanceKey: INSTANCE_KEY, kind: 'energy', key: 'grid_import' }
   return { accessory, energy: new EveEnergyAccessory(hap, accessory, 'grid_import', INSTANCE_KEY, history, quiet) }
 }
@@ -77,7 +77,7 @@ test('an energy accessory has the outlet with Total Consumption and the Eve hist
     ],
   )
   const outlet = serviceOf(accessory, S.Outlet.UUID)
-  assert.equal(outlet.getCharacteristic(C.ConfiguredName).value, 'Grid Import')
+  assert.equal(outlet.getCharacteristic(C.ConfiguredName).value, 'Power Usage')
   assert.equal(outlet.getCharacteristic(C.OutletInUse).value, true)
   const total = characteristicOf(outlet, EVE_UUIDS.totalConsumption)
   assert.deepEqual(
@@ -86,7 +86,7 @@ test('an energy accessory has the outlet with Total Consumption and the Eve hist
   )
   assert.equal(
     outlet.characteristics.some((characteristic) => characteristic.UUID === 'E863F10D-079E-48FF-8F27-9C2605A29F52'),
-    false,
+    true,
   )
   const history = serviceOf(accessory, EVE_UUIDS.historyService)
   assert.deepEqual(
@@ -146,15 +146,17 @@ test('a cached energy accessory is faulted before binding and keeps one set of s
   assert.deepEqual(await readStatus(characteristicOf(outlet, EVE_UUIDS.totalConsumption)), { value: 5 })
 })
 
-async function runPlatform(failUsage: boolean, halfHourly: unknown[] | null, until: (record: { level: string; message: string }) => boolean): Promise<{ registered: PlatformAccessory[]; platform: Platform<number> }> {
+async function runPlatform(failUsage: boolean, halfHourly: unknown[] | null, until: (record: { level: string; message: string }) => boolean, startDate?: string, preserveStorage = false): Promise<{ registered: PlatformAccessory[]; platform: Platform<number>; usageStarts: string[] }> {
   const storage = storagePath()
   const configPath = join(storage, 'config.json')
-  rmSync(join(storage, PRODUCT_NAME), { recursive: true, force: true })
+  if (!preserveStorage) rmSync(join(storage, PRODUCT_NAME), { recursive: true, force: true })
   const config = { platform: PLATFORM_NAME, name: 'Flipped Energy', token: 'fdk_SEQUENCEFIXTURE000000000000000000wXyZ' }
   writeFileSync(configPath, JSON.stringify({ bridge: { name: 'Test Bridge' }, platforms: [config] }))
   const sequence = loadSequence('first-run-account-pinning')
+  const usageStarts: string[] = []
   const stub = await startStub((request, response) => {
     const path = new URL(request.url ?? '', 'http://stub').pathname
+    if (path.startsWith('/api/Usage/')) usageStarts.push(new URL(request.url ?? '', 'http://stub').searchParams.get('start') ?? '')
     if (halfHourly !== null && path === '/api/Usage/usage/projectreads/halfhourly') {
       response.writeHead(200, { 'content-type': 'application/json' })
       response.end(JSON.stringify(halfHourly))
@@ -171,6 +173,13 @@ async function runPlatform(failUsage: boolean, halfHourly: unknown[] | null, unt
       response.end(`no 200 answer for ${path}`)
       return
     }
+    if (startDate !== undefined && path === '/api/MyAccount/GetAccountData') {
+      const body: { accounts: { startDate?: string }[] } = typeof answer.body === 'string' ? JSON.parse(answer.body) : structuredClone(answer.body)
+      for (const account of body.accounts) account.startDate = startDate
+      response.writeHead(200, { 'content-type': 'application/json' })
+      response.end(JSON.stringify(body))
+      return
+    }
     response.writeHead(answer.status, answer.headers)
     response.end(typeof answer.body === 'string' ? answer.body : JSON.stringify(answer.body))
   })
@@ -185,7 +194,7 @@ async function runPlatform(failUsage: boolean, halfHourly: unknown[] | null, unt
   try {
     homebridge.signalFinished()
     await log.until(until)
-    return { registered, platform }
+    return { registered, platform, usageStarts }
   } finally {
     homebridge.signalShutdown()
     await stub.close()
@@ -196,27 +205,42 @@ test('no energy accessory exists before the energy group has been ok', async () 
   const { registered, platform } = await runPlatform(true, null, (record) => record.level === 'error' && record.message.startsWith('energy: '))
   assert.deepEqual(
     registered.map((accessory) => accessory.displayName),
-    ['Flipped Energy Rates', 'Flipped Energy Wholesale', 'Flipped Energy Status'],
+    ['Flipped Energy Rates', 'Flipped Energy Status'],
   )
-  assert.equal(platform.accessories.length, 3)
+  assert.equal(platform.accessories.length, 2)
   assert.equal(existsSync(join(storagePath(), PRODUCT_NAME, `instance-${instanceHash(INSTANCE_KEY)}.json`)), false)
 })
 
 test('the first usage sync with the energy group ok runs the ledger, writes the Eve history and the state file, and publishes Total Consumption', async () => {
   const { registered } = await runPlatform(false, USAGE_ROWS, (record) => record.message === 'energy: ok')
-  const grid = registered.find((accessory) => accessory.displayName === 'Flipped Energy Grid Import')
-  if (grid === undefined) throw new Error('no Grid Import accessory')
+  const grid = registered.find((accessory) => accessory.displayName === 'Flipped Energy Power Usage')
+  if (grid === undefined) throw new Error('no Power Usage accessory')
   const file = JSON.parse(readFileSync(join(storagePath(), PRODUCT_NAME, `instance-${instanceHash(INSTANCE_KEY)}.json`), 'utf8'))
   const channel = readChannelState(file.channels.grid_import, 'grid_import')
   assert.equal(channel.totalKwh, 0.412 + 0.5)
   assert.equal(channel.through, '2026-09-29T02:00:00Z')
   assert.equal(channel.history.lastEntry, 7)
-  assert.deepEqual(registered.map((accessory) => accessory.displayName).slice(3), ['Flipped Energy Grid Import', 'Flipped Energy Solar Export'])
+  assert.deepEqual(registered.map((accessory) => accessory.displayName).slice(2), ['Flipped Energy Power Usage', 'Flipped Energy Solar Export'])
   assert.equal(file.channels.controlled_load, undefined)
   const outlet = serviceOf(grid, hap.Service.Outlet.UUID)
   assert.deepEqual(await readStatus(outlet.getCharacteristic(hap.Characteristic.On)), { value: true })
   assert.deepEqual(await readStatus(characteristicOf(outlet, EVE_UUIDS.totalConsumption)), { value: roundTotal(channel.totalKwh) })
+  assert.deepEqual(await readStatus(characteristicOf(outlet, EVE_UUIDS.powerConsumption)), { value: 1000 })
   const status = new EveHistory(channel.history).status()
   if (status === null) throw new Error('no history status')
   assert.equal(characteristicOf(serviceOf(grid, EVE_UUIDS.historyService), EVE_UUIDS.historyStatus).value, base64(status))
+})
+
+test('account-start backfill replaces partial totals without double counting and resumes incremental sync', async () => {
+  const ready = (record: { message: string }) => record.message === 'energy: ok'
+  await runPlatform(false, USAGE_ROWS, ready)
+  const older = { ...USAGE_ROWS[0], time: '2026-09-01T11:00:00', value: 2 }
+  const backfill = await runPlatform(false, [older, ...USAGE_ROWS], ready, '2026-09-01T00:00:00', true)
+  assert.ok(backfill.usageStarts.length > 0)
+  assert.ok(backfill.usageStarts.every((start) => start === '2026-09-01T00:00:00'))
+  assert.equal(backfill.platform.instanceState?.historyStart, '2026-09-01T00:00:00')
+  assert.equal(backfill.platform.instanceState?.channels.grid_import?.totalKwh, 2.912)
+  const resumed = await runPlatform(false, USAGE_ROWS, ready, '2026-09-01T00:00:00', true)
+  assert.ok(resumed.usageStarts.every((start) => start !== '2026-09-01T00:00:00'))
+  assert.equal(resumed.platform.instanceState?.channels.grid_import?.totalKwh, 2.912)
 })

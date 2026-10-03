@@ -13,7 +13,7 @@ export function nodeLabel(name: string): string {
 }
 
 export function matterName(firstInstance: boolean, accountNumber: string, nmi: string | null, key: ChannelName): string {
-  const base = `${CHANNEL_IDENTITIES[key].suffix} Energy`
+  const base = key === 'peak' || key === 'off_peak' || key === 'shoulder' ? CHANNEL_IDENTITIES[key].suffix : `${CHANNEL_IDENTITIES[key].suffix} Energy`
   if (firstInstance) return nodeLabel(base)
   const account = `${base} ${accountNumber.slice(-SUFFIX_LENGTH)}`
   return nodeLabel(nmi === null ? account : `${account} ${nmi.slice(-SUFFIX_LENGTH)}`)
